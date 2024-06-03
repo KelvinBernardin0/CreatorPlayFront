@@ -1,0 +1,69 @@
+<div class="login-container">
+  <div class="left-section">
+    <img src="assets/imagens/logo-vve.png" alt="Logo Vivo" class="vivo-logo" />
+    <div class="saiba-mais">
+      <a
+        href="https://www.vivo.com.br/para-empresas/por-que-vivo-empresas/vivo-valoriza-empresas"
+        class="saiba-mais-link"
+        >Acesse e Saiba Mais</a
+      >
+    </div>
+  </div>
+  <div class="right-section">
+    <form [formGroup]="cadastroForm" (submit)="onSubmit()" class="form-logon">
+      <h1>Registre-se no Vivo Valoriza Empresas</h1>
+      <div class="form-group"></div>
+      <div class="form-group">
+        <input
+          formControlName="usuario"
+          type="text"
+          id="registrase-usuario"
+          name="telefone"
+          required
+          class="input"
+          placeholder="Telefone"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          formControlName="email"
+          type="email"
+          id="registrase-email"
+          name="email"
+          required
+          class="input"
+          placeholder="E-mail"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          formControlName="senha"
+          type="password"
+          id="registrase-senha"
+          name="senha"
+          required
+          class="input"
+          placeholder="Senha"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          formControlName="confirmacaoSenha"
+          type="password"
+          id="registrase-confirma-senha"
+          name="confirmaSenha"
+          required
+          class="input"
+          placeholder="Confirmar Senha"
+        />
+      </div>
+      <div class="botoes">
+        <button type="button" class="button-cancelar" routerLink="/login">
+          Voltar
+        </button>
+        <button type="submit" class="btn btn-primary">Registrar-se</button>
+      </div>
+    </form>
+    <small class="copy-right">&copy; 2023 - Vivo Valoriza Empresas</small>
+  </div>
+</div>

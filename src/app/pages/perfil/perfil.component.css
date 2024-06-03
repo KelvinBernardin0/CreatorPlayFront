@@ -1,0 +1,8 @@
+.forgot-password a {
+  color:#660099;
+}
+
+.forgot-password a:hover {
+  color:#660099;
+  font-weight: 500;
+}

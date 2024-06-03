@@ -1,0 +1,62 @@
+<div class="login-container">
+  <div class="left-section">
+    <img src="assets/imagens/logo-vve.png" alt="Logo Vivo" class="vivo-logo" />
+    <div class="saiba-mais">
+      <a
+        href="https://www.vivo.com.br/para-empresas/por-que-vivo-empresas/vivo-valoriza-empresas"
+        class="saiba-mais-link"
+        >Acesse e Saiba Mais</a
+      >
+    </div>
+  </div>
+
+  <div class="right-section">
+    <form class="form-logon" [formGroup]="loginForm" (submit)="submitLogin()">
+      <h1>Faça login no Vivo Valoriza Empresas</h1>
+      <div class="form">
+        <input
+          formControlName="token"
+          type="text"
+          id="token"
+          name="token"
+          required
+          placeholder="E-mail"
+        />
+      </div>
+      <div class="form">
+        <input
+          formControlName="secret"
+          type="password"
+          id="secret"
+          name="secret"
+          required
+          placeholder="Senha"
+        />
+      </div>
+      <div class="forgot-password">
+        <a
+          [routerLink]="['/esqueci-senha']"
+          routerLinkActive="router-link-active"
+          class="forgot-password-link"
+          >Esqueceu a senha?</a
+        >
+      </div>
+      <div class="entrar-checkbox">
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </div>
+      <div class="registra-se">
+        Ainda não tem registro no VVE?
+        <a
+          [routerLink]="['/registrase']"
+          routerLinkActive="router-link-active"
+          class="registra-se-link"
+          >Registra-se</a
+        >
+      </div>
+    </form>
+    <!-- <small class="copy-right">&copy; 2023 - Vivo Valoriza Empresas</small> -->
+  </div>
+</div>
+<div *ngIf="showSpinner" class="overlay">
+  <span class="loader"></span>
+</div>
