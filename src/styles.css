@@ -1,3 +1,307 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700&display=swap");
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: #f6f6f6;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  color: #660099;
+  width: 100%;
+  font-style: normal;
+  line-height: 30px;
+  letter-spacing: 0.2px;
+  font-size: 27px;
+}
+
+h2 {
+  color: #000000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 30px;
+  letter-spacing: 0.2px;
+}
+
+h3 {
+  font-style: normal;
+  font-weight: 300;
+  line-height: 30px;
+  font-size: 24px;
+  letter-spacing: -1.2px;
+  color: #595959;
+}
+
+h4 {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 30px;
+  letter-spacing: 0.2px;
+  color: #595959;
+}
+
+h1.title {
+  color: #262626;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+input:not([type="checkbox"]) {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  gap: 12px;
+  isolation: isolate;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  flex: none;
+  align-self: stretch;
+  font-size: 20px;
+}
+
+input:focus {
+  border-style: #660099;
+}
+
+input::placeholder {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.2px;
+  color: #5c5c5c;
+}
+
+.forms-container select.form-select.select-varios {
+  padding: 15px 20px;
+  height: 150px;
+}
+
+/* TELAS DE LOGIN, REGISTRA-SE E RECUPERAR SENHA */
+.login-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.left-section {
+  flex: 1;
+  background-color: #660099;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+  flex-direction: column;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-logon {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.vivo-logo {
+  max-width: 100%;
+  margin-bottom: 50px;
+}
+
+.saiba-mais-link {
+  color: #660099;
+  text-decoration: none; /* Remove o sublinhado padrão dos links */
+  font-size: 16px; /* Tamanho da fonte */
+  font-weight: bold; /* Peso da fonte */
+  background-color: #ffffff; /* Cor de fundo do link */
+  padding: 10px 20px; /* Espaçamento interno  */
+  border-radius: 5px; /* Borda arredondada  */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Adicionando transição para a cor do texto */
+
+  /* Efeito de hover */
+  &:hover {
+    background-color: #33004d; /* Cor de fundo do link ao passar o mouse */
+    color: #ffffff; /* Mudando a cor do texto para branco ao passar o mouse */
+  }
+}
+
+button.btn.btn-primary {
+  width: 170px;
+  height: 45px;
+  background: #660099;
+  border-radius: 5px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+  cursor: pointer;
+  border: 2px solid #660099;
+}
+
+.button-cancelar {
+  width: 170px;
+  height: 45px;
+  margin-right: 20px;
+  background: #990000;
+  border-radius: 5px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+  cursor: pointer;
+  border: 2px solid #990000;
+}
+
+.button:hover {
+  border: 2px solid #84eec1;
+  color: #84eec1;
+}
+
+.copy-right {
+  position: absolute;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  color: #595959;
+  bottom: -100px;
+}
+
+a {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: #660099;
+  cursor: pointer;
+}
+
+/* TELAS DE LOGIN, REGISTRA-SE E RECUPERAR SENHA */
+
+/* CARREGAMENTO DE PÁGINA */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Cor de fundo escura com opacidade */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Certifique-se de que este valor seja maior do que o z-index de outros elementos na página */
+}
+
+.loader {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50px;
+  height: 80px;
+  border-top: 5px solid #fff;
+  border-bottom: 5px solid #fff;
+  position: relative;
+  background: linear-gradient(#660099 30px, transparent 0) no-repeat;
+  background-size: 2px 40px;
+  background-position: 50% 0px;
+  animation: spinx 5s linear infinite;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  width: 40px;
+  left: 50%;
+  height: 35px;
+  position: absolute;
+  top: 0;
+  transform: translatex(-50%);
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 0 0 20px 20px;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: 0 0px;
+  animation: lqt 5s linear infinite;
+}
+.loader:after {
+  top: auto;
+  bottom: 0;
+  border-radius: 20px 20px 0 0;
+  animation: lqb 5s linear infinite;
+}
+@keyframes lqt {
+  0%,
+  100% {
+    background-image: linear-gradient(#660099 40px, transparent 0);
+    background-position: 0% 0px;
+  }
+  50% {
+    background-image: linear-gradient(#660099 40px, transparent 0);
+    background-position: 0% 40px;
+  }
+  50.1% {
+    background-image: linear-gradient(#660099 40px, transparent 0);
+    background-position: 0% -40px;
+  }
+}
+@keyframes lqb {
+  0% {
+    background-image: linear-gradient(#660099 40px, transparent 0);
+    background-position: 0 40px;
+  }
+  100% {
+    background-image: linear-gradient(#660099 40px, transparent 0);
+    background-position: 0 -40px;
+  }
+}
+@keyframes spinx {
+  0%,
+  49% {
+    transform: rotate(0deg);
+    background-position: 50% 36px;
+  }
+  51%,
+  98% {
+    transform: rotate(180deg);
+    background-position: 50% 4px;
+  }
+  100% {
+    transform: rotate(360deg);
+    background-position: 50% 36px;
+  }
+}

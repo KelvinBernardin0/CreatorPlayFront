@@ -7,6 +7,7 @@ import { AutenticacaoToken } from 'src/app/common/autenticacao/autenticacao.toke
 import { LoginModel } from 'src/app/models/login/login/login-model';
 import { LoginService } from 'src/app/services/login/login/login.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     public loginService: LoginService,
-    // private NotificacaoService: NotificacaoService,
+    private notificacaoService: NotificacaoService,
     private spinner: NgxSpinnerService
   ) {
     this.loginForm = this.formBuilder.group({
@@ -37,9 +38,7 @@ export class LoginComponent {
 
   submitLogin() {
     this.showSpinner = true; // Exibe o spinner (carregamento)
-
     var dadosLogin = this.loginForm.getRawValue() as LoginModel;
-
     this.loginService.LoginUsuario(dadosLogin).subscribe(
       (data: any) => {
         console.log(data);
@@ -59,9 +58,7 @@ export class LoginComponent {
         localStorage.setItem('JwtTokenInativo', DataHoraAtual.toString());
         localStorage.setItem('JwtTokenBearer', 'Bearer ' + data.token);
         localStorage.setItem('UserRole', userRole);
-
         this.router.navigate(['/inicio']);
-
         this.showSpinner = false; // Esconde o spinner quando o processo for concluído
       },
       (error) => {
@@ -69,14 +66,15 @@ export class LoginComponent {
         // Esconda o spinner quando o processo for concluído
         this.spinner.hide();
         this.showSpinner = false;
-
-        // this.NotificacaoService.AlertaErro(
-        //   'Erro',
-        //   'Erro ao tentar entrar, contate o administrador do sistema',
-        //   'Concluir'
-        // ).then(() => {
-        //   window.location.reload();
-        // });
+        this.notificacaoService
+          .AlertaErro(
+            'Erro',
+            'Erro ao tentar entrar, contate o administrador do sistema',
+            'Concluir'
+          )
+          .then(() => {
+            window.location.reload();
+          });
       }
     );
   }

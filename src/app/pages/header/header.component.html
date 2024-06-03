@@ -1,18 +1,22 @@
-<div class="container">
-  <div class="header">
+<div class="header">
+  <a
+    class="navbar-brand"
+    [routerLink]="['/inicio']"
+    routerLinkActive="router-link-active"
+  >
     <img src="assets/imagens/logo.png" alt="Creator Play" />
+  </a>
 
-    <div class="dropdown user">
-      <img src="assets/imagens/icon_perfil.png" alt="Perfil" />
+  <div class="dropdown user">
+    <img src="assets/imagens/icon_perfil.png" alt="Perfil" />
 
-      <button class="dropbtn">
-        <i class="bi bi-caret-down-fill"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="#">Perfil</a>
-        <a href="#">Senha</a>
-        <a (click)="DeslogarUsuario()">Sair</a>
-      </div>
+    <button class="dropbtn">
+      <i class="bi bi-caret-down-fill"></i>
+    </button>
+    <div class="dropdown-content">
+      <a (click)="Perfil()">Perfil</a>
+      <a (click)="Senha()">Senha</a>
+      <a (click)="Sair()">Sair</a>
     </div>
   </div>
 </div>

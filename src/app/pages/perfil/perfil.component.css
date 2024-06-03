@@ -1,8 +1,12 @@
 .forgot-password a {
-  color:#660099;
+  color: #660099;
 }
 
 .forgot-password a:hover {
-  color:#660099;
+  color: #660099;
   font-weight: 500;
+}
+
+.forms-title {
+  margin-top: 50px;
 }

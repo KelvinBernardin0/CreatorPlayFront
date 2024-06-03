@@ -1,6 +1,7 @@
 import { AuthService } from 'src/app/services/helpService/Auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
 import { HttpHeaders } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -32,7 +33,7 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.carregarPerfilUsuario();
+    // this.carregarPerfilUsuario();
   }
 
   carregarPerfilUsuario(): void {

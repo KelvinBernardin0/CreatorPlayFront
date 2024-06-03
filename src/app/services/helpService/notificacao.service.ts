@@ -23,6 +23,7 @@ export class NotificacaoService {
       showCloseButton: true,
     });
   }
+
   AlertaConcluidoVerde(Titulo: string, Texto: string, Botao: string) {
     return Swal.fire({
       title: Titulo,
@@ -32,6 +33,7 @@ export class NotificacaoService {
       showCloseButton: true,
     });
   }
+
   AlertaAtencaoLaranja(Titulo: string, Texto: string, Botao: string) {
     return Swal.fire({
       title: Titulo,
@@ -41,6 +43,7 @@ export class NotificacaoService {
       showCloseButton: true,
     });
   }
+
   AlertaErroConfirmacao(
     Titulo: string,
     Texto: string,
@@ -59,6 +62,7 @@ export class NotificacaoService {
       showCloseButton: true,
     });
   }
+
   AlertaErro(Titulo: string, Texto: string, BotaoOk: string) {
     return Swal.fire({
       title: Titulo,
@@ -71,6 +75,7 @@ export class NotificacaoService {
       showCloseButton: true,
     });
   }
+
   AlertaAtencaoConfirmacao(
     Titulo: string,
     Texto: string,

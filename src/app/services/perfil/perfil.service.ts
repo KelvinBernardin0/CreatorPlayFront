@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PerfilModel } from 'src/app/models/meuPerfil/perfil/perfil-model';
+import { PerfilModel } from 'src/app/models/perfil/perfil-model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class PerfilService {
   private readonly baseUrl = environment['apiURL'];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   obterPerfilUsuarioGestor(headers: HttpHeaders): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/api/v1/usuario/perfil/gestor`, {
@@ -19,9 +19,12 @@ export class PerfilService {
   }
 
   obterPerfilUsuarioColaborador(headers: HttpHeaders): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/api/v1/usuario/perfil/colaborador`, {
-      headers,
-    });
+    return this.httpClient.get(
+      `${this.baseUrl}/api/v1/usuario/perfil/colaborador`,
+      {
+        headers,
+      }
+    );
   }
 
   atualizarPerfilGestor(perfil: PerfilModel): Observable<any> {
@@ -32,10 +35,15 @@ export class PerfilService {
   }
 
   obterPerfilUsuario(headers: HttpHeaders): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/api/v1/usuario/perfil`, { headers });
+    return this.httpClient.get(`${this.baseUrl}/api/v1/usuario/perfil`, {
+      headers,
+    });
   }
 
   atualizarPerfil(perfil: PerfilModel): Observable<any> {
-    return this.httpClient.put<any>(`${this.baseUrl}/api/v1/usuario/perfil`, perfil);
+    return this.httpClient.put<any>(
+      `${this.baseUrl}/api/v1/usuario/perfil`,
+      perfil
+    );
   }
 }

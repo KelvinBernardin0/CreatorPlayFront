@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { SenhaModel } from 'src/app/models/meuPerfil/senha/senha-model';
+import { SenhaModel } from 'src/app/models/senha/senha-model';
 
 @Injectable({
   providedIn: 'root',

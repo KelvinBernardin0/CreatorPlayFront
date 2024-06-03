@@ -9,8 +9,16 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   constructor(private router: Router) {}
 
-  DeslogarUsuario(): void {
+  Perfil(): void {
+    this.router.navigate(['/perfil']); // Redirecionar para a página de perfil
+  }
+
+  Senha(): void {
+    this.router.navigate(['/senha']); // Redirecionar para a página de senha
+  }
+
+  Sair(): void {
     localStorage.clear(); // Limpar o localStorage após deslogar com sucesso
-    this.router.navigate(['/login']); // Redirecionar para a página de login ou outra página inicial
+    this.router.navigate(['/login']); // Redirecionar para a página de login
   }
 }
