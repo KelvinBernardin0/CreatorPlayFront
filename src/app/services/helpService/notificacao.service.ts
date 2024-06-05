@@ -18,7 +18,8 @@ export class NotificacaoService {
     return Swal.fire({
       title: Titulo,
       text: Texto,
-      iconHtml: '<img src="/assets/imagens/h_ok_azul_redondo.svg" width="50">',
+      iconHtml:
+        '<img src="/assets/imagens/notificacoes/h_ok_azul_redondo.svg" width="50">',
       confirmButtonText: Botao,
       showCloseButton: true,
     });
@@ -28,7 +29,8 @@ export class NotificacaoService {
     return Swal.fire({
       title: Titulo,
       text: Texto,
-      iconHtml: '<img src="/assets/imagens/h_ok_verde_redondo.svg" width="50">',
+      iconHtml:
+        '<img src="/assets/imagens/notificacoes/h_ok_verde_redondo.svg" width="50">',
       confirmButtonText: Botao,
       showCloseButton: true,
     });
@@ -38,7 +40,8 @@ export class NotificacaoService {
     return Swal.fire({
       title: Titulo,
       html: Texto,
-      iconHtml: '<img src="/assets/imagens/h_atencao-redondo.svg" width="50">',
+      iconHtml:
+        '<img src="/assets/imagens/notificacoes/h_atencao-redondo.svg" width="50">',
       confirmButtonText: Botao,
       showCloseButton: true,
     });
@@ -53,7 +56,8 @@ export class NotificacaoService {
     return Swal.fire({
       title: Titulo,
       text: Texto,
-      iconHtml: '<img src="/assets/imagens/h_erro_redondo.svg" width="50">',
+      iconHtml:
+        '<img src="/assets/imagens/notificacoes/h_erro_redondo.svg" width="50">',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -67,7 +71,8 @@ export class NotificacaoService {
     return Swal.fire({
       title: Titulo,
       text: Texto,
-      iconHtml: '<img src="/assets/imagens/h_erro_redondo.svg" width="50">',
+      iconHtml:
+        '<img src="/assets/imagens/notificacoes/h_erro_redondo.svg" width="50">',
       showCancelButton: false,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -86,7 +91,7 @@ export class NotificacaoService {
       title: Titulo,
       html: Texto,
       iconHtml:
-        '<img src="/assets/imagens/h_atencao_laranja_redondo.svg" width="50">',
+        '<img src="/assets/imagens/notificacoes/h_atencao_laranja_redondo.svg" width="50">',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',

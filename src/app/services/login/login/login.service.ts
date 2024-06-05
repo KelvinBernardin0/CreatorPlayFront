@@ -20,7 +20,7 @@ export class LoginService {
 
   LoginUsuario(objeto: any) {
     return this.httpClient.post<any>(
-      this.baseUrl + '/api/v1/autenticacao/',
+      this.baseUrl + '/api/v1/authentication/autenticar',
       objeto
     );
   }

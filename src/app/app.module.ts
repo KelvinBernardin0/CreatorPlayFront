@@ -9,26 +9,22 @@ import { LoginComponent } from './pages/login/login/login.component';
 import { RegistraseComponent } from './pages/login/registrase/registrase.component';
 import { EsqueciSenhaComponent } from './pages/login/esqueci-senha/esqueci-senha.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
-import { SenhaComponent } from './pages/senha/senha.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AutenticacaoInterceptor } from './common/autenticacao/autenticacao.interceptor';
 import { HeaderComponent } from './pages/header/header.component';
+import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   { path: '**', redirectTo: '/login', pathMatch: 'full' },
   {
-    path: 'header',
-    component: HeaderComponent,
-  },
-  {
     path: 'login',
     component: LoginComponent,
   },
   {
-    path: 'registra-se',
+    path: 'registrase',
     component: RegistraseComponent,
   },
   {
@@ -36,16 +32,19 @@ const routes: Routes = [
     component: EsqueciSenhaComponent,
   },
   {
+    path: 'header',
+    component: HeaderComponent,
+    canActivate: [AutenticacaoGuard],
+  },
+  {
     path: 'inicio',
     component: InicioComponent,
+    canActivate: [AutenticacaoGuard],
   },
   {
     path: 'perfil',
     component: PerfilComponent,
-  },
-  {
-    path: 'senha',
-    component: SenhaComponent,
+    canActivate: [AutenticacaoGuard],
   },
 ];
 
@@ -58,7 +57,6 @@ const routes: Routes = [
     InicioComponent,
     HeaderComponent,
     PerfilComponent,
-    SenhaComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +69,7 @@ const routes: Routes = [
 
   providers: [
     AutenticacaoGuard,
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AutenticacaoInterceptor,

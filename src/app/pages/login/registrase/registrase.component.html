@@ -1,29 +1,18 @@
 <div class="login-container">
   <div class="left-section">
-    <img src="assets/imagens/logo-vve.png" alt="Logo Vivo" class="vivo-logo" />
-    <div class="saiba-mais">
+    <img src="assets/imagens/logo.png" alt="Logo Vivo" class="vivo-logo" />
+    <!-- <div class="saiba-mais">
       <a
         href="https://www.vivo.com.br/para-empresas/por-que-vivo-empresas/vivo-valoriza-empresas"
         class="saiba-mais-link"
         >Acesse e Saiba Mais</a
       >
-    </div>
+    </div> -->
   </div>
   <div class="right-section">
     <form [formGroup]="cadastroForm" (submit)="onSubmit()" class="form-logon">
-      <h1>Registre-se no Vivo Valoriza Empresas</h1>
+      <h1>Registre-se no CreatorPlay</h1>
       <div class="form-group"></div>
-      <div class="form-group">
-        <input
-          formControlName="usuario"
-          type="text"
-          id="registrase-usuario"
-          name="telefone"
-          required
-          class="input"
-          placeholder="Telefone"
-        />
-      </div>
       <div class="form-group">
         <input
           formControlName="email"
@@ -37,10 +26,10 @@
       </div>
       <div class="form-group">
         <input
-          formControlName="senha"
+          formControlName="password"
           type="password"
           id="registrase-senha"
-          name="senha"
+          name="password"
           required
           class="input"
           placeholder="Senha"
@@ -48,10 +37,10 @@
       </div>
       <div class="form-group">
         <input
-          formControlName="confirmacaoSenha"
+          formControlName="passwordConfirmation"
           type="password"
           id="registrase-confirma-senha"
-          name="confirmaSenha"
+          name="passwordConfirmation"
           required
           class="input"
           placeholder="Confirmar Senha"
@@ -64,6 +53,6 @@
         <button type="submit" class="btn btn-primary">Registrar-se</button>
       </div>
     </form>
-    <small class="copy-right">&copy; 2023 - Vivo Valoriza Empresas</small>
+    <!-- <small class="copy-right">&copy; 2023 - Vivo Valoriza Empresas</small> -->
   </div>
 </div>

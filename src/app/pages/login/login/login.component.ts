@@ -29,8 +29,8 @@ export class LoginComponent {
     private spinner: NgxSpinnerService
   ) {
     this.loginForm = this.formBuilder.group({
-      token: ['', [Validators.required]],
-      secret: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -41,6 +41,7 @@ export class LoginComponent {
     var dadosLogin = this.loginForm.getRawValue() as LoginModel;
     this.loginService.LoginUsuario(dadosLogin).subscribe(
       (data: any) => {
+        debugger;
         console.log(data);
         const decodedToken = this.autenticacaoToken.decodeToken(data.token);
         const userRole =
@@ -51,10 +52,13 @@ export class LoginComponent {
         DataHoraAtual.setMinutes(
           DataHoraAtual.getMinutes() + this.minutesToken
         );
+
+        // Converte o timestamp de expiração para um objeto Date
+        const expirationDate = new Date(data.expiration * 1000);
         localStorage.setItem('UserId', decodedToken.id);
         localStorage.setItem('Email', decodedToken.email);
         localStorage.setItem('JwtToken', data.token);
-        localStorage.setItem('JwtTokenExpires', data.expiration);
+        localStorage.setItem('JwtTokenExpires', expirationDate.toISOString());
         localStorage.setItem('JwtTokenInativo', DataHoraAtual.toString());
         localStorage.setItem('JwtTokenBearer', 'Bearer ' + data.token);
         localStorage.setItem('UserRole', userRole);

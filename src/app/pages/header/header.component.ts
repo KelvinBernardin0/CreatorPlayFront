@@ -9,12 +9,11 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   constructor(private router: Router) {}
 
+  Inicio(): void {
+    this.router.navigate(['/inicio']); // Redirecionar para a página de inicio
+  }
   Perfil(): void {
     this.router.navigate(['/perfil']); // Redirecionar para a página de perfil
-  }
-
-  Senha(): void {
-    this.router.navigate(['/senha']); // Redirecionar para a página de senha
   }
 
   Sair(): void {

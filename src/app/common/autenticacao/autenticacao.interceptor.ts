@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { tap, take } from 'rxjs/operators';
 import { AutenticacaoToken } from './autenticacao.token';
 declare var $: any;
-
 import { DatePipe } from '@angular/common';
 import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
 import { LogGeralService } from 'src/app/services/helpService/log-geral.service';

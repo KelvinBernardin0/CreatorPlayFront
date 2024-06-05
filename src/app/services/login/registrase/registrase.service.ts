@@ -18,7 +18,7 @@ export class RegistraseService {
 
   registrarUsuario(usuario: RegistraseModel): Observable<any> {
     return this.httpClient.post<any>(
-      this.baseUrl + '/api/v1/usuario/',
+      this.baseUrl + '/api/v1/users/criarusuario',
       usuario
     );
   }

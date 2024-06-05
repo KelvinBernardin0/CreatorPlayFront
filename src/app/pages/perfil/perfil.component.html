@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row">
     <div class="col forms-title">
-      <h4>Meu Perfil</h4>
+      <h4>Aqui você pode alterar seus dados</h4>
     </div>
   </div>
 
@@ -10,18 +10,6 @@
     <div class="row">
       <div class="col-6">
         <form [formGroup]="perfilForm" (submit)="atualizarPerfil()">
-          <div class="form-floating mb-1">
-            <input
-              formControlName="usuario"
-              type="text"
-              id="usuario"
-              name="usuario"
-              placeholder="Usuário"
-              class="form-control"
-              [readonly]="true"
-            />
-            <label>Usuário</label>
-          </div>
           <div class="form-floating mb-0">
             <input
               formControlName="email"
@@ -33,25 +21,39 @@
             />
             <label>E-mail</label>
           </div>
-
-          <div class="forgot-password">
+          <div class="col forms-title">
+            <p>Quer alterar somente a senha? Adicione o mesmo e-mail acima.</p>
+          </div>
+          <div class="form-floating mb-1">
+            <input
+              formControlName="novaSenha"
+              type="password"
+              id="novaSenha"
+              name="novaSenha"
+              required
+              placeholder="Nova Senha"
+              class="form-control"
+            />
+            <label>Nova senha</label>
+          </div>
+          <div class="form-floating mb-1">
+            <input
+              formControlName="confirmacaoSenha"
+              type="password"
+              id="confirmacaoSenha"
+              name="confirmacaoSenha"
+              required
+              placeholder="Confirme a Senha"
+              class="form-control"
+            />
+            <label>Confirme a nova senha</label>
+          </div>
+          <!-- <div class="forgot-password">
             <a (click)="enviarEmailVerificacao()"
               ><i class="bi bi-chevron-right"></i> Clique para enviar e-mail de
               verificação</a
             >
-          </div>
-
-          <div class="form-floating mb-1">
-            <input
-              formControlName="telefone"
-              type="text"
-              id="telefone"
-              name="telefone"
-              placeholder="Telefone"
-              class="form-control"
-            />
-            <label>Telefone</label>
-          </div>
+          </div> -->
 
           <div class="mb-1">
             <button type="submit" class="btn btn-primary">Atualizar</button>
