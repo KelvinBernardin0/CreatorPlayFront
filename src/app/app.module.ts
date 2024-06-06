@@ -14,6 +14,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AutenticacaoInterceptor } from './common/autenticacao/autenticacao.interceptor';
 import { HeaderComponent } from './pages/header/header.component';
 import { DatePipe } from '@angular/common';
+import { EmailComponent } from './pages/email/email.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -46,6 +47,10 @@ const routes: Routes = [
     component: PerfilComponent,
     canActivate: [AutenticacaoGuard],
   },
+  {
+    path: 'email',
+    component: EmailComponent,
+  },
 ];
 
 @NgModule({
@@ -57,6 +62,7 @@ const routes: Routes = [
     InicioComponent,
     HeaderComponent,
     PerfilComponent,
+    EmailComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,97 @@
+.structure-blocks {
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.square-card {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.card-deck {
+  margin: 50px 0px 50px 0px;
+  text-align: center;
+  width: 100%; /* Garante que a largura ocupe o espaço disponível */
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente dentro do deck */
+}
+
+.centered-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.emailfundo {
+  background: #dddddd;
+}
+
+.edit-view-btns {
+  margin-bottom: 20px;
+}
+
+.edit-view-btns button {
+  margin-right: 10px;
+}
+
+.block-properties {
+  padding: 20px;
+  border-left: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.block-properties ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.block-properties li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.block-properties li:last-child {
+  border-bottom: none;
+}
+
+.block-properties span {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.img-icon {
+  width: 20px; /* Ajuste o tamanho conforme necessário */
+  height: 20px; /* Ajuste o tamanho conforme necessário */
+  display: block;
+  margin: 0 auto 10px; /* Centraliza a imagem e adiciona margem inferior */
+}
+
+.header1 {
+  font-size: 15px;
+  border-radius: 50px;
+  background: #660099;
+  color: #ffffff;
+  padding: 10px;
+}
+
+.header {
+  background: #ffffff;
+
+  font-size: 15px;
+  border-radius: 50px;
+  padding: 10px;
+}
+
+.avancar {
+  display: flex;
+  border-radius: 5px;
+  font-size: 16px;
+  justify-content: center; /* Centraliza horizontalmente dentro do deck */
+  margin: 50px 0px 20px 0px;
+}
