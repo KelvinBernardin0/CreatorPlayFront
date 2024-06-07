@@ -4,6 +4,8 @@
   gap: 10px;
   padding: 20px 100px 20px 100px;
   background-color: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Adiciona sombra com 10px de deslocamento horizontal e vertical */
+
 }
 
 .header span {

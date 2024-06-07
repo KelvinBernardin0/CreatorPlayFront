@@ -1,6 +1,6 @@
+/* 1 PARTE */
 .structure-blocks {
-  padding: 20px;
-  border-right: 1px solid #ddd;
+  padding: 20px 10px 0px 10px;
   border-radius: 10px;
 }
 
@@ -20,56 +20,15 @@
   width: 100%; /* Garante que a largura ocupe o espaço disponível */
   display: flex;
   justify-content: center; /* Centraliza horizontalmente dentro do deck */
+  
 }
 
-.centered-content {
-  padding: 20px;
-  text-align: center;
-}
-
-.emailfundo {
-  background: #dddddd;
-}
-
-.edit-view-btns {
-  margin-bottom: 20px;
-}
-
-.edit-view-btns button {
-  margin-right: 10px;
-}
-
-.block-properties {
-  padding: 20px;
-  border-left: 1px solid #ddd;
-  border-radius: 10px;
-}
-
-.block-properties ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.block-properties li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.block-properties li:last-child {
-  border-bottom: none;
-}
-
-.block-properties span {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.img-icon {
-  width: 20px; /* Ajuste o tamanho conforme necessário */
-  height: 20px; /* Ajuste o tamanho conforme necessário */
-  display: block;
-  margin: 0 auto 10px; /* Centraliza a imagem e adiciona margem inferior */
+.avancar {
+  display: flex;
+  border-radius: 5px;
+  font-size: 16px;
+  justify-content: center; /* Centraliza horizontalmente dentro do deck */
+  margin: 50px 0px 20px 0px;
 }
 
 .header1 {
@@ -80,6 +39,7 @@
   padding: 10px;
 }
 
+
 .header {
   background: #ffffff;
 
@@ -88,10 +48,84 @@
   padding: 10px;
 }
 
-.avancar {
-  display: flex;
-  border-radius: 5px;
-  font-size: 16px;
-  justify-content: center; /* Centraliza horizontalmente dentro do deck */
-  margin: 50px 0px 20px 0px;
+
+.img-icon {
+  width: 20px; /* Ajuste o tamanho conforme necessário */
+  height: 20px; /* Ajuste o tamanho conforme necessário */
+  display: block;
+  margin: 0 auto 10px; /* Centraliza a imagem e adiciona margem inferior */
 }
+/* 1 PARTE */
+
+/* 2 PARTE */
+
+.centered-content {
+
+}
+
+.emailfundo {
+  background: #dddddd;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Adiciona sombra com 10px de deslocamento horizontal e vertical */
+  height: 100vh;
+}
+
+
+
+.edit-view-btns {
+  margin-bottom: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.edit-view-btns button {
+  margin-right: 10px;
+  
+}
+
+.editarvisualizar {
+  font-size: 15px;
+  border-radius: 50px;
+
+  padding: 10px;
+}
+
+
+/* 2 PARTE */
+
+
+/* 3   PARTE */
+
+.block-properties {
+  padding: 20px;
+}
+
+
+
+.block-properties span {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+
+.block-properties .form-group {
+  display: flex;
+  align-items: center;
+}
+
+.form-group label {
+  flex: 1; /* Faz com que as labels ocupem todo o espaço disponível */
+}
+
+
+
+.form-group{
+  margin: 20px 0px 0px 0px;
+}
+
+.form-select {
+  width: auto;
+  border-radius: 10px;
+}
+
+
+/* 3   PARTE*/

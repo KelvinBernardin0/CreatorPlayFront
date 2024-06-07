@@ -14,7 +14,7 @@
             </button>
           </div>
         </div>
-        <h5>Blocos</h5>
+        <h5 style="margin-bottom: 30px;">Blocos</h5>
         <div class="row">
           <div class="col-md-4">
             <div class="card square-card">
@@ -86,23 +86,61 @@
     </div>
     <div class="col-md-6 emailfundo">
       <div class="centered-content">
-        <div class="edit-view-btns">
-          <button class="btn btn-primary">Editar</button>
-          <button class="btn btn-secondary">Visualizar</button>
-        </div>
-        <!-- Add your components here -->
+        <!-- <div class="edit-view-btns">
+          <button class="btn btn-light editarvisualizar" type="button">
+            Editar
+          </button><button class="btn btn-light editarvisualizar" type="button">
+            Visuavizar
+          </button>
+        </div> -->
+        <!-- ADICIONAR AQUI  -->
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3"> 
       <div class="block-properties">
-        <h5>Propriedades do e-mail</h5>
-        <ul>
-          <li><span>Esquema de cores:</span> Positivo</li>
-          <li><span>Cor do fundo do e-mail:</span> Branco</li>
-          <li><span>Tipo de template:</span> Vertical</li>
-          <li><span>B2B:</span> Vivo Empresas</li>
-        </ul>
+        <h5 style="margin-bottom: 50px;">Propriedades do e-mail</h5>
+        
+        <div class="form-group">
+          <label for="esquemaCores">Esquema de cores</label>
+          <select class="form-select" aria-label="Default select example">
+            <option disabled selected>Positivo</option>
+            <option value="positivo">Positivo</option>
+            <option value="negativo">Negativo</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="corFundo">Cor do fundo do e-mail</label>
+          <select class="form-select" id="corFundo">
+            <option disabled selected>Cor</option>
+            <option value="branco">Branco</option>
+            <option value="cinza">Cinza</option>
+            <option value="colorido">Colorido</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="tipoTemplate">Tipo de template</label>
+          <select class="form-select" id="tipoTemplate">
+            <option disabled selected>Tipo</option>
+            <option value="b2b">B2B</option>
+            <option value="b2c">B2C</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="empresa">Empresa</label>
+          <select class="form-select" id="empresa">
+            <option disabled selected>Vivo Empresas</option>
+
+            <option value="vivoEmpresas">Vivo</option>
+            <option value="outraEmpresa">Outraos </option>
+          </select>
+        </div>
+
       </div>
     </div>
+    
+    
   </div>
 </div>
