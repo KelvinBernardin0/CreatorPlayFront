@@ -6,18 +6,26 @@
         <h5>Estrutura</h5>
         <div class="card-deck">
           <div class="d-grid gap-3 col-8 mx-auto">
-            <button class="btn btn-light header1" type="button">
+            <button
+              class="btn btn-light header1"
+              type="button"
+              (click)="redirecionarParaEmailSemImagem()"
+            >
               Header sem imagem
             </button>
-            <button class="btn btn-light header" type="button">
+            <button
+              class="btn btn-light header"
+              type="button"
+              (click)="redirecionarParaEmailComImagem()"
+            >
               Header com imagem
             </button>
           </div>
         </div>
-        <h5 style="margin-bottom: 30px;">Blocos</h5>
+        <h5 style="margin-bottom: 30px">Blocos</h5>
         <div class="row">
           <div class="col-md-4">
-            <div class="card square-card">
+            <div class="card square-card" (click)="carregarOpcoesTipografias()">
               <img
                 src="assets/imagens/blocos/texto-icon.png"
                 alt="Texto"
@@ -26,9 +34,8 @@
               Texto
             </div>
           </div>
-
           <div class="col-md-4">
-            <div class="card square-card">
+            <div class="card square-card" (click)="AnexarImagem()">
               <img
                 src="assets/imagens/blocos/imagem-icon.png"
                 alt="imagem"
@@ -80,67 +87,110 @@
           </div>
         </div>
         <div class="avancar">
-          <button class="btn btn-primary btn-block">Avançar</button>
+          <button (click)="saveChanges()" class="btn btn-primary btn-block">
+            Salvar E-mail
+          </button>
         </div>
       </div>
     </div>
+    <!-- TEMPLATE -->
     <div class="col-md-6 emailfundo">
       <div class="centered-content">
-        <!-- <div class="edit-view-btns">
-          <button class="btn btn-light editarvisualizar" type="button">
-            Editar
-          </button><button class="btn btn-light editarvisualizar" type="button">
-            Visuavizar
-          </button>
-        </div> -->
-        <!-- ADICIONAR AQUI  -->
+        <div
+          id="editable-container"
+          [innerHTML]="emailHTML"
+          (click)="makeEditable($event)"
+        ></div>
+        <!-- <button (click)="saveChanges()">Salvar Alterações</button> -->
       </div>
     </div>
-    <div class="col-md-3"> 
+    <!-- TEMPLATE -->
+
+    <div class="col-md-3">
       <div class="block-properties">
-        <h5 style="margin-bottom: 50px;">Propriedades do e-mail</h5>
+        <!-- TIPOGRAFIAS -->
+        <div *ngIf="mostrarTipografia">
+          <h5 style="margin-bottom: 50px">Tipografias</h5>
+          <div class="form-group">
+            <label for="esquemaCores">Titulos: </label>
+            <select class="form-select" aria-label="Default select example" (change)="AplicaMudanca($event)">
+              <option disabled selected>Tamanhos e Cores</option>
+              <option *ngFor="let opcoes of opcoesTitulos" [value]="opcoes.nome">
+                {{ opcoes.nome }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="esquemaCores">Descrições: </label>
+            <select class="form-select" aria-label="Default select example" (change)="AplicaMudanca($event)">
+              <option disabled selected>Tamanhos e Cores</option>
+              <option *ngFor="let opcoes of opcoesDescricoes" [value]="opcoes.nome">
+                {{ opcoes.nome }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="esquemaCores">Links: </label>
+            <select class="form-select" aria-label="Default select example" (change)="AplicaMudanca($event)">
+              <option disabled selected>Tamanhos e Cores</option>
+              <option *ngFor="let opcoes of opcoesLinks" [value]="opcoes.nome">
+                {{ opcoes.nome }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- TIPOGRAFIAS -->
+
+        <!-- IMAGEM -->
+        <div *ngIf="mostrarImagem">
+          <h5 style="margin-bottom: 50px">Imagem</h5>
+          <input type="file" (change)="onFileSelected($event)">
+        </div>
+        <!-- IMAGEM -->
         
-        <div class="form-group">
-          <label for="esquemaCores">Esquema de cores</label>
-          <select class="form-select" aria-label="Default select example">
-            <option disabled selected>Positivo</option>
-            <option value="positivo">Positivo</option>
-            <option value="negativo">Negativo</option>
-          </select>
-        </div>
+        <div *ngIf="mostrarPropriedades" class="propriedades">
+          <h5 style="margin-bottom: 50px">Propriedades do e-mail</h5>
 
-        <div class="form-group">
-          <label for="corFundo">Cor do fundo do e-mail</label>
-          <select class="form-select" id="corFundo">
-            <option disabled selected>Cor</option>
-            <option value="branco">Branco</option>
-            <option value="cinza">Cinza</option>
-            <option value="colorido">Colorido</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="esquemaCores">Esquema de cores</label>
+            <select class="form-select" aria-label="Default select example">
+              <option disabled selected>Positivo</option>
+              <option value="positivo">Positivo</option>
+              <option value="negativo">Negativo</option>
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label for="tipoTemplate">Tipo de template</label>
-          <select class="form-select" id="tipoTemplate">
-            <option disabled selected>Tipo</option>
-            <option value="b2b">B2B</option>
-            <option value="b2c">B2C</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label for="empresa">Empresa</label>
-          <select class="form-select" id="empresa">
-            <option disabled selected>Vivo Empresas</option>
+          <div class="form-group">
+            <label for="corFundo">Cor do fundo do e-mail</label>
+            <select class="form-select" id="corFundo">
+              <option disabled selected>Cor</option>
+              <option value="branco">Branco</option>
+              <option value="cinza">Cinza</option>
+              <option value="colorido">Colorido</option>
+            </select>
+          </div>
 
-            <option value="vivoEmpresas">Vivo</option>
-            <option value="outraEmpresa">Outraos </option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="tipoTemplate">Tipo de template</label>
+            <select class="form-select" id="tipoTemplate">
+              <option disabled selected>Tipo</option>
+              <option value="b2b">B2B</option>
+              <option value="b2c">B2C</option>
+            </select>
+          </div>
 
+          <div class="form-group">
+            <label for="empresa">Empresa</label>
+            <select class="form-select" id="empresa">
+              <option disabled selected>Vivo Empresas</option>
+              <option value="vivoEmpresas">Vivo</option>
+              <option value="outraEmpresa">Outraos</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
-    
-    
   </div>
 </div>

@@ -59,9 +59,17 @@
 
 /* 2 PARTE */
 
-.centered-content {
-
+/* #editable-container img {
+  max-width: 100%;
+  height: auto;
 }
+
+.centered-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */
 
 .emailfundo {
   background: #dddddd;

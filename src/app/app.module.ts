@@ -35,17 +35,14 @@ const routes: Routes = [
   {
     path: 'header',
     component: HeaderComponent,
-    canActivate: [AutenticacaoGuard],
   },
   {
     path: 'inicio',
     component: InicioComponent,
-    canActivate: [AutenticacaoGuard],
   },
   {
     path: 'perfil',
     component: PerfilComponent,
-    canActivate: [AutenticacaoGuard],
   },
   {
     path: 'email',

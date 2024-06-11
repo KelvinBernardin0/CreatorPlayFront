@@ -5,19 +5,19 @@
       <h1>Escolha seu modelo para começar a criação:</h1>
     </div>
     <div class="cards">
-      <div class="card" routerLink="/whatsapp">
+      <div class="card" >
         <img src="assets/imagens/icon_wpp.png" alt="WhatsApp" />
         <h2>Card de Whatsapp</h2>
       </div>
-      <div class="card" routerLink="/copy">
+      <div class="card" >
         <img src="assets/imagens/icon_copy.png" alt="Copy" />
         <h2>Criador de copy</h2>
       </div>
-      <div class="card" routerLink="/email-no-image">
+      <div class="card" (click)="redirecionarParaEmailSemImagem()">
         <img src="assets/imagens/icon_header_sem.png" alt="Header Sem" />
         <h2>E-mail com header<br />sem imagem</h2>
       </div>
-      <div class="card" routerLink="/email-with-image">
+      <div class="card" (click)="redirecionarParaEmailComImagem()">
         <img src="assets/imagens/icon_header_com.png" alt="Header Com" />
         <h2>E-mail com header<br />com imagem</h2>
       </div>
