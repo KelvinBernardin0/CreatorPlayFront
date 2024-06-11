@@ -6,24 +6,42 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-email',
   templateUrl: './email.component.html',
-  styleUrls: ['./email.component.css']
+  styleUrls: ['./email.component.css'],
 })
 export class EmailComponent {
   emailHTML: SafeHtml = '';
   rawEmailHTML: string = '';
+
+  mostrarPropriedades: boolean = true;
   mostrarTipografia: boolean = false;
   mostrarImagem: boolean = false;
-  mostrarPropriedades: boolean = true;
-  opcoesTitulos: { nome: string, html: string }[] = [];
-  opcoesDescricoes: { nome: string, html: string }[] = [];
-  opcoesLinks: { nome: string, html: string }[] = [];
-  currentRange: Range | null = null;  // To store the current cursor position
+  mostrarBotao: boolean = false;
+  mostrarCards: boolean = false;
+  mostrarPlanos: boolean = false;
+  mostrarVitrine: boolean = false;
 
-  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private router: Router, private http: HttpClient, private elRef: ElementRef) {
-    this.route.queryParams.subscribe(params => {
+  opcoesPropriedades: { nome: string; html: string }[] = [];
+  opcoesTipografias: { nome: string; html: string }[] = [];
+  opcoesBotoes: { nome: string; html: string }[] = [];
+  opcoesCards: { nome: string; html: string }[] = [];
+  opcoesPlanos: { nome: string; html: string }[] = [];
+  opcoesVitrineEquipamento: { nome: string; html: string }[] = [];
+  opcoesVitrinePlanos: { nome: string; html: string }[] = [];
+  currentRange: Range | null = null; // To store the current cursor position
+
+  constructor(
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer,
+    private router: Router,
+    private http: HttpClient,
+    private elRef: ElementRef
+  ) {
+    this.route.queryParams.subscribe((params) => {
       if (params['emailHTML']) {
         this.rawEmailHTML = params['emailHTML'];
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+          this.rawEmailHTML
+        );
       }
     });
   }
@@ -37,9 +55,11 @@ export class EmailComponent {
   }
 
   carregarEmail(url: string) {
-    this.http.get(url, { responseType: 'text' }).subscribe(data => {
+    this.http.get(url, { responseType: 'text' }).subscribe((data) => {
       this.emailHTML = data;
-      this.router.navigate(['/email'], { queryParams: { emailHTML: this.emailHTML } });
+      this.router.navigate(['/email'], {
+        queryParams: { emailHTML: this.emailHTML },
+      });
     });
   }
 
@@ -54,85 +74,121 @@ export class EmailComponent {
     }
   }
 
-  saveChanges() {
-    const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
-    if (editableContainer) {
-      this.rawEmailHTML = editableContainer.innerHTML;
-      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-      console.log('HTML atualizado:', this.rawEmailHTML);
-      this.downloadHTML(this.rawEmailHTML, 'Email.html');
-    }
-  }
-
-  downloadHTML(html: string, filename: string) {
-    const blob = new Blob([html], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   carregarOpcoesTipografias() {
-    this.opcoesTitulos = [];
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = true; //MOSTRAR TIPOGRAFIAS
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
+
+    this.opcoesTipografias = [];
     const tamanhos = [
-      { nome: 'H1 Branco', path: 'assets/componentes/tipografia/H1_Branco.html' },
-      { nome: 'H2 Branco', path: 'assets/componentes/tipografia/H2_Branco.html' },
-      { nome: 'H3 Branco', path: 'assets/componentes/tipografia/H3_Branco.html' },
+      {
+        nome: 'H1 Branco',
+        path: 'assets/componentes/tipografia/H1_Branco.html',
+      },
+      {
+        nome: 'H2 Branco',
+        path: 'assets/componentes/tipografia/H2_Branco.html',
+      },
+      {
+        nome: 'H3 Branco',
+        path: 'assets/componentes/tipografia/H3_Branco.html',
+      },
       { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
       { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
-      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' }
+      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
     ];
-  
-    tamanhos.forEach(opcao => { // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe(data => {
-        this.opcoesTitulos.push({ nome: opcao.nome, html: data });
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesTipografias.push({ nome: opcao.nome, html: data });
       });
     });
 
-    this.opcoesDescricoes = [];
+    this.opcoesTipografias = [];
     const descricoes = [
-      { nome: 'Descrição Cinza 16px', path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html' },
-      { nome: 'Descrição Cinza 14px', path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html' },
-      { nome: 'Descrição Branca 16px', path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html' },
-      { nome: 'Descrição Branca 14px', path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html' }
+      {
+        nome: 'Descrição Cinza 16px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Cinza 14px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
+      },
+      {
+        nome: 'Descrição Branca 16px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Branca 14px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
+      },
     ];
-  
-    descricoes.forEach(opcao => { // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe(data => {
-        this.opcoesDescricoes.push({ nome: opcao.nome, html: data });
+
+    descricoes.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesTipografias.push({ nome: opcao.nome, html: data });
       });
     });
 
-    
-    this.opcoesLinks = [];
+    this.opcoesTipografias = [];
     const links = [
-      { nome: 'Link Sublinhado Roxo 16px', path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html' },
-      { nome: 'Link Sublinhado Roxo 12px', path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html' },
-      { nome: 'Link Sublinhado Branco 16px', path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html' },
-      { nome: 'Link Sublinhado Branco 12px', path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html' },
-      { nome: 'Link S/ Sublinhado Roxo 16px', path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html' },
-      { nome: 'Link S/ Sublinhado Roxo 12px', path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html' },
-      { nome: 'Link S/ Sublinhado Branco 16px', path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html' },
-      { nome: 'Link S/ Sublinhado Branco 12px', path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html' },
+      {
+        nome: 'Link Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
+      },
     ];
-  
-    links.forEach(opcao => { // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe(data => {
-        this.opcoesLinks.push({ nome: opcao.nome, html: data });
+
+    links.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesTipografias.push({ nome: opcao.nome, html: data });
       });
     });
-    this.mostrarTipografia = true; // Move this line outside the forEach loop
-    this.mostrarImagem = false;
-    this.mostrarPropriedades = false; // Hide properties when loading typography options
   }
 
+  // ANEXAR IMAGEM
   AnexarImagem() {
-
-    this.mostrarTipografia = false; // Move this line outside the forEach loop
-    this.mostrarImagem = true;
-    this.mostrarPropriedades = false; // Hide properties when loading typography options
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = true; //MOSTRAR IMAGEM
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
   }
 
   handleDragOver(event: DragEvent) {
@@ -165,18 +221,432 @@ export class EmailComponent {
         ev.dataTransfer?.setData('text/plain', img.src);
       };
 
-      const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
+      const editableContainer = this.elRef.nativeElement.querySelector(
+        '#editable-container'
+      );
       if (editableContainer) {
         editableContainer.appendChild(img);
         this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+          this.rawEmailHTML
+        );
       }
     };
     reader.readAsDataURL(file);
   }
+  // ANEXAR IMAGEM FIM
 
-  
+  // CARREGAR BOTOES
+  carregarOpcoesBotoes() {
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = true; //MOSTRAR BOTOES
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
 
+    this.opcoesBotoes = [];
+    const tamanhos = [
+      {
+        nome: 'H1 Branco',
+        path: 'assets/componentes/tipografia/H1_Branco.html',
+      },
+      {
+        nome: 'H2 Branco',
+        path: 'assets/componentes/tipografia/H2_Branco.html',
+      },
+      {
+        nome: 'H3 Branco',
+        path: 'assets/componentes/tipografia/H3_Branco.html',
+      },
+      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
+      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
+      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
+    ];
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesBotoes.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesBotoes = [];
+    const descricoes = [
+      {
+        nome: 'Descrição Cinza 16px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Cinza 14px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
+      },
+      {
+        nome: 'Descrição Branca 16px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Branca 14px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
+      },
+    ];
+
+    descricoes.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesBotoes.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesBotoes = [];
+    const links = [
+      {
+        nome: 'Link Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
+      },
+    ];
+
+    links.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesBotoes.push({ nome: opcao.nome, html: data });
+      });
+    });
+  }
+  // PROPRIEDADES BOTOES FIM
+
+  // INICIO DAS PROPRIEDADES CARDS
+  carregarOpcoesCards() {
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = true; //MOSTRAR Cards
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
+
+    this.opcoesCards = [];
+    const tamanhos = [
+      {
+        nome: 'H1 Branco',
+        path: 'assets/componentes/tipografia/H1_Branco.html',
+      },
+      {
+        nome: 'H2 Branco',
+        path: 'assets/componentes/tipografia/H2_Branco.html',
+      },
+      {
+        nome: 'H3 Branco',
+        path: 'assets/componentes/tipografia/H3_Branco.html',
+      },
+      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
+      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
+      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
+    ];
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesCards.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesCards = [];
+    const descricoes = [
+      {
+        nome: 'Descrição Cinza 16px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Cinza 14px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
+      },
+      {
+        nome: 'Descrição Branca 16px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Branca 14px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
+      },
+    ];
+
+    descricoes.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesCards.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesCards = [];
+    const links = [
+      {
+        nome: 'Link Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
+      },
+    ];
+
+    links.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesCards.push({ nome: opcao.nome, html: data });
+      });
+    });
+  }
+  // FIM DAS PROPRIEDADES CARDS
+
+  // INICIO DAS PROPRIEDADES PLANOS
+  carregarOpcoesPlanos() {
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = true; //MOSTRAR Planos
+    this.mostrarVitrine = false;
+
+    this.opcoesPlanos = [];
+    const tamanhos = [
+      {
+        nome: 'H1 Branco',
+        path: 'assets/componentes/tipografia/H1_Branco.html',
+      },
+      {
+        nome: 'H2 Branco',
+        path: 'assets/componentes/tipografia/H2_Branco.html',
+      },
+      {
+        nome: 'H3 Branco',
+        path: 'assets/componentes/tipografia/H3_Branco.html',
+      },
+      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
+      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
+      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
+    ];
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesPlanos.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesPlanos = [];
+    const descricoes = [
+      {
+        nome: 'Descrição Cinza 16px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Cinza 14px',
+        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
+      },
+      {
+        nome: 'Descrição Branca 16px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
+      },
+      {
+        nome: 'Descrição Branca 14px',
+        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
+      },
+    ];
+
+    descricoes.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesPlanos.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesPlanos = [];
+    const links = [
+      {
+        nome: 'Link Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Roxo 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 16px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
+      },
+      {
+        nome: 'Link S/ Sublinhado Branco 12px',
+        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
+      },
+    ];
+
+    links.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesPlanos.push({ nome: opcao.nome, html: data });
+      });
+    });
+  }
+  // FIM DAS PROPRIEDADES PLANOS
+
+  // INICIO DAS PROPRIEDADES PLANOS
+  carregarOpcoesVitrine() {
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = true; //MOSTRAR VITRINE
+
+    this.opcoesVitrineEquipamento = [];
+    const tamanhos = [
+      {
+        nome: 'Equipamento 1',
+        path: 'assets/componentes/vitrine/vitrine_equipamento_opcao1.html',
+      },
+      {
+        nome: 'Equipamento 2',
+        path: 'assets/componentes/vitrine/vitrine_equipamento_opcao2.html',
+      }
+    ];
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesVitrineEquipamento.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    this.opcoesVitrinePlanos = [];
+    const descricoes = [
+      {
+        nome: 'Vitrine Plano 1',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao1.html',
+      },
+      {
+        nome: 'Vitrine Plano 2',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao2.html',
+      },
+      {
+        nome: 'Vitrine Plano 3',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao3.html',
+      },
+      {
+        nome: 'Vitrine Plano 4',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao4.html',
+      },
+    ];
+
+    descricoes.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesVitrinePlanos.push({ nome: opcao.nome, html: data });
+      });
+    });
+
+    
+  }
+  // FIM DAS PROPRIEDADES VITRINE
+
+  // SALVAR HTML
+  saveChanges() {
+    const editableContainer = this.elRef.nativeElement.querySelector(
+      '#editable-container'
+    );
+    if (editableContainer) {
+      this.rawEmailHTML = editableContainer.innerHTML;
+      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+        this.rawEmailHTML
+      );
+      console.log('HTML atualizado:', this.rawEmailHTML);
+      this.downloadHTML(this.rawEmailHTML, 'Email.html');
+    }
+  }
+
+  downloadHTML(html: string, filename: string) {
+    const blob = new Blob([html], { type: 'text/html' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  // SALVAR HTML
+
+  // APLICA MUDANCAN NO HTML
   AplicaMudanca(event: any) {
     const selectedValue = event.target.value;
     const editableContainer = document.getElementById('editable-container');
@@ -184,9 +654,22 @@ export class EmailComponent {
       const div = document.createElement('div');
       let selectedOption;
 
-      selectedOption = this.opcoesTitulos.find(opcoes => opcoes.nome === selectedValue)
-          || this.opcoesDescricoes.find(opcoes => opcoes.nome === selectedValue)
-          || this.opcoesLinks.find(opcoes => opcoes.nome === selectedValue);
+      // Verifica em qual array de opções está o valor selecionado
+      selectedOption = this.opcoesPropriedades.find(
+        (opcoes) => opcoes.nome === selectedValue
+    ) || this.opcoesTipografias.find(
+        (opcoes) => opcoes.nome === selectedValue
+    ) || this.opcoesBotoes.find(
+        (opcoes) => opcoes.nome === selectedValue
+    ) || this.opcoesCards.find(
+        (opcoes) => opcoes.nome === selectedValue
+    ) || this.opcoesPlanos.find(
+        (opcoes) => opcoes.nome === selectedValue
+    ) || this.opcoesVitrineEquipamento.find(
+        (opcoes) => opcoes.nome === selectedValue
+    ) || this.opcoesVitrinePlanos.find(
+        (opcoes) => opcoes.nome === selectedValue
+    );
 
       if (selectedOption) {
         div.innerHTML = selectedOption.html;
@@ -205,18 +688,11 @@ export class EmailComponent {
         }
 
         this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-        this.mostrarTipografia = true; // Hide typography options after applying
-        this.mostrarImagem = false; // Hide typography options after applying
-        this.mostrarPropriedades = false;  // Show properties again after applying
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+          this.rawEmailHTML
+        );
       }
     }
   }
-
-
-  
-  
-
-  
-  
+  // APLICA MUDANCAN NO HTML
 }
