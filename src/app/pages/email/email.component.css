@@ -171,5 +171,14 @@ option
   display: none;
 }
 
+.btn-smaller {
+  border-color: #660099;
+  background: #660099;
+  margin-left: 5px;
+  height: 35px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
 
 /* 3   PARTE*/

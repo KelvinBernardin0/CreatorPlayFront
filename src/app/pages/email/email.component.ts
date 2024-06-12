@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
@@ -44,6 +44,8 @@ export class EmailComponent {
   lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
   termosDeUsoAceitos: boolean = false;
 
+  @ViewChild('editableContainer') editableContainerRef!: ElementRef;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -61,6 +63,31 @@ export class EmailComponent {
       }
     });
   }
+
+  AplicaCor(cor: string) {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.color = cor;
+
+      range.surroundContents(span);
+
+      // Atualiza o HTML após aplicar a cor
+      this.atualizarHTML();
+    }
+  }
+
+  // Atualiza o HTML após as alterações
+  private atualizarHTML() {
+    const editableContainer = this.editableContainerRef.nativeElement;
+    this.rawEmailHTML = editableContainer.innerHTML;
+    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
+
+  
+  
+
 
   carregarEmail(url: string) {
     this.http.get(url, { responseType: 'text' }).subscribe((data) => {
@@ -736,47 +763,43 @@ export class EmailComponent {
   // SALVAR HTML
 
 
+
   // APLICA MUDANCAN NO HTML
   AplicaMudanca(event: any) {
-    const selectedValue = event.target.value;
-    const editableContainer = document.getElementById('editable-container');
-    if (editableContainer) {
-      const div = document.createElement('div');
-      let selectedOption;
-
-      // Verifica em qual array de opções está o valor selecionado
-      selectedOption =
-        this.opcoesPropriedades.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesTitulos.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesDescricoes.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesLinks.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesBotoes.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesCards.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesPlanos.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesVitrineEquipamento.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesVitrinePlanos.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue);
-
-      if (selectedOption) {
+    const tipoSelecionado = event.target.value;
+    const categoriaSelecionada = event.target.parentElement.querySelector('label').textContent.trim();
+  
+    let opcoesSelecionadas: { nome: string, html: string }[] = []; // Definindo o tipo explicitamente
+  
+    // Verifica em qual array de opções está o valor selecionado
+    switch (categoriaSelecionada) {
+      case 'Titulos:':
+        opcoesSelecionadas = this.opcoesTitulos;
+        break;
+      case 'Descrições:':
+        opcoesSelecionadas = this.opcoesDescricoes;
+        break;
+      case 'Links:':
+        opcoesSelecionadas = this.opcoesLinks;
+        break;
+      // Adicione mais cases conforme necessário para outras categorias
+      default:
+        break;
+    }
+  
+    const selectedOption = opcoesSelecionadas.find((opcao) => opcao.nome === tipoSelecionado);
+  
+    if (selectedOption) {
+      const editableContainer = document.getElementById('editable-container');
+      if (editableContainer) {
+        const div = document.createElement('div');
         div.innerHTML = selectedOption.html;
         const frag = document.createDocumentFragment();
         let node;
         while ((node = div.firstChild)) {
           frag.appendChild(node);
         }
-
+  
         if (this.currentRange) {
           this.currentRange.deleteContents();
           this.currentRange.insertNode(frag);
@@ -784,14 +807,48 @@ export class EmailComponent {
         } else {
           editableContainer.appendChild(frag); // Append to the end if no range is stored
         }
-
+  
         this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-          this.rawEmailHTML
-        );
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
       }
     }
   }
+
+  applySelectedStyle(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    if (!selectedValue) return; // Sai se nenhum valor estiver selecionado
+  
+    const editableContainer = document.getElementById('editable-container');
+    if (!editableContainer) return;
+  
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+  
+    const range = selection.getRangeAt(0);
+  
+    const span = document.createElement('span');
+    switch (selectedValue) {
+      case 'bold':
+        span.style.fontWeight = range.toString().includes('<b>') ? 'normal' : 'bold';
+        break;
+      case 'italic':
+        span.style.fontStyle = range.toString().includes('<i>') ? 'normal' : 'italic';
+        break;
+      case 'underline':
+        span.style.textDecoration = range.toString().includes('<u>') ? 'none' : 'underline';
+        break;
+      default:
+        break;
+    }
+  
+    range.surroundContents(span);
+    this.rawEmailHTML = editableContainer.innerHTML;
+    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
+  
+  
+  
+  
   // APLICA MUDANCAN NO HTML
 
 

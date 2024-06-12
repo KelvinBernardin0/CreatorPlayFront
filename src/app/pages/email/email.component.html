@@ -259,6 +259,30 @@
               </option>
             </select>
           </div>
+
+          <div class="form-group">
+            <label for="esquemaCores">Cor: </label>
+            <select class="form-select" aria-label="Default select example" #corSelect>
+              <option disabled selected>Cor do Texto</option>
+              <option value="#49066B">Roxo</option>
+              <option value="#660099">Roxo Claro</option>
+              <option value="#000000">Preto</option>
+              <option value="#666666">Cinza</option>
+              <option value="#FFFFFF">Branco</option>
+            </select>
+            <button class="btn btn-secondary btn-smaller" (click)="AplicaCor(corSelect.value)">Aplicar</button>
+          </div>
+
+          <div class="form-group">
+            <label>Estilo:</label>
+            <select class="form-select" (change)="applySelectedStyle($event)">
+              <option disabled selected >Selecione</option>
+              <option value="bold">Negrito</option>
+              <option value="italic">Itálico</option>
+              <option value="underline">Sublinhado</option>
+            </select>
+          </div>
+          
         </div>
         <!-- TIPOGRAFIAS -->
 
