@@ -13,11 +13,11 @@ export class InicioComponent {
   emailHTML: string = '';
 
   redirecionarParaEmailSemImagem() {
-    this.carregarEmail('assets/componentes/headers/header_sem_imagem.html'); // Corrigido o caminho do arquivo
+    this.carregarEmail('assets/componentes/headers/headers_sem_imagem.html'); // Corrigido o caminho do arquivo
   }
 
   redirecionarParaEmailComImagem() {
-    this.carregarEmail('assets/componentes/headers/header_com_imagem.html'); // Corrigido o caminho do arquivo
+    this.carregarEmail('assets/componentes/headers/headers_imagem_pequena.html'); // Corrigido o caminho do arquivo
   }
 
   carregarEmail(url: string) {

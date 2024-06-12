@@ -10,16 +10,23 @@
             <button
               class="btn btn-light header1"
               type="button"
-              (click)="redirecionarParaEmailSemImagem()"
+              (click)="carregarOpcoesHeaders()"
             >
-              Header sem imagem
+              Header
             </button>
-            <button
+            <!-- <button
               class="btn btn-light header"
               type="button"
               (click)="redirecionarParaEmailComImagem()"
             >
-              Header com imagem
+              Header
+            </button> -->
+            <button
+              class="btn btn-light header"
+              type="button"
+              (click)="carregarOpcoesFooters()"
+            >
+              Footer
             </button>
           </div>
         </div>
@@ -113,6 +120,92 @@
     <!-- PROPRIEDADES DO EMAIL -->
     <div class="col-md-3">
       <div class="block-properties">
+        <!-- HEADER -->
+        <div *ngIf="mostrarHeader" class="propriedades">
+          <h5 style="margin-bottom: 50px">Headers</h5>
+
+          <div class="form-group">
+            <label for="Headers">Headers: </label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              (change)="opcaoSelecionada($event)"
+            >
+              <option disabled selected>Escolher</option>
+              <option *ngFor="let opcao of opcoesHeaders" [value]="opcao.path">
+                {{ opcao.nome }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- HEADER -->
+
+        <!-- FOOTER -->
+        <div *ngIf="mostrarFooter" class="propriedades">
+          <h5 style="margin-bottom: 50px">Footers</h5>
+
+          <div class="form-group">
+            <label for="footers">Footers: </label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              (change)="AplicaMudanca($event)"
+            >
+              <option disabled selected>Escolher</option>
+              <option
+                *ngFor="let opcoes of opcoesFooters"
+                [value]="opcoes.nome"
+              >
+                {{ opcoes.nome }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- FOOTER -->
+
+        <!-- PROPRIEDADES -->
+        <div *ngIf="mostrarPropriedades" class="propriedades">
+          <h5 style="margin-bottom: 50px">Propriedades do e-mail</h5>
+
+          <!-- <div class="form-group">
+            <label for="esquemaCores">Esquema de cores</label>
+            <select class="form-select" aria-label="Default select example">
+              <option disabled selected>Positivo</option>
+              <option value="positivo">Positivo</option>
+              <option value="negativo">Negativo</option>
+            </select>
+          </div> -->
+
+          <div class="form-group">
+            <label for="corFundo">Cor do fundo do e-mail</label>
+            <select class="form-select" id="corFundo">
+              <option disabled selected>Cor</option>
+              <option value="branco">Branco</option>
+              <option value="cinza">Cinza</option>
+              <option value="colorido">Colorido</option>
+            </select>
+          </div>
+
+          <!-- <div class="form-group">
+            <label for="tipoTemplate">Tipo de template</label>
+            <select class="form-select" id="tipoTemplate">
+              <option disabled selected>Tipo</option>
+              <option value="b2b">B2B</option>
+              <option value="b2c">B2C</option>
+            </select>
+          </div> -->
+
+          <div class="form-group">
+            <label for="empresa">Empresa</label>
+            <select class="form-select" id="empresa">
+              <option disabled selected>Vivo Empresas</option>
+              <option value="vivoEmpresas">Vivo</option>
+              <option value="outraEmpresa">Outraos</option>
+            </select>
+          </div>
+        </div>
+        <!-- PROPRIEDADES -->
+
         <!-- TIPOGRAFIAS -->
         <div *ngIf="mostrarTipografia">
           <h5 style="margin-bottom: 50px">Tipografias</h5>
@@ -125,7 +218,7 @@
             >
               <option disabled selected>Tamanhos e Cores</option>
               <option
-                *ngFor="let opcoes of opcoesTipografias"
+                *ngFor="let opcoes of opcoesTitulos"
                 [value]="opcoes.nome"
               >
                 {{ opcoes.nome }}
@@ -142,7 +235,7 @@
             >
               <option disabled selected>Tamanhos e Cores</option>
               <option
-                *ngFor="let opcoes of opcoesTipografias"
+                *ngFor="let opcoes of opcoesDescricoes"
                 [value]="opcoes.nome"
               >
                 {{ opcoes.nome }}
@@ -159,7 +252,7 @@
             >
               <option disabled selected>Tamanhos e Cores</option>
               <option
-                *ngFor="let opcoes of opcoesTipografias"
+                *ngFor="let opcoes of opcoesLinks"
                 [value]="opcoes.nome"
               >
                 {{ opcoes.nome }}
@@ -176,52 +269,9 @@
         </div>
         <!-- IMAGEM -->
 
-        <!-- PROPRIEDADES -->
-        <div *ngIf="mostrarPropriedades" class="propriedades">
-          <h5 style="margin-bottom: 50px">Propriedades do e-mail</h5>
-
-          <div class="form-group">
-            <label for="esquemaCores">Esquema de cores</label>
-            <select class="form-select" aria-label="Default select example">
-              <option disabled selected>Positivo</option>
-              <option value="positivo">Positivo</option>
-              <option value="negativo">Negativo</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="corFundo">Cor do fundo do e-mail</label>
-            <select class="form-select" id="corFundo">
-              <option disabled selected>Cor</option>
-              <option value="branco">Branco</option>
-              <option value="cinza">Cinza</option>
-              <option value="colorido">Colorido</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="tipoTemplate">Tipo de template</label>
-            <select class="form-select" id="tipoTemplate">
-              <option disabled selected>Tipo</option>
-              <option value="b2b">B2B</option>
-              <option value="b2c">B2C</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="empresa">Empresa</label>
-            <select class="form-select" id="empresa">
-              <option disabled selected>Vivo Empresas</option>
-              <option value="vivoEmpresas">Vivo</option>
-              <option value="outraEmpresa">Outraos</option>
-            </select>
-          </div>
-        </div>
-        <!-- PROPRIEDADES -->
-
         <!-- BOTAO -->
         <div *ngIf="mostrarBotao">
-          <h5 style="margin-bottom: 50px">Tipografias</h5>
+          <h5 style="margin-bottom: 50px">Botões</h5>
           <div class="form-group">
             <label for="esquemaCores">Titulos: </label>
             <select
@@ -277,17 +327,17 @@
 
         <!-- CARDS -->
         <div *ngIf="mostrarCards">
-          <h5 style="margin-bottom: 50px">Tipografias</h5>
+          <h5 style="margin-bottom: 50px">Cards</h5>
           <div class="form-group">
-            <label for="esquemaCores">Titulos: </label>
+            <label for="esquemaCores">Cards: </label>
             <select
               class="form-select"
               aria-label="Default select example"
               (change)="AplicaMudanca($event)"
             >
-              <option disabled selected>Tamanhos e Cores</option>
+              <option disabled selected>Escolher</option>
               <option
-                *ngFor="let opcoes of opcoesPropriedades"
+                *ngFor="let opcoes of opcoesCards"
                 [value]="opcoes.nome"
               >
                 {{ opcoes.nome }}
@@ -295,45 +345,13 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label for="esquemaCores">Descrições: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesPropriedades"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="esquemaCores">Links: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesPropriedades"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
+          
         </div>
         <!-- CARDS -->
 
         <!-- PLANOS -->
         <div *ngIf="mostrarPlanos">
-          <h5 style="margin-bottom: 50px">Tipografias</h5>
+          <h5 style="margin-bottom: 50px">Planos</h5>
           <div class="form-group">
             <label for="esquemaCores">Titulos: </label>
             <select
@@ -389,7 +407,7 @@
 
         <!-- VITRINE -->
         <div *ngIf="mostrarVitrine">
-          <h5 style="margin-bottom: 50px">Tipografias</h5>
+          <h5 style="margin-bottom: 50px">Vitrine</h5>
           <div class="form-group">
             <label for="esquemaCores">Equipamento: </label>
             <select

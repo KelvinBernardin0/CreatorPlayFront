@@ -2,7 +2,11 @@ import { Component, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-
+interface OpcaoHeader {
+  nome: string;
+  path: string;
+  html?: string;
+}
 @Component({
   selector: 'app-email',
   templateUrl: './email.component.html',
@@ -13,6 +17,8 @@ export class EmailComponent {
   rawEmailHTML: string = '';
 
   mostrarPropriedades: boolean = true;
+  mostrarHeader: boolean = false;
+  mostrarFooter: boolean = false;
   mostrarTipografia: boolean = false;
   mostrarImagem: boolean = false;
   mostrarBotao: boolean = false;
@@ -21,7 +27,11 @@ export class EmailComponent {
   mostrarVitrine: boolean = false;
 
   opcoesPropriedades: { nome: string; html: string }[] = [];
-  opcoesTipografias: { nome: string; html: string }[] = [];
+  opcoesHeaders!: OpcaoHeader[];
+  opcoesFooters: { nome: string; html: string }[] = [];
+  opcoesTitulos: { nome: string; html: string }[] = [];
+  opcoesDescricoes: { nome: string; html: string }[] = [];
+  opcoesLinks: { nome: string; html: string }[] = [];
   opcoesBotoes: { nome: string; html: string }[] = [];
   opcoesCards: { nome: string; html: string }[] = [];
   opcoesPlanos: { nome: string; html: string }[] = [];
@@ -46,14 +56,6 @@ export class EmailComponent {
     });
   }
 
-  redirecionarParaEmailSemImagem() {
-    this.carregarEmail('assets/componentes/headers/header_sem_imagem.html');
-  }
-
-  redirecionarParaEmailComImagem() {
-    this.carregarEmail('assets/componentes/headers/header_com_imagem.html');
-  }
-
   carregarEmail(url: string) {
     this.http.get(url, { responseType: 'text' }).subscribe((data) => {
       this.emailHTML = data;
@@ -74,8 +76,105 @@ export class EmailComponent {
     }
   }
 
+
+  // CARREGAR HERADES
+  carregarOpcoesHeaders() {
+    this.mostrarPropriedades = false;
+    this.mostrarHeader = true; //MOSTRAR
+    this.mostrarFooter = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
+
+    this.opcoesHeaders = [];
+    const tamanhos = [
+      {
+        nome: 'Imagem Grande',
+        path: 'assets/componentes/headers/headers_imagem_grande.html',
+      },
+      {
+        nome: 'Imagem Grande Inverso',
+        path: 'assets/componentes/headers/headers_imagem_grande_inverso.html',
+      },
+      {
+        nome: 'Imagem Pequena',
+        path: 'assets/componentes/headers/headers_imagem_pequena.html',
+      },
+      {
+        nome: 'Imagem Pequena Inverso',
+        path: 'assets/componentes/headers/headers_imagem_pequena_inverso.html',
+      },
+      {
+        nome: 'Sem Imagem',
+        path: 'assets/componentes/headers/headers_sem_imagem.html',
+      },
+      {
+        nome: 'Sem Imagem Inverso',
+        path: 'assets/componentes/headers/headers_sem_imagem_inverso.html',
+      },
+    ];
+
+    tamanhos.forEach((opcao) => {
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesHeaders.push({
+          nome: opcao.nome,
+          path: opcao.path,
+          html: data,
+        });
+      });
+    });
+  }
+
+  opcaoSelecionada(event: any) {
+    debugger;
+    const selectedPath = event.target.value;
+    this.carregarEmail(selectedPath);
+  }
+  // FIM CARREGAR HERADES
+
+
+  // CARREGAR FOOTERS
+  carregarOpcoesFooters() {
+    this.mostrarPropriedades = false;
+    this.mostrarHeader = false;
+    this.mostrarFooter = true; //MOSTRAR
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
+
+    this.opcoesFooters = [];
+    const tamanhos = [
+      {
+        nome: 'Footer Roxo',
+        path: 'assets/componentes/footers/footer.html',
+      },
+      {
+        nome: 'Footer Branco',
+        path: 'assets/componentes/footers/footer_inverso.html',
+      },
+    ];
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesFooters.push({ nome: opcao.nome, html: data });
+      });
+    });
+  }
+  // FIM CARREGAR FOOTERS
+
+
+  // CARREGAR TEXTOS
   carregarOpcoesTipografias() {
     this.mostrarPropriedades = false;
+    this.mostrarHeader = false;
+    this.mostrarFooter = false;
     this.mostrarTipografia = true; //MOSTRAR TIPOGRAFIAS
     this.mostrarImagem = false;
     this.mostrarBotao = false;
@@ -83,33 +182,35 @@ export class EmailComponent {
     this.mostrarPlanos = false;
     this.mostrarVitrine = false;
 
-    this.opcoesTipografias = [];
+    this.opcoesTitulos= [];
     const tamanhos = [
       {
         nome: 'H1 Branco',
         path: 'assets/componentes/tipografia/H1_Branco.html',
       },
+      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
+
       {
         nome: 'H2 Branco',
         path: 'assets/componentes/tipografia/H2_Branco.html',
       },
+      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
+
       {
         nome: 'H3 Branco',
         path: 'assets/componentes/tipografia/H3_Branco.html',
       },
-      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
-      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
       { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
     ];
 
     tamanhos.forEach((opcao) => {
       // Renomeando a variável para evitar colisão
       this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesTipografias.push({ nome: opcao.nome, html: data });
+        this.opcoesTitulos.push({ nome: opcao.nome, html: data });
       });
     });
 
-    this.opcoesTipografias = [];
+    this.opcoesDescricoes = [];
     const descricoes = [
       {
         nome: 'Descrição Cinza 16px',
@@ -132,11 +233,11 @@ export class EmailComponent {
     descricoes.forEach((opcao) => {
       // Renomeando a variável para evitar colisão
       this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesTipografias.push({ nome: opcao.nome, html: data });
+        this.opcoesDescricoes.push({ nome: opcao.nome, html: data });
       });
     });
 
-    this.opcoesTipografias = [];
+    this.opcoesLinks = [];
     const links = [
       {
         nome: 'Link Sublinhado Roxo 16px',
@@ -175,70 +276,18 @@ export class EmailComponent {
     links.forEach((opcao) => {
       // Renomeando a variável para evitar colisão
       this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesTipografias.push({ nome: opcao.nome, html: data });
+        this.opcoesLinks.push({ nome: opcao.nome, html: data });
       });
     });
   }
+  // FIM CARREGAR TEXTOS
 
-  // ANEXAR IMAGEM
-  AnexarImagem() {
-    this.mostrarPropriedades = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = true; //MOSTRAR IMAGEM
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
-  }
-
-  handleDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  handleDrop(event: DragEvent) {
-    event.preventDefault();
-    const files = event.dataTransfer?.files;
-    if (files && files.length > 0) {
-      this.uploadFile(files[0]);
-    }
-  }
-
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.uploadFile(file);
-    }
-  }
-
-  uploadFile(file: File) {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.style.maxWidth = '100%';
-      img.draggable = true;
-      img.ondragstart = (ev: DragEvent) => {
-        ev.dataTransfer?.setData('text/plain', img.src);
-      };
-
-      const editableContainer = this.elRef.nativeElement.querySelector(
-        '#editable-container'
-      );
-      if (editableContainer) {
-        editableContainer.appendChild(img);
-        this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-          this.rawEmailHTML
-        );
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-  // ANEXAR IMAGEM FIM
 
   // CARREGAR BOTOES
   carregarOpcoesBotoes() {
     this.mostrarPropriedades = false;
+    this.mostrarHeader = false;
+    this.mostrarFooter = false;
     this.mostrarTipografia = false;
     this.mostrarImagem = false;
     this.mostrarBotao = true; //MOSTRAR BOTOES
@@ -344,10 +393,13 @@ export class EmailComponent {
   }
   // PROPRIEDADES BOTOES FIM
 
+
   // INICIO DAS PROPRIEDADES CARDS
   carregarOpcoesCards() {
     this.mostrarPropriedades = false;
     this.mostrarTipografia = false;
+    this.mostrarHeader = false;
+    this.mostrarFooter = false;
     this.mostrarImagem = false;
     this.mostrarBotao = false;
     this.mostrarCards = true; //MOSTRAR Cards
@@ -357,20 +409,14 @@ export class EmailComponent {
     this.opcoesCards = [];
     const tamanhos = [
       {
-        nome: 'H1 Branco',
-        path: 'assets/componentes/tipografia/H1_Branco.html',
+        nome: 'Card de Conteudo Branco',
+        path: 'assets/componentes/cards/card_conteudo.html',
       },
       {
-        nome: 'H2 Branco',
-        path: 'assets/componentes/tipografia/H2_Branco.html',
+        nome: 'Card de Conteudo Cinza',
+        path: 'assets/componentes/cards/card_conteudo_alternativo.html',
       },
-      {
-        nome: 'H3 Branco',
-        path: 'assets/componentes/tipografia/H3_Branco.html',
-      },
-      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
-      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
-      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
+      
     ];
 
     tamanhos.forEach((opcao) => {
@@ -380,81 +426,16 @@ export class EmailComponent {
       });
     });
 
-    this.opcoesCards = [];
-    const descricoes = [
-      {
-        nome: 'Descrição Cinza 16px',
-        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
-      },
-      {
-        nome: 'Descrição Cinza 14px',
-        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
-      },
-      {
-        nome: 'Descrição Branca 16px',
-        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
-      },
-      {
-        nome: 'Descrição Branca 14px',
-        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
-      },
-    ];
-
-    descricoes.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesCards.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesCards = [];
-    const links = [
-      {
-        nome: 'Link Sublinhado Roxo 16px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
-      },
-      {
-        nome: 'Link Sublinhado Roxo 12px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
-      },
-      {
-        nome: 'Link Sublinhado Branco 16px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
-      },
-      {
-        nome: 'Link Sublinhado Branco 12px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Roxo 16px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Roxo 12px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Branco 16px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Branco 12px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
-      },
-    ];
-
-    links.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesCards.push({ nome: opcao.nome, html: data });
-      });
-    });
+    
   }
   // FIM DAS PROPRIEDADES CARDS
+
 
   // INICIO DAS PROPRIEDADES PLANOS
   carregarOpcoesPlanos() {
     this.mostrarPropriedades = false;
+    this.mostrarHeader = false;
+    this.mostrarFooter = false;
     this.mostrarTipografia = false;
     this.mostrarImagem = false;
     this.mostrarBotao = false;
@@ -560,9 +541,12 @@ export class EmailComponent {
   }
   // FIM DAS PROPRIEDADES PLANOS
 
+
   // INICIO DAS PROPRIEDADES PLANOS
   carregarOpcoesVitrine() {
     this.mostrarPropriedades = false;
+    this.mostrarHeader = false;
+    this.mostrarFooter = false;
     this.mostrarTipografia = false;
     this.mostrarImagem = false;
     this.mostrarBotao = false;
@@ -579,7 +563,7 @@ export class EmailComponent {
       {
         nome: 'Equipamento 2',
         path: 'assets/componentes/vitrine/vitrine_equipamento_opcao2.html',
-      }
+      },
     ];
 
     tamanhos.forEach((opcao) => {
@@ -615,10 +599,66 @@ export class EmailComponent {
         this.opcoesVitrinePlanos.push({ nome: opcao.nome, html: data });
       });
     });
-
-    
   }
   // FIM DAS PROPRIEDADES VITRINE
+
+
+  // ANEXAR IMAGEM
+  AnexarImagem() {
+    this.mostrarPropriedades = false;
+    this.mostrarTipografia = false;
+    this.mostrarImagem = true; //MOSTRAR IMAGEM
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
+  }
+
+  handleDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  handleDrop(event: DragEvent) {
+    event.preventDefault();
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.uploadFile(files[0]);
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.uploadFile(file);
+    }
+  }
+
+  uploadFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.style.maxWidth = '100%';
+      img.draggable = true;
+      img.ondragstart = (ev: DragEvent) => {
+        ev.dataTransfer?.setData('text/plain', img.src);
+      };
+
+      const editableContainer = this.elRef.nativeElement.querySelector(
+        '#editable-container'
+      );
+      if (editableContainer) {
+        editableContainer.appendChild(img);
+        this.rawEmailHTML = editableContainer.innerHTML;
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+          this.rawEmailHTML
+        );
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+  // ANEXAR IMAGEM FIM
+
 
   // SALVAR HTML
   saveChanges() {
@@ -646,6 +686,7 @@ export class EmailComponent {
   }
   // SALVAR HTML
 
+
   // APLICA MUDANCAN NO HTML
   AplicaMudanca(event: any) {
     const selectedValue = event.target.value;
@@ -655,21 +696,29 @@ export class EmailComponent {
       let selectedOption;
 
       // Verifica em qual array de opções está o valor selecionado
-      selectedOption = this.opcoesPropriedades.find(
-        (opcoes) => opcoes.nome === selectedValue
-    ) || this.opcoesTipografias.find(
-        (opcoes) => opcoes.nome === selectedValue
-    ) || this.opcoesBotoes.find(
-        (opcoes) => opcoes.nome === selectedValue
-    ) || this.opcoesCards.find(
-        (opcoes) => opcoes.nome === selectedValue
-    ) || this.opcoesPlanos.find(
-        (opcoes) => opcoes.nome === selectedValue
-    ) || this.opcoesVitrineEquipamento.find(
-        (opcoes) => opcoes.nome === selectedValue
-    ) || this.opcoesVitrinePlanos.find(
-        (opcoes) => opcoes.nome === selectedValue
-    );
+      selectedOption =
+        this.opcoesPropriedades.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesTitulos.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesDescricoes.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesLinks.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesBotoes.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesCards.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesPlanos.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesVitrineEquipamento.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesVitrinePlanos.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue);
 
       if (selectedOption) {
         div.innerHTML = selectedOption.html;
@@ -695,4 +744,6 @@ export class EmailComponent {
     }
   }
   // APLICA MUDANCAN NO HTML
+
+
 }
