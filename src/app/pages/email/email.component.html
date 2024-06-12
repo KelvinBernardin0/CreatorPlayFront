@@ -265,9 +265,28 @@
         <!-- IMAGEM -->
         <div *ngIf="mostrarImagem">
           <h5 style="margin-bottom: 50px">Imagem</h5>
-          <input type="file" (change)="onFileSelected($event)" />
+          <select class="form-select" style="margin-bottom: 30px"
+          [(ngModel)]="selectedImageSize">
+            <option value="P">Pequena (P)</option>
+            <option value="M">Média (M)</option>
+            <option value="G">Grande (G)</option>
+          </select>
+          <div class="image-upload-container">
+            <!-- Checkbox para confirmar termos de uso -->
+            <label>
+              <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+              Eu aceito os termos de uso
+            </label>
+          
+            <!-- Botão personalizado para upload de arquivo -->
+            <label class="custom-file-upload">
+              <input type="file" (change)="onFileSelected($event)" [disabled]="!termosDeUsoAceitos" />
+              Escolher arquivo
+            </label>
+          </div>
         </div>
         <!-- IMAGEM -->
+
 
         <!-- BOTAO -->
         <div *ngIf="mostrarBotao">

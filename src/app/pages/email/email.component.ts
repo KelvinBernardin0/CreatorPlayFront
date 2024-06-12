@@ -37,7 +37,13 @@ export class EmailComponent {
   opcoesPlanos: { nome: string; html: string }[] = [];
   opcoesVitrineEquipamento: { nome: string; html: string }[] = [];
   opcoesVitrinePlanos: { nome: string; html: string }[] = [];
-  currentRange: Range | null = null; // To store the current cursor position
+  
+  currentRange: Range | null = null; //Para armazenar a posição atual do cursor
+
+  selectedImageSize: string = 'M'; //Tamanho padrão da imagem 100%
+  lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
+  termosDeUsoAceitos: boolean = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -65,6 +71,8 @@ export class EmailComponent {
     });
   }
 
+  //A função makeEditable armazena a posição do cursor atual na variável 
+  //currentRange sempre que o usuário clica dentro da área editável
   makeEditable(event: any) {
     const target = event.target;
     if (target && target.nodeType === 1) {
@@ -74,7 +82,11 @@ export class EmailComponent {
     if (selection && selection.rangeCount > 0) {
       this.currentRange = selection.getRangeAt(0);
     }
+  
+    // Limpe a última imagem carregada ao tornar o conteúdo editável novamente
+    this.lastUploadedImg = null;
   }
+  
 
 
   // CARREGAR HERADES
@@ -604,6 +616,7 @@ export class EmailComponent {
 
 
   // ANEXAR IMAGEM
+
   AnexarImagem() {
     this.mostrarPropriedades = false;
     this.mostrarTipografia = false;
@@ -638,25 +651,61 @@ export class EmailComponent {
     reader.onload = (e: any) => {
       const img = document.createElement('img');
       img.src = e.target.result;
-      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+  
+      // Set the width based on the selected size
+      switch (this.selectedImageSize) {
+        case 'P':
+          img.style.width = '25%';
+          break;
+        case 'M':
+          img.style.width = '50%';
+          break;
+        case 'G':
+          img.style.width = '100%';
+          break;
+      }
+  
       img.draggable = true;
       img.ondragstart = (ev: DragEvent) => {
         ev.dataTransfer?.setData('text/plain', img.src);
       };
-
+  
       const editableContainer = this.elRef.nativeElement.querySelector(
         '#editable-container'
       );
       if (editableContainer) {
-        editableContainer.appendChild(img);
-        this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-          this.rawEmailHTML
-        );
+        const selection = window.getSelection();
+        if (selection) {
+          if (this.currentRange) {
+            // Remove existing content in the range
+            this.currentRange.deleteContents();
+  
+            // Insert the image into the range
+            this.currentRange.insertNode(img);
+  
+            // Move the cursor to the end of the newly inserted content
+            const range = document.createRange();
+            range.setStartAfter(img);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          } else {
+            // Append the image at the end if no range is stored
+            editableContainer.appendChild(img);
+          }
+  
+          // Save the updated HTML content
+          this.rawEmailHTML = editableContainer.innerHTML;
+          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+            this.rawEmailHTML
+          );
+        }
       }
     };
     reader.readAsDataURL(file);
   }
+
   // ANEXAR IMAGEM FIM
 
 
