@@ -40,7 +40,7 @@ export class EmailComponent {
   
   currentRange: Range | null = null; //Para armazenar a posição atual do cursor
 
-  selectedImageSize: string = 'M'; //Tamanho padrão da imagem 100%
+  selectedImageSize: string = 'M'; //Tamanho padrão da imagem
   lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
   termosDeUsoAceitos: boolean = false;
 
@@ -64,31 +64,9 @@ export class EmailComponent {
     });
   }
 
-  AplicaCor(cor: string) {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const span = document.createElement('span');
-      span.style.color = cor;
+ 
 
-      range.surroundContents(span);
-
-      // Atualiza o HTML após aplicar a cor
-      this.atualizarHTML();
-    }
-  }
-
-  // Atualiza o HTML após as alterações
-  private atualizarHTML() {
-    const editableContainer = this.editableContainerRef.nativeElement;
-    this.rawEmailHTML = editableContainer.innerHTML;
-    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-  }
-
-  
-  
-
-
+  //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
   carregarEmail(url: string) {
     this.http.get(url, { responseType: 'text' }).subscribe((data) => {
       this.emailHTML = data;
@@ -116,7 +94,10 @@ export class EmailComponent {
   
 
 
-  // CARREGAR HERADES
+  //---------------- CARREGAR HERADES ----------------
+  /**
+   * Função para carregar as opções de headers
+   */
   carregarOpcoesHeaders() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = true; //MOSTRAR
@@ -167,15 +148,19 @@ export class EmailComponent {
     });
   }
 
+  /**
+   * Função chamada quando uma opção é selecionada
+   * @param event - Evento de mudança no select
+   */
   opcaoSelecionada(event: any) {
     debugger;
     const selectedPath = event.target.value;
     this.carregarEmail(selectedPath);
   }
-  // FIM CARREGAR HERADES
+  //---------------- FIM CARREGAR HERADES ----------------
 
 
-  // CARREGAR FOOTERS
+  //---------------- CARREGAR FOOTERS ----------------
   carregarOpcoesFooters() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = false;
@@ -206,10 +191,45 @@ export class EmailComponent {
       });
     });
   }
-  // FIM CARREGAR FOOTERS
+  //---------------- FIM CARREGAR FOOTERS ----------------
 
+  //---------------- INICIO DAS PROPRIEDADES ----------------
+  carregarOpcoesPropriedades() {
+    this.mostrarPropriedades = true;//MOSTRAR
+    this.mostrarHeader = false;
+    this.mostrarFooter = false; 
+    this.mostrarTipografia = false;
+    this.mostrarImagem = false;
+    this.mostrarBotao = false;
+    this.mostrarCards = false;
+    this.mostrarPlanos = false;
+    this.mostrarVitrine = false;
+  }
+  
+  mudarCorFundo(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    const editableContainer = document.getElementById('editable-container');
 
-  // CARREGAR TEXTOS
+    if (editableContainer) {
+      switch (selectedValue) {
+        case 'branco':
+          editableContainer.style.backgroundColor = '#FFFFFF';
+          break;
+        case 'cinza':
+          editableContainer.style.backgroundColor = '#666666';
+          break;
+        case 'roxo':
+          editableContainer.style.backgroundColor = '#49066B'; 
+          break;
+        default:
+          editableContainer.style.backgroundColor = 'transparent';
+          break;
+      }
+    }
+  }
+  //---------------- FIM DAS PROPRIEDADES ----------------
+
+  //---------------- CARREGAR TEXTOS ----------------
   carregarOpcoesTipografias() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = false;
@@ -319,10 +339,64 @@ export class EmailComponent {
       });
     });
   }
-  // FIM CARREGAR TEXTOS
+
+  // Aplica a cor selecionada ao texto selecionado
+  AplicaCor(cor: string) {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.color = cor;
+
+      range.surroundContents(span);
+
+      // Atualiza o HTML após aplicar a cor
+      this.atualizarHTML();
+    }
+  }
+
+  // Atualiza o HTML após as alterações
+  atualizarHTML() {
+    const editableContainer = this.editableContainerRef.nativeElement;
+    this.rawEmailHTML = editableContainer.innerHTML;
+    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
+
+  aplicaEstiloSelecionado(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    if (!selectedValue) return; // Sai se nenhum valor estiver selecionado
+  
+    const editableContainer = document.getElementById('editable-container');
+    if (!editableContainer) return;
+  
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+  
+    const range = selection.getRangeAt(0);
+  
+    const span = document.createElement('span');
+    switch (selectedValue) {
+      case 'bold':
+        span.style.fontWeight = range.toString().includes('<b>') ? 'normal' : 'bold';
+        break;
+      case 'italic':
+        span.style.fontStyle = range.toString().includes('<i>') ? 'normal' : 'italic';
+        break;
+      case 'underline':
+        span.style.textDecoration = range.toString().includes('<u>') ? 'none' : 'underline';
+        break;
+      default:
+        break;
+    }
+  
+    range.surroundContents(span);
+    this.rawEmailHTML = editableContainer.innerHTML;
+    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
+  //---------------- FIM CARREGAR TEXTOS ----------------
 
 
-  // CARREGAR BOTOES
+  //---------------- CARREGAR BOTOES ----------------
   carregarOpcoesBotoes() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = false;
@@ -336,21 +410,9 @@ export class EmailComponent {
 
     this.opcoesBotoes = [];
     const tamanhos = [
-      {
-        nome: 'H1 Branco',
-        path: 'assets/componentes/tipografia/H1_Branco.html',
-      },
-      {
-        nome: 'H2 Branco',
-        path: 'assets/componentes/tipografia/H2_Branco.html',
-      },
-      {
-        nome: 'H3 Branco',
-        path: 'assets/componentes/tipografia/H3_Branco.html',
-      },
-      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
-      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
-      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
+      { nome: 'botao1', path: 'assets/componentes/botoes/botao1.png' },
+      { nome: 'botao2', path: 'assets/componentes/botoes/botao2.png' },
+      { nome: 'botao2', path: 'assets/componentes/botoes/botao3.png' },
     ];
 
     tamanhos.forEach((opcao) => {
@@ -360,80 +422,11 @@ export class EmailComponent {
       });
     });
 
-    this.opcoesBotoes = [];
-    const descricoes = [
-      {
-        nome: 'Descrição Cinza 16px',
-        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
-      },
-      {
-        nome: 'Descrição Cinza 14px',
-        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
-      },
-      {
-        nome: 'Descrição Branca 16px',
-        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
-      },
-      {
-        nome: 'Descrição Branca 14px',
-        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
-      },
-    ];
-
-    descricoes.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesBotoes.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesBotoes = [];
-    const links = [
-      {
-        nome: 'Link Sublinhado Roxo 16px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
-      },
-      {
-        nome: 'Link Sublinhado Roxo 12px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
-      },
-      {
-        nome: 'Link Sublinhado Branco 16px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
-      },
-      {
-        nome: 'Link Sublinhado Branco 12px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Roxo 16px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Roxo 12px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Branco 16px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Branco 12px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
-      },
-    ];
-
-    links.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesBotoes.push({ nome: opcao.nome, html: data });
-      });
-    });
-  }
-  // PROPRIEDADES BOTOES FIM
+  } 
+  //---------------- FIM DOS BOTOES  ----------------
 
 
-  // INICIO DAS PROPRIEDADES CARDS
+  //---------------- INICIO DOS  CARDS ----------------
   carregarOpcoesCards() {
     this.mostrarPropriedades = false;
     this.mostrarTipografia = false;
@@ -467,10 +460,10 @@ export class EmailComponent {
 
     
   }
-  // FIM DAS PROPRIEDADES CARDS
+  //---------------- FIM DOS  CARDS ----------------
 
 
-  // INICIO DAS PROPRIEDADES PLANOS
+  //---------------- INICIO DOS  PLANOS ----------------
   carregarOpcoesPlanos() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = false;
@@ -578,10 +571,10 @@ export class EmailComponent {
       });
     });
   }
-  // FIM DAS PROPRIEDADES PLANOS
+  //---------------- FIM DAS  PLANOS ----------------
 
 
-  // INICIO DAS PROPRIEDADES PLANOS
+  //---------------- INICIO DAS  PLANOS ----------------
   carregarOpcoesVitrine() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = false;
@@ -639,15 +632,16 @@ export class EmailComponent {
       });
     });
   }
-  // FIM DAS PROPRIEDADES VITRINE
+  //---------------- FIM DAS VITRINE ----------------
 
 
-  // ANEXAR IMAGEM
-
+  //---------------- ANEXAR IMAGEM ----------------
   AnexarImagem() {
     this.mostrarPropriedades = false;
+    this.mostrarHeader = false; 
+    this.mostrarFooter = false;
     this.mostrarTipografia = false;
-    this.mostrarImagem = true; //MOSTRAR IMAGEM
+    this.mostrarImagem = true; //MOSTRAR
     this.mostrarBotao = false;
     this.mostrarCards = false;
     this.mostrarPlanos = false;
@@ -679,8 +673,9 @@ export class EmailComponent {
       const img = document.createElement('img');
       img.src = e.target.result;
       img.style.height = 'auto';
+      // img.style.width = 'auto';
   
-      // Set the width based on the selected size
+      //Define a largura com base no tamanho selecionado
       switch (this.selectedImageSize) {
         case 'P':
           img.style.width = '25%';
@@ -705,24 +700,24 @@ export class EmailComponent {
         const selection = window.getSelection();
         if (selection) {
           if (this.currentRange) {
-            // Remove existing content in the range
+            //Remove o conteúdo existente no intervalo
             this.currentRange.deleteContents();
   
-            // Insert the image into the range
+            //Insere a imagem no intervalo
             this.currentRange.insertNode(img);
   
-            // Move the cursor to the end of the newly inserted content
+            // Move o cursor para o final do conteúdo recém-inserido
             const range = document.createRange();
             range.setStartAfter(img);
             range.collapse(true);
             selection.removeAllRanges();
             selection.addRange(range);
           } else {
-            // Append the image at the end if no range is stored
+            // Acrescenta a imagem no final se nenhum intervalo for armazenado
             editableContainer.appendChild(img);
           }
   
-          // Save the updated HTML content
+          //Salva o conteúdo HTML atualizado
           this.rawEmailHTML = editableContainer.innerHTML;
           this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
             this.rawEmailHTML
@@ -732,11 +727,10 @@ export class EmailComponent {
     };
     reader.readAsDataURL(file);
   }
+  //---------------- FIM ANEXAR IMAGEM FIM ----------------
 
-  // ANEXAR IMAGEM FIM
 
-
-  // SALVAR HTML
+  //---------------- SALVAR HTML ----------------
   saveChanges() {
     const editableContainer = this.elRef.nativeElement.querySelector(
       '#editable-container'
@@ -760,46 +754,51 @@ export class EmailComponent {
     link.click();
     document.body.removeChild(link);
   }
-  // SALVAR HTML
+  //---------------- FIM SALVAR HTML ----------------
 
 
 
-  // APLICA MUDANCAN NO HTML
+  //---------------- APLICA MUDANÇA NO HTML ----------------
   AplicaMudanca(event: any) {
-    const tipoSelecionado = event.target.value;
-    const categoriaSelecionada = event.target.parentElement.querySelector('label').textContent.trim();
-  
-    let opcoesSelecionadas: { nome: string, html: string }[] = []; // Definindo o tipo explicitamente
-  
-    // Verifica em qual array de opções está o valor selecionado
-    switch (categoriaSelecionada) {
-      case 'Titulos:':
-        opcoesSelecionadas = this.opcoesTitulos;
-        break;
-      case 'Descrições:':
-        opcoesSelecionadas = this.opcoesDescricoes;
-        break;
-      case 'Links:':
-        opcoesSelecionadas = this.opcoesLinks;
-        break;
-      // Adicione mais cases conforme necessário para outras categorias
-      default:
-        break;
-    }
-  
-    const selectedOption = opcoesSelecionadas.find((opcao) => opcao.nome === tipoSelecionado);
-  
-    if (selectedOption) {
-      const editableContainer = document.getElementById('editable-container');
-      if (editableContainer) {
-        const div = document.createElement('div');
+    const selectedValue = event.target.value;
+    const editableContainer = document.getElementById('editable-container');
+    if (editableContainer) {
+      const div = document.createElement('div');
+      let selectedOption;
+
+      // Verifica em qual array de opções está o valor selecionado
+      selectedOption =
+        this.opcoesPropriedades.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesTitulos.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesDescricoes.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesLinks.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesBotoes.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesCards.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesPlanos.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesVitrineEquipamento.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesVitrinePlanos.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
+        this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue);
+
+      if (selectedOption) {
         div.innerHTML = selectedOption.html;
         const frag = document.createDocumentFragment();
         let node;
         while ((node = div.firstChild)) {
           frag.appendChild(node);
         }
-  
+
         if (this.currentRange) {
           this.currentRange.deleteContents();
           this.currentRange.insertNode(frag);
@@ -807,49 +806,15 @@ export class EmailComponent {
         } else {
           editableContainer.appendChild(frag); // Append to the end if no range is stored
         }
-  
+
         this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+          this.rawEmailHTML
+        );
       }
     }
   }
-
-  applySelectedStyle(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    if (!selectedValue) return; // Sai se nenhum valor estiver selecionado
-  
-    const editableContainer = document.getElementById('editable-container');
-    if (!editableContainer) return;
-  
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-  
-    const range = selection.getRangeAt(0);
-  
-    const span = document.createElement('span');
-    switch (selectedValue) {
-      case 'bold':
-        span.style.fontWeight = range.toString().includes('<b>') ? 'normal' : 'bold';
-        break;
-      case 'italic':
-        span.style.fontStyle = range.toString().includes('<i>') ? 'normal' : 'italic';
-        break;
-      case 'underline':
-        span.style.textDecoration = range.toString().includes('<u>') ? 'none' : 'underline';
-        break;
-      default:
-        break;
-    }
-  
-    range.surroundContents(span);
-    this.rawEmailHTML = editableContainer.innerHTML;
-    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-  }
-  
-  
-  
-  
-  // APLICA MUDANCAN NO HTML
+  //---------------- APLICA MUDANÇA NO HTML ----------------
 
 
 }
