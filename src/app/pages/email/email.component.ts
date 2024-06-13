@@ -752,14 +752,61 @@ export class EmailComponent {
   }
 
   downloadHTML(html: string, filename: string) {
-    const blob = new Blob([html], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Regex para encontrar todas as tags <img> no HTML
+    const imgRegex = /<img.*?src="(.*?)".*?>/g;
+    const matches = html.matchAll(imgRegex);
+  
+    // Array para armazenar as Promises de carregamento de base64 das imagens
+    const promises = [];
+  
+    // Iterar sobre todas as correspondências de tags <img>
+    for (const match of matches) {
+      const imgSrc = match[1]; // Captura o atributo src da tag <img>
+  
+      // Função para carregar imagem e converter para base64
+      const loadImageToBase64 = (src: string) => {
+        return new Promise<string>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = function() {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+              resolve(reader.result as string); // Resolve com o conteúdo base64 da imagem
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(xhr.response);
+          };
+          xhr.onerror = reject;
+          xhr.open('GET', src);
+          xhr.responseType = 'blob';
+          xhr.send();
+        });
+      };
+  
+      // Adicionar promessa de carregamento de base64 ao array
+      promises.push(loadImageToBase64(imgSrc).then((base64) => {
+        // Substituir src da imagem pelo conteúdo base64 no HTML
+        html = html.replace(imgSrc, base64.toString());
+      }).catch((error) => {
+        console.error('Erro ao carregar imagem:', error);
+      }));
+    }
+  
+    // Após todas as promessas de carregamento de base64 serem resolvidas
+    Promise.all(promises).then(() => {
+      // Agora podemos prosseguir com o download do HTML modificado
+      const blob = new Blob([html], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }).catch((error) => {
+      console.error('Erro ao processar imagens:', error);
+    });
   }
+  
+  
   //---------------- FIM SALVAR HTML ----------------
 
 
