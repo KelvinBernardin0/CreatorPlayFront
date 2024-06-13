@@ -32,7 +32,7 @@ export class EmailComponent {
   opcoesTitulos: { nome: string; html: string }[] = [];
   opcoesDescricoes: { nome: string; html: string }[] = [];
   opcoesLinks: { nome: string; html: string }[] = [];
-  opcoesBotoes: { nome: string; html: string }[] = [];
+  opcoesBotoes: Array<{ nome: string, path: string }> = [];
   opcoesCards: { nome: string; html: string }[] = [];
   opcoesPlanos: { nome: string; html: string }[] = [];
   opcoesVitrineEquipamento: { nome: string; html: string }[] = [];
@@ -78,11 +78,13 @@ export class EmailComponent {
 
   //A função makeEditable armazena a posição do cursor atual na variável 
   //currentRange sempre que o usuário clica dentro da área editável
-  makeEditable(event: any) {
-    const target = event.target;
+
+  makeEditable(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
     if (target && target.nodeType === 1) {
       target.setAttribute('contenteditable', 'true');
     }
+  
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       this.currentRange = selection.getRangeAt(0);
@@ -91,7 +93,6 @@ export class EmailComponent {
     // Limpe a última imagem carregada ao tornar o conteúdo editável novamente
     this.lastUploadedImg = null;
   }
-  
 
 
   //---------------- CARREGAR HERADES ----------------
@@ -408,21 +409,26 @@ export class EmailComponent {
     this.mostrarPlanos = false;
     this.mostrarVitrine = false;
 
-    this.opcoesBotoes = [];
-    const tamanhos = [
+    this.opcoesBotoes = [
       { nome: 'botao1', path: 'assets/componentes/botoes/botao1.png' },
       { nome: 'botao2', path: 'assets/componentes/botoes/botao2.png' },
-      { nome: 'botao2', path: 'assets/componentes/botoes/botao3.png' },
+      { nome: 'botao3', path: 'assets/componentes/botoes/botao3.png' },
     ];
+  }
 
-    tamanhos.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesBotoes.push({ nome: opcao.nome, html: data });
-      });
-    });
+  insereImagemBotao(path: string) {
+    const editableContainer = document.getElementById('editable-container');
+    if (editableContainer && this.currentRange) {
+      const img = document.createElement('img');
+      img.src = path;
+      this.currentRange.deleteContents();
+      this.currentRange.insertNode(img);
+      this.currentRange = null; // Reset the stored range
 
-  } 
+      this.rawEmailHTML = editableContainer.innerHTML;
+      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+    }
+  }
   //---------------- FIM DOS BOTOES  ----------------
 
 
@@ -763,36 +769,32 @@ export class EmailComponent {
     const selectedValue = event.target.value;
     const editableContainer = document.getElementById('editable-container');
     if (editableContainer) {
-      const div = document.createElement('div');
-      let selectedOption;
+      let selectedOption: { nome: string, html?: string, path?: string } | undefined;
 
       // Verifica em qual array de opções está o valor selecionado
       selectedOption =
-        this.opcoesPropriedades.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesTitulos.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesDescricoes.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesLinks.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
+        this.opcoesPropriedades.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesTitulos.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesDescricoes.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesLinks.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesBotoes.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesCards.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesPlanos.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesVitrineEquipamento.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesVitrinePlanos.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
+        this.opcoesVitrineEquipamento.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesVitrinePlanos.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue);
 
       if (selectedOption) {
-        div.innerHTML = selectedOption.html;
+        const div = document.createElement('div');
+
+        if (selectedOption.html) {
+          div.innerHTML = selectedOption.html;
+        } else if (selectedOption.path) {
+          const img = document.createElement('img');
+          img.src = selectedOption.path;
+          div.appendChild(img);
+        }
+
         const frag = document.createDocumentFragment();
         let node;
         while ((node = div.firstChild)) {
@@ -808,12 +810,11 @@ export class EmailComponent {
         }
 
         this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-          this.rawEmailHTML
-        );
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
       }
     }
   }
+
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
 

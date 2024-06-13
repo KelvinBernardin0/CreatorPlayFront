@@ -324,26 +324,13 @@
         <!-- BOTAO -->
         <div *ngIf="mostrarBotao">
           <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
+          <label for="esquemaCores">Escolha um botão: </label>
+
           <div class="form-group">
-            <label for="esquemaCores">Titulos: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesBotoes"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
+            <div class="btn-options">
+              <img *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } })" class="btn-img">
+            </div>
           </div>
-
-          
-
-          
         </div>
         <!-- BOTAO -->
 
@@ -469,4 +456,3 @@
     </div>
     <!-- PROPRIEDADES DO EMAIL -->
   </div>
-</div>
