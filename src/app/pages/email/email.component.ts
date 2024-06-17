@@ -94,7 +94,7 @@ export class EmailComponent {
     // Limpe a última imagem carregada ao tornar o conteúdo editável novamente
     this.lastUploadedImg = null;
   }
-
+  
 
   //---------------- CARREGAR HERADES ----------------
   /**
@@ -416,6 +416,37 @@ export class EmailComponent {
     range.surroundContents(span);
     this.rawEmailHTML = editableContainer.innerHTML;
     this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
+
+  // INSERIR LINK
+  inserirLink() {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer as HTMLElement;
+
+      const imgElement = container.querySelector('img');
+      if (imgElement) {
+        const link = prompt('Digite o URL do link:');
+        if (link) {
+          const aElement = document.createElement('a');
+          aElement.href = link;
+          aElement.target = '_blank';
+          
+          // Clonar a imagem e adicionar ao link
+          const imgClone = imgElement.cloneNode(true);
+          aElement.appendChild(imgClone);
+
+          // Substituir a imagem original pelo link com a imagem clonada
+          imgElement.parentNode?.replaceChild(aElement, imgElement);
+
+          // Atualizar o HTML
+          this.atualizarHTML();
+        }
+      } else {
+        alert('Por favor, selecione uma imagem primeiro.');
+      }
+    }
   }
   //---------------- FIM CARREGAR TEXTOS ----------------
 
@@ -761,16 +792,13 @@ export class EmailComponent {
 
   //---------------- SALVAR HTML ----------------
   saveChanges() {
-    const editableContainer = this.elRef.nativeElement.querySelector(
-      '#editable-container'
-    );
+    const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
     if (editableContainer) {
       this.rawEmailHTML = editableContainer.innerHTML;
-      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-        this.rawEmailHTML
-      );
-      console.log('HTML atualizado:', this.rawEmailHTML);
-      this.downloadHTML(this.rawEmailHTML, 'Email.html');
+      const cleanedHTML = this.removeContentEditable(this.rawEmailHTML);
+      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(cleanedHTML);
+      console.log('HTML atualizado:', cleanedHTML);
+      this.downloadHTML(cleanedHTML, 'Email.html');
     }
   }
 
@@ -778,14 +806,14 @@ export class EmailComponent {
     // Regex para encontrar todas as tags <img> no HTML
     const imgRegex = /<img.*?src="(.*?)".*?>/g;
     const matches = html.matchAll(imgRegex);
-  
+
     // Array para armazenar as Promises de carregamento de base64 das imagens
     const promises = [];
-  
+
     // Iterar sobre todas as correspondências de tags <img>
     for (const match of matches) {
       const imgSrc = match[1]; // Captura o atributo src da tag <img>
-  
+
       // Função para carregar imagem e converter para base64
       const loadImageToBase64 = (src: string) => {
         return new Promise<string>((resolve, reject) => {
@@ -804,7 +832,7 @@ export class EmailComponent {
           xhr.send();
         });
       };
-  
+
       // Adicionar promessa de carregamento de base64 ao array
       promises.push(loadImageToBase64(imgSrc).then((base64) => {
         // Substituir src da imagem pelo conteúdo base64 no HTML
@@ -813,7 +841,7 @@ export class EmailComponent {
         console.error('Erro ao carregar imagem:', error);
       }));
     }
-  
+
     // Após todas as promessas de carregamento de base64 serem resolvidas
     Promise.all(promises).then(() => {
       // Agora podemos prosseguir com o download do HTML modificado
@@ -828,8 +856,21 @@ export class EmailComponent {
       console.error('Erro ao processar imagens:', error);
     });
   }
-  //---------------- FIM SALVAR HTML ----------------
 
+  removeContentEditable(html: string): string {
+    // Cria um elemento DOM temporário para manipulação
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    // Remove o atributo contenteditable de todos os elementos
+    const elements = tempDiv.querySelectorAll('[contenteditable]');
+    elements.forEach(element => {
+      element.removeAttribute('contenteditable');
+    });
+
+    return tempDiv.innerHTML;
+  }
+  //---------------- FIM SALVAR HTML ----------------
 
 
   //---------------- APLICA MUDANÇA NO HTML ----------------
@@ -880,6 +921,9 @@ export class EmailComponent {
 
         this.rawEmailHTML = editableContainer.innerHTML;
         this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+      
+
+      
       } 
     }
   }

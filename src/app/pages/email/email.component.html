@@ -204,12 +204,22 @@
             </select>
           </div> -->
 
+          
+
           <div class="form-group">
-            <label for="empresa">Empresa</label>
-            <select class="form-select" id="empresa">
-              <option disabled selected>Vivo Empresas</option>
-              <option value="vivoEmpresas">Vivo</option>
-              <option value="outraEmpresa">Outraos</option>
+            <label for="esquemaCores">Empresas: </label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              (change)="AplicaMudanca($event)"
+            >
+              <option disabled selected>Escolher</option>
+              <option
+                *ngFor="let opcoes of opcoesPropriedadesEmpresas"
+                [value]="opcoes.nome"
+              >
+                {{ opcoes.nome }}
+              </option>
             </select>
           </div>
         </div>
@@ -273,11 +283,11 @@
             <label for="esquemaCores">Cor: </label>
             <select class="form-select" aria-label="Default select example" #corSelect (change)="AplicaCor(corSelect.value)">
               <option disabled selected>Cor do Texto</option>
-              <option value="#49066B">Roxo</option>
-              <!-- <option value="#660099">Roxo Claro</option> -->
-              <option value="#000000">Preto</option>
-              <option value="#666666">Cinza</option>
-              <option value="#FFFFFF">Branco</option>
+              <option value="#49066B" style="background-color: #49066B; color: #FFFFFF;">Roxo</option>
+              <option value="#660099" style="background-color: #660099; color: #FFFFFF;">Roxo Claro</option>
+              <option value="#000000" style="background-color: #000000; color: #FFFFFF;">Preto</option>
+              <option value="#666666" style="background-color: #666666; color: #FFFFFF;">Cinza</option>
+              <option value="#FFFFFF" style="background-color: #FFFFFF; color: #000000;">Branco</option>
             </select>
             <!-- <button class="btn btn-secondary btn-smaller" (click)="AplicaCor(corSelect.value)">Aplicar</button> -->
           </div>
@@ -286,11 +296,15 @@
             <label>Estilo:</label>
             <select class="form-select" (change)="aplicaEstiloSelecionado($event)">
               <option disabled selected >Selecione</option>
-              <option value="bold">Negrito</option>
-              <option value="italic">Itálico</option>
-              <option value="underline">Sublinhado</option>
-            </select>
+              <option value="bold" style="font-weight: bold;">Negrito</option>
+              <option value="italic" style="font-style: italic;">Itálico</option>
+              <option value="underline" style="text-decoration: underline;">Sublinhado</option>            </select>
           </div>
+          
+          <label>Inserir Link:
+            <button  class="btn btn-secondary btn-smaller btn-link" (click)="inserirLink()">Clique aqui </button>
+          </label>
+
           
         </div>
         <!-- TIPOGRAFIAS -->

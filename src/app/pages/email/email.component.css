@@ -1,4 +1,4 @@
-/* 1 PARTE */
+/* ------------------- 1 PARTE ------------------- */
 .structure-blocks {
   padding: 20px 10px 0px 10px;
   border-radius: 10px;
@@ -65,9 +65,9 @@
   display: block;
   margin: 0 auto 10px; /* Centraliza a imagem e adiciona margem inferior */
 }
-/* 1 PARTE */
+/* ------------------- 1 PARTE ------------------- */
 
-/* 2 PARTE */
+/* ------------------- 2 PARTE ------------------- */
 
 /* #editable-container img {
   max-width: 100%;
@@ -109,10 +109,10 @@ option
 }
 
 
-/* 2 PARTE */
+/* ------------------- 2 PARTE ------------------- */
 
 
-/* 3   PARTE */
+/* 3 -------------------  PARTE ------------------- */
 
 .block-properties {
   padding: 20px;
@@ -208,5 +208,12 @@ option
   border-color: #007bff;
 }
 
+.btn-link{
+  background: #5e008d;
+  color: #ffffff;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 15px;
+}
 
-/* 3   PARTE*/
+/* ------------------- 3 PARTE ------------------- */
