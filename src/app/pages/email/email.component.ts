@@ -27,6 +27,7 @@ export class EmailComponent {
   mostrarVitrine: boolean = false;
 
   opcoesPropriedades: { nome: string; html: string }[] = [];
+  opcoesPropriedadesEmpresas: { nome: string; html: string }[] = [];
   opcoesHeaders!: OpcaoHeader[];
   opcoesFooters: { nome: string; html: string }[] = [];
   opcoesTitulos: { nome: string; html: string }[] = [];
@@ -205,6 +206,28 @@ export class EmailComponent {
     this.mostrarCards = false;
     this.mostrarPlanos = false;
     this.mostrarVitrine = false;
+
+    this.opcoesPropriedadesEmpresas= [];
+    const tamanhos = [
+      {
+        nome: 'botao1',
+        path: 'assets/componentes/propriedades/botao1.png',
+      },
+      { nome: 'botao2', 
+        path: 'assets/componentes/propriedades/botao2.png' 
+      },
+      {
+        nome: 'botao3',
+        path: 'assets/componentes/propriedades/botao3.png',
+      }
+    ];
+
+    tamanhos.forEach((opcao) => {
+      // Renomeando a variável para evitar colisão
+      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+        this.opcoesPropriedadesEmpresas.push({ nome: opcao.nome, html: data });
+      });
+    });
   }
   
   mudarCorFundo(event: Event) {
@@ -805,8 +828,6 @@ export class EmailComponent {
       console.error('Erro ao processar imagens:', error);
     });
   }
-  
-  
   //---------------- FIM SALVAR HTML ----------------
 
 
@@ -829,7 +850,8 @@ export class EmailComponent {
         this.opcoesPlanos.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesVitrineEquipamento.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesVitrinePlanos.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue);
+        this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesPropriedadesEmpresas.find((opcoes) => opcoes.nome === selectedValue);
 
       if (selectedOption) {
         const div = document.createElement('div');
@@ -858,10 +880,9 @@ export class EmailComponent {
 
         this.rawEmailHTML = editableContainer.innerHTML;
         this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-      }
+      } 
     }
   }
-
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
 
