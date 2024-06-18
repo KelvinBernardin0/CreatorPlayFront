@@ -16,6 +16,9 @@ export class EmailComponent {
   emailHTML: SafeHtml = '';
   rawEmailHTML: string = '';
 
+  undoStack: string[] = []; // Pilha de históricos para refazer as alterações
+
+
   mostrarPropriedades: boolean = true;
   mostrarHeader: boolean = false;
   mostrarFooter: boolean = false;
@@ -62,10 +65,32 @@ export class EmailComponent {
           this.rawEmailHTML
         );
       }
+
+      this.saveState(); // Salvar o estado antes de fazer a alteração
+
     });
   }
 
- 
+  saveState() {
+    const editableContainer = document.getElementById('editable-container');
+    if (editableContainer) {
+      this.undoStack.push(editableContainer.innerHTML);
+    }
+  }
+
+  refazer() {
+    if (this.undoStack.length > 0) {
+      const editableContainer = document.getElementById('editable-container');
+      if (editableContainer) {
+        const lastState = this.undoStack.pop();
+        if (lastState) {
+          editableContainer.innerHTML = lastState;
+          this.rawEmailHTML = editableContainer.innerHTML;
+          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+        }
+      }
+    }
+  }
 
   //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
   carregarEmail(url: string) {
@@ -231,8 +256,11 @@ export class EmailComponent {
   }
   
   mudarCorFundo(event: Event) {
+ 
+
     const selectedValue = (event.target as HTMLSelectElement).value;
     const editableContainer = document.getElementById('editable-container');
+
 
     if (editableContainer) {
       switch (selectedValue) {
@@ -249,6 +277,8 @@ export class EmailComponent {
           editableContainer.style.backgroundColor = 'transparent';
           break;
       }
+
+
     }
   }
   //---------------- FIM DAS PROPRIEDADES ----------------
@@ -372,6 +402,8 @@ export class EmailComponent {
       const span = document.createElement('span');
       span.style.color = cor;
 
+      this.saveState(); // Salvar o estado antes de fazer a alteração
+
       range.surroundContents(span);
 
       // Atualiza o HTML após aplicar a cor
@@ -383,7 +415,9 @@ export class EmailComponent {
   atualizarHTML() {
     const editableContainer = this.editableContainerRef.nativeElement;
     this.rawEmailHTML = editableContainer.innerHTML;
+    
     this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+    
   }
 
   aplicaEstiloSelecionado(event: Event) {
@@ -412,8 +446,11 @@ export class EmailComponent {
       default:
         break;
     }
-  
+
+    this.saveState(); // Salvar o estado antes de fazer a alteração
+
     range.surroundContents(span);
+
     this.rawEmailHTML = editableContainer.innerHTML;
     this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
   }
@@ -436,6 +473,8 @@ export class EmailComponent {
           // Clonar a imagem e adicionar ao link
           const imgClone = imgElement.cloneNode(true);
           aElement.appendChild(imgClone);
+
+          this.saveState(); // Salvar o estado antes de fazer a alteração
 
           // Substituir a imagem original pelo link com a imagem clonada
           imgElement.parentNode?.replaceChild(aElement, imgElement);
@@ -470,11 +509,14 @@ export class EmailComponent {
     ];
   }
 
+  //INSERE IMAGENS DOS BOTOES
   insereImagemBotao(path: string) {
     const editableContainer = document.getElementById('editable-container');
     if (editableContainer && this.currentRange) {
       const img = document.createElement('img');
       img.src = path;
+      this.saveState(); // Salvar o estado antes de fazer a alteração
+
       this.currentRange.deleteContents();
       this.currentRange.insertNode(img);
       this.currentRange = null; // Reset the stored range
@@ -763,6 +805,8 @@ export class EmailComponent {
             //Remove o conteúdo existente no intervalo
             this.currentRange.deleteContents();
   
+            this.saveState(); // Salvar o estado antes de fazer a alteração
+
             //Insere a imagem no intervalo
             this.currentRange.insertNode(img);
   
@@ -911,6 +955,9 @@ export class EmailComponent {
           frag.appendChild(node);
         }
 
+        this.saveState(); // Salvar o estado antes de fazer a alteração
+
+
         if (this.currentRange) {
           this.currentRange.deleteContents();
           this.currentRange.insertNode(frag);
@@ -929,5 +976,11 @@ export class EmailComponent {
   }
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
+
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      this.saveState(); // Salvar o estado antes de deletar
+    }
+  }
 
 }

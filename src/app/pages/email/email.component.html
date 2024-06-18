@@ -102,10 +102,16 @@
           </div>
         </div>
         <div class="avancar">
-          <button (click)="saveChanges()" class="btn btn-primary btn-block">
-            Salvar E-mail
+          <button (click)="saveChanges()" class="btn btn-primary">
+            Salvar HTML
           </button>
         </div>
+        <div class="avancar">
+          <button (click)="refazer()" class="btn btn-danger desfazer">
+            Desfazer
+          </button>
+        </div>
+        
       </div>
     </div>
     <!-- BLOCOS -->
@@ -120,6 +126,7 @@
           contenteditable="true"
           [innerHTML]="emailHTML"
           (click)="makeEditable($event)"
+          (keydown)="onKeyDown($event)"
         ></div>
         <!-- <button (click)="saveChanges()">Salvar Alterações</button> -->
       </div>
