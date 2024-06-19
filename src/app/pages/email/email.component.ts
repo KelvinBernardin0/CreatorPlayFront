@@ -44,7 +44,7 @@ export class EmailComponent {
   
   currentRange: Range | null = null; //Para armazenar a posição atual do cursor
 
-  selectedImageSize: string = 'M'; //Tamanho padrão da imagem
+  selectedImageSize: string = 'G'; //Tamanho padrão da imagem
   lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
   termosDeUsoAceitos: boolean = false;
 
@@ -621,99 +621,30 @@ export class EmailComponent {
     this.mostrarPlanos = true; //MOSTRAR Planos
     this.mostrarVitrine = false;
 
-    this.opcoesPlanos = [];
-    const tamanhos = [
-      {
-        nome: 'H1 Branco',
-        path: 'assets/componentes/tipografia/H1_Branco.html',
-      },
-      {
-        nome: 'H2 Branco',
-        path: 'assets/componentes/tipografia/H2_Branco.html',
-      },
-      {
-        nome: 'H3 Branco',
-        path: 'assets/componentes/tipografia/H3_Branco.html',
-      },
-      { nome: 'H1 Roxo', path: 'assets/componentes/tipografia/H1_Roxo.html' },
-      { nome: 'H2 Roxo', path: 'assets/componentes/tipografia/H2_Roxo.html' },
-      { nome: 'H3 Roxo', path: 'assets/componentes/tipografia/H3_Roxo.html' },
-    ];
-
-    tamanhos.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesPlanos.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesPlanos = [];
+    this.opcoesVitrinePlanos = [];
     const descricoes = [
       {
-        nome: 'Descrição Cinza 16px',
-        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize16px.html',
+        nome: 'Plano 1',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao1.html',
       },
       {
-        nome: 'Descrição Cinza 14px',
-        path: 'assets/componentes/tipografia/DescricaoCinza_FonteSize14px.html',
+        nome: 'Plano 2',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao2.html',
       },
       {
-        nome: 'Descrição Branca 16px',
-        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize16px.html',
+        nome: 'Plano 3',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao3.html',
       },
       {
-        nome: 'Descrição Branca 14px',
-        path: 'assets/componentes/tipografia/DescricaoBranca_FonteSize14px.html',
+        nome: 'Plano 4',
+        path: 'assets/componentes/vitrine/vitrine_plano_opcao4.html',
       },
     ];
 
     descricoes.forEach((opcao) => {
       // Renomeando a variável para evitar colisão
       this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesPlanos.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesPlanos = [];
-    const links = [
-      {
-        nome: 'Link Sublinhado Roxo 16px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
-      },
-      {
-        nome: 'Link Sublinhado Roxo 12px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
-      },
-      {
-        nome: 'Link Sublinhado Branco 16px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
-      },
-      {
-        nome: 'Link Sublinhado Branco 12px',
-        path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Roxo 16px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Roxo 12px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Branco 16px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
-      },
-      {
-        nome: 'Link S/ Sublinhado Branco 12px',
-        path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
-      },
-    ];
-
-    links.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesPlanos.push({ nome: opcao.nome, html: data });
+        this.opcoesVitrinePlanos.push({ nome: opcao.nome, html: data });
       });
     });
   }
@@ -748,33 +679,6 @@ export class EmailComponent {
       // Renomeando a variável para evitar colisão
       this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
         this.opcoesVitrineEquipamento.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesVitrinePlanos = [];
-    const descricoes = [
-      {
-        nome: 'Vitrine Plano 1',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao1.html',
-      },
-      {
-        nome: 'Vitrine Plano 2',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao2.html',
-      },
-      {
-        nome: 'Vitrine Plano 3',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao3.html',
-      },
-      {
-        nome: 'Vitrine Plano 4',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao4.html',
-      },
-    ];
-
-    descricoes.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesVitrinePlanos.push({ nome: opcao.nome, html: data });
       });
     });
   }

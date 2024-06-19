@@ -308,9 +308,9 @@
               <option value="underline" style="text-decoration: underline;">Sublinhado</option>            </select>
           </div>
           
-          <label>Inserir Link:
+          <!-- <label>Inserir Link:
             <button  class="btn btn-secondary btn-smaller btn-link" (click)="inserirLink()">Clique aqui </button>
-          </label>
+          </label> -->
 
           
         </div>
@@ -354,6 +354,10 @@
               </div>
             </div>
           </div>
+
+          <label>Inserir Link:
+            <button  class="btn btn-secondary btn-smaller btn-link" (click)="inserirLink()">Clique aqui </button>
+          </label>
         </div>
         
         <!-- BOTAO -->
@@ -378,6 +382,29 @@
             </select>
           </div>
 
+          <div>
+            <h2 style="margin: 50px 0px 20px 0px">Propriedades das Imagens</h2>
+            <select class="form-select" style="margin-bottom: 30px"
+            [(ngModel)]="selectedImageSize">
+              <option value="P">Pequena (25%)</option>
+              <option value="M">Média (50%)</option>
+              <option value="G">Grande (100%)</option>
+            </select>
+            <div class="image-upload-container">
+              <!-- Checkbox para confirmar termos de uso -->
+              <label>
+                <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+                Eu aceito os termos de uso
+              </label>
+            
+              <!-- Botão personalizado para upload de arquivo -->
+              <label class="custom-file-upload">
+                <input type="file" (change)="onFileSelected($event)" [disabled]="!termosDeUsoAceitos" />
+                Escolher arquivo
+              </label>
+            </div>
+          </div>
+
           
         </div>
         <!-- CARDS -->
@@ -385,16 +412,17 @@
         <!-- PLANOS -->
         <div *ngIf="mostrarPlanos">
           <h5 style="margin-bottom: 50px">Propriedades dos Planos</h5>
+          
           <div class="form-group">
-            <label for="esquemaCores">Titulos: </label>
+            <label for="esquemaCores">Planos: </label>
             <select
               class="form-select"
               aria-label="Default select example"
               (change)="AplicaMudanca($event)"
             >
-              <option disabled selected>Tamanhos e Cores</option>
+              <option disabled selected>Escolher</option>
               <option
-                *ngFor="let opcoes of opcoesPropriedades"
+                *ngFor="let opcoes of opcoesVitrinePlanos"
                 [value]="opcoes.nome"
               >
                 {{ opcoes.nome }}
@@ -402,39 +430,29 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label for="esquemaCores">Descrições: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesPropriedades"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
+          <div>
+            <h2 style="margin: 50px 0px 20px 0px">Propriedades das Imagens</h2>
+            <select class="form-select" style="margin-bottom: 30px"
+            [(ngModel)]="selectedImageSize">
+              <option value="P">Pequena (25%)</option>
+              <option value="M">Média (50%)</option>
+              <option value="G">Grande (100%)</option>
             </select>
+            <div class="image-upload-container">
+              <!-- Checkbox para confirmar termos de uso -->
+              <label>
+                <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+                Eu aceito os termos de uso
+              </label>
+            
+              <!-- Botão personalizado para upload de arquivo -->
+              <label class="custom-file-upload">
+                <input type="file" (change)="onFileSelected($event)" [disabled]="!termosDeUsoAceitos" />
+                Escolher arquivo
+              </label>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="esquemaCores">Links: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesPropriedades"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
         </div>
         <!-- PLANOS -->
 
@@ -442,7 +460,7 @@
         <div *ngIf="mostrarVitrine">
           <h5 style="margin-bottom: 50px">Propriedades das Vitrines</h5>
           <div class="form-group">
-            <label for="esquemaCores">Equipamento: </label>
+            <label for="esquemaCores">Vitrine: </label>
             <select
               class="form-select"
               aria-label="Default select example"
@@ -458,22 +476,29 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label for="esquemaCores">Plano: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesVitrinePlanos"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
+          <div>
+            <h2 style="margin: 50px 0px 20px 0px">Propriedades das Imagens</h2>
+            <select class="form-select" style="margin-bottom: 30px"
+            [(ngModel)]="selectedImageSize">
+              <option value="P">Pequena (25%)</option>
+              <option value="M">Média (50%)</option>
+              <option value="G">Grande (100%)</option>
             </select>
+            <div class="image-upload-container">
+              <!-- Checkbox para confirmar termos de uso -->
+              <label>
+                <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+                Eu aceito os termos de uso
+              </label>
+            
+              <!-- Botão personalizado para upload de arquivo -->
+              <label class="custom-file-upload">
+                <input type="file" (change)="onFileSelected($event)" [disabled]="!termosDeUsoAceitos" />
+                Escolher arquivo
+              </label>
+            </div>
           </div>
+
         </div>
         <!-- VITRINE -->
       </div>

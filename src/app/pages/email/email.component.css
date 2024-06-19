@@ -206,7 +206,7 @@ option
 }
 
 .btn-options-container {
-  max-height: 100vh; /* Define a altura máxima para o contêiner */
+  max-height: 70vh; /* Define a altura máxima para o contêiner */
   overflow-y: auto; /* Adiciona a barra de rolagem vertical */
   padding: 10px; /* Adiciona um espaçamento interno (opcional) */
   background: #ebebeb;
