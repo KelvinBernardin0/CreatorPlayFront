@@ -107,7 +107,7 @@
           </button>
         </div>
         <div class="avancar">
-          <button (click)="refazer()" class="btn btn-danger desfazer">
+          <button (click)="desfazer()" class="btn btn-danger desfazer">
             Desfazer
           </button>
         </div>
@@ -213,7 +213,7 @@
 
           
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="esquemaCores">Empresas: </label>
             <select
               class="form-select"
@@ -228,7 +228,7 @@
                 {{ opcoes.nome }}
               </option>
             </select>
-          </div>
+          </div> -->
         </div>
         <!-- PROPRIEDADES -->
 
@@ -346,13 +346,16 @@
         <div *ngIf="mostrarBotao">
           <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
           <label for="esquemaCores">Escolha um botão: </label>
-
+        
           <div class="form-group">
-            <div class="btn-options">
-              <img *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } })" class="btn-img">
+            <div class="btn-options-container">
+              <div class="btn-options">
+                <img *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } })" class="btn-img">
+              </div>
             </div>
           </div>
         </div>
+        
         <!-- BOTAO -->
 
         <!-- CARDS -->

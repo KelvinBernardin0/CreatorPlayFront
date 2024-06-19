@@ -78,7 +78,7 @@ export class EmailComponent {
     }
   }
 
-  refazer() {
+  desfazer() {
     if (this.undoStack.length > 0) {
       const editableContainer = document.getElementById('editable-container');
       if (editableContainer) {
@@ -503,9 +503,53 @@ export class EmailComponent {
     this.mostrarVitrine = false;
 
     this.opcoesBotoes = [
-      { nome: 'botao1', path: 'assets/componentes/botoes/botao1.png' },
-      { nome: 'botao2', path: 'assets/componentes/botoes/botao2.png' },
-      { nome: 'botao3', path: 'assets/componentes/botoes/botao3.png' },
+      { nome: 'btn_acesse', path: 'assets/componentes/botoes/btn_acesse.png' },
+      { nome: 'btn_acesse_inverse', path: 'assets/componentes/botoes/btn_acesse_inverse.png' },
+      { nome: 'btn_acesse_inverse_small', path: 'assets/componentes/botoes/btn_acesse_inverse_small.png' },
+      { nome: 'btn_acesse_secondary', path: 'assets/componentes/botoes/btn_acesse_secondary.png' },
+      { nome: 'btn_acesse_secondary_inverse', path: 'assets/componentes/botoes/btn_acesse_secondary_inverse.png' },
+      { nome: 'btn_acesse_secondary_inverse_small', path: 'assets/componentes/botoes/btn_acesse_secondary_inverse_small.png' },
+      { nome: 'btn_acesse_secondary_small', path: 'assets/componentes/botoes/btn_acesse_secondary_small.png' },
+      { nome: 'btn_acesse_small', path: 'assets/componentes/botoes/btn_acesse_small.png' },
+      { nome: 'btn_app', path: 'assets/componentes/botoes/btn_app.png' },
+      { nome: 'btn_app_inverse', path: 'assets/componentes/botoes/btn_app_inverse.png' },
+      { nome: 'btn_app_inverse_small', path: 'assets/componentes/botoes/btn_app_inverse_small.png' },
+      { nome: 'btn_app_secondary', path: 'assets/componentes/botoes/btn_app_secondary.png' },
+      { nome: 'btn_app_secondary_inverse', path: 'assets/componentes/botoes/btn_app_secondary_inverse.png' },
+      { nome: 'btn_app_secondary_small', path: 'assets/componentes/botoes/btn_app_secondary_small.png' },
+      { nome: 'btn_app_small', path: 'assets/componentes/botoes/btn_app_small.png' },
+      { nome: 'btn_assine_inverse', path: 'assets/componentes/botoes/btn_assine_inverse.png' },
+      { nome: 'btn_assine_inverse_small', path: 'assets/componentes/botoes/btn_assine_inverse_small.png' },
+      { nome: 'btn_assine_secondary', path: 'assets/componentes/botoes/btn_assine_secondary.png' },
+      { nome: 'btn_assine_secondary_inverse', path: 'assets/componentes/botoes/btn_assine_secondary_inverse.png' },
+      { nome: 'btn_assine_secondary_inverse_small', path: 'assets/componentes/botoes/btn_assine_secondary_inverse_small.png' },
+      { nome: 'btn_assine_secondary_small', path: 'assets/componentes/botoes/btn_assine_secondary_small.png' },
+      { nome: 'btn_assine_small', path: 'assets/componentes/botoes/btn_assine_small.png' },
+      { nome: 'btn_beneficio_inverse', path: 'assets/componentes/botoes/btn_beneficio_inverse.png' },
+      { nome: 'btn_beneficio_inverse_small', path: 'assets/componentes/botoes/btn_beneficio_inverse_small.png' },
+      { nome: 'btn_beneficio_secondary', path: 'assets/componentes/botoes/btn_beneficio_secondary.png' },
+      { nome: 'btn_beneficio_secondary_inverse_small', path: 'assets/componentes/botoes/btn_beneficio_secondary_inverse_small.png' },
+      { nome: 'btn_beneficio_secondary_small', path: 'assets/componentes/botoes/btn_beneficio_secondary_small.png' },
+      { nome: 'btn_beneficio_small', path: 'assets/componentes/botoes/btn_beneficio_small.png' },
+      { nome: 'btn_compreagora_inverse', path: 'assets/componentes/botoes/btn_compreagora_inverse.png' },
+      { nome: 'btn_compreagora_inverse_small', path: 'assets/componentes/botoes/btn_compreagora_inverse_small.png' },
+      { nome: 'btn_compreagora_secondary', path: 'assets/componentes/botoes/btn_compreagora_secondary.png' },
+      { nome: 'btn_compreagora_secondary_inverse', path: 'assets/componentes/botoes/btn_compreagora_secondary_inverse.png' },
+      { nome: 'btn_compreagora_secondary_inverse_small', path: 'assets/componentes/botoes/btn_compreagora_secondary_inverse_small.png' },
+      { nome: 'btn_compreagora_small', path: 'assets/componentes/botoes/btn_compreagora_small.png' },
+      { nome: 'btn_queroesse', path: 'assets/componentes/botoes/btn_queroesse.png' },
+      { nome: 'btn_queroesse_inverse', path: 'assets/componentes/botoes/btn_queroesse_inverse.png' },
+      { nome: 'btn_queroesse_secondary', path: 'assets/componentes/botoes/btn_queroesse_secondary.png' },
+      { nome: 'btn_queroesse_secondary_inverse', path: 'assets/componentes/botoes/btn_queroesse_secondary_inverse.png' },
+      { nome: 'btn_queroesse_secondary_inverse_small', path: 'assets/componentes/botoes/btn_queroesse_secondary_inverse_small.png' },
+      { nome: 'btn_queroesse_secondary_small', path: 'assets/componentes/botoes/btn_queroesse_secondary_small.png' },
+      { nome: 'btn_saibamais', path: 'assets/componentes/botoes/btn_saibamais.png' },
+      { nome: 'btn_saibamais_inverse', path: 'assets/componentes/botoes/btn_saibamais_inverse.png' },
+      { nome: 'btn_saibamais_inverse_small', path: 'assets/componentes/botoes/btn_saibamais_inverse_small.png' },
+      { nome: 'btn_saibamais_secondary', path: 'assets/componentes/botoes/btn_saibamais_secondary.png' },
+      { nome: 'btn_saibamais_secondary_inverse', path: 'assets/componentes/botoes/btn_saibamais_secondary_inverse.png' },
+      { nome: 'btn_saibamais_secondary_small', path: 'assets/componentes/botoes/btn_saibamais_secondary_small.png' },
+      { nome: 'btn_saibamais_small', path: 'assets/componentes/botoes/btn_saibamais_small.png' }
     ];
   }
 
@@ -835,16 +879,7 @@ export class EmailComponent {
 
 
   //---------------- SALVAR HTML ----------------
-  saveChanges() {
-    const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
-    if (editableContainer) {
-      this.rawEmailHTML = editableContainer.innerHTML;
-      const cleanedHTML = this.removeContentEditable(this.rawEmailHTML);
-      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(cleanedHTML);
-      console.log('HTML atualizado:', cleanedHTML);
-      this.downloadHTML(cleanedHTML, 'Email.html');
-    }
-  }
+
 
   downloadHTML(html: string, filename: string) {
     // Regex para encontrar todas as tags <img> no HTML
@@ -976,11 +1011,23 @@ export class EmailComponent {
   }
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
+  //---------------- DESFAZER MUDANÇA NO HTML ----------------
+  saveChanges() {
+    const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
+    if (editableContainer) {
+      this.rawEmailHTML = editableContainer.innerHTML;
+      const cleanedHTML = this.removeContentEditable(this.rawEmailHTML);
+      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(cleanedHTML);
+      console.log('HTML atualizado:', cleanedHTML);
+      this.downloadHTML(cleanedHTML, 'Email.html');
+    }
+  }
 
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Delete' || event.key === 'Backspace') {
       this.saveState(); // Salvar o estado antes de deletar
     }
   }
+  //---------------- DESFAZER MUDANÇA NO HTML ----------------
 
 }

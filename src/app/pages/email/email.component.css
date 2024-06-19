@@ -203,10 +203,13 @@ option
 
 .btn-img {
   cursor: pointer;
-  width: 50px; /* Ajuste conforme necessário */
-  height: 50px; /* Ajuste conforme necessário */
-  border: 1px solid #ccc;
-  border-radius: 5px;
+}
+
+.btn-options-container {
+  max-height: 100vh; /* Define a altura máxima para o contêiner */
+  overflow-y: auto; /* Adiciona a barra de rolagem vertical */
+  padding: 10px; /* Adiciona um espaçamento interno (opcional) */
+  background: #ebebeb;
 }
 
 .btn-img:hover {
