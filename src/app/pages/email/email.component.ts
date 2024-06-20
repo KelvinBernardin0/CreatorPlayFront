@@ -22,8 +22,6 @@ export class EmailComponent {
 
   undoStack: { header: string, content: string, footer: string }[] = [];
 
-  
-
   mostrarPropriedades: boolean = true;
   mostrarHeader: boolean = false;
   mostrarFooter: boolean = false;
@@ -55,6 +53,7 @@ export class EmailComponent {
 
   selectedBackgroundColor = ''; // Cor de fundo selecionada
 
+  
   @ViewChild('contentContainer', { static: false }) contentContainerRef!: ElementRef;
   @ViewChild('headerContainer', { static: false }) headerContainerRef!: ElementRef;
   @ViewChild('footerContainer', { static: false }) footerContainerRef!: ElementRef;
@@ -77,6 +76,18 @@ export class EmailComponent {
     });
   }
 
+  //---------------- FUNCIONAMENTO DO HTML ----------------
+  //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
+  carregarEmail(url: string) {
+      this.http.get(url, { responseType: 'text' }).subscribe((data) => {
+        this.emailHTML = data;
+        this.router.navigate(['/email'], {
+          queryParams: { emailHTML: this.emailHTML },
+        });
+      });
+  }
+
+  //DIVIDINDO HTML EM 3 PARTES
   divideHTML(html: string) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -96,61 +107,8 @@ export class EmailComponent {
     );
   }
 
-    //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
-    carregarEmail(url: string) {
-      this.http.get(url, { responseType: 'text' }).subscribe((data) => {
-        this.emailHTML = data;
-        this.router.navigate(['/email'], {
-          queryParams: { emailHTML: this.emailHTML },
-        });
-      });
-    }
-
-
-    saveState() {
-      const headerContainer = document.getElementById('header-container');
-      const contentContainer = document.getElementById('content-container');
-      const footerContainer = document.getElementById('footer-container');
-    
-      if (headerContainer && contentContainer && footerContainer) {
-        const currentState = {
-          header: headerContainer.innerHTML,
-          content: contentContainer.innerHTML,
-          footer: footerContainer.innerHTML,
-        };
-    
-        this.undoStack.push(currentState);
-      }
-    }
-    
-
-    desfazer() {
-      if (this.undoStack.length > 0) {
-        const prevState = this.undoStack.pop();
-    
-        if (prevState) {
-          const headerContainer = document.getElementById('header-container');
-          const contentContainer = document.getElementById('content-container');
-          const footerContainer = document.getElementById('footer-container');
-    
-          if (headerContainer && contentContainer && footerContainer) {
-            headerContainer.innerHTML = prevState.header;
-            contentContainer.innerHTML = prevState.content;
-            footerContainer.innerHTML = prevState.footer;
-    
-            this.rawEmailHTML = headerContainer.innerHTML + contentContainer.innerHTML + footerContainer.innerHTML;
-            this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-          }
-        }
-      }
-    }
-    
-
-
-
   //A função makeEditable armazena a posição do cursor atual na variável 
   //currentRange sempre que o usuário clica dentro da área editável
-
   makeEditable(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (target && target.nodeType === 1) {
@@ -165,12 +123,41 @@ export class EmailComponent {
     // Limpe a última imagem carregada ao tornar o conteúdo editável novamente
     this.lastUploadedImg = null;
   }
-  
+
+  // Função chamada quando o usuário inicia o arraste de um card
+  onDragStart(event: DragEvent, opcao: any) {
+    this.saveState(); // Salvar o estado antes de fazer a alteração
+
+    event.dataTransfer?.setData('text/html', opcao.html);
+  }
+
+  // Função chamada quando o usuário solta um card no conteúdo editável
+  onDrop(event: DragEvent) {
+    this.saveState(); // Salvar o estado antes de fazer a alteração
+
+    event.preventDefault();
+    const htmlContent = event.dataTransfer?.getData('text/html');
+    if (htmlContent) {
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        const fragment = range.createContextualFragment(htmlContent);
+        range.insertNode(fragment);
+      }
+    }
+  }
+
+  // Função para permitir soltar elementos arrastados no conteúdo editável
+  onDragOver(event: DragEvent) {
+    this.saveState(); // Salvar o estado antes de fazer a alteração
+
+    event.preventDefault();
+  }
+  //---------------- FIM DO FUNCIONAMENTO DO HTML ----------------
+
 
   //---------------- CARREGAR HERADES ----------------
-  /**
-   * Função para carregar as opções de headers
-   */
   carregarOpcoesHeaders() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = true; //MOSTRAR
@@ -220,8 +207,6 @@ export class EmailComponent {
       });
     });
   }
-
- 
   //---------------- FIM CARREGAR HERADES ----------------
 
 
@@ -257,6 +242,7 @@ export class EmailComponent {
     });
   }
   //---------------- FIM CARREGAR FOOTERS ----------------
+
 
   //---------------- INICIO DAS PROPRIEDADES ----------------
   carregarOpcoesPropriedades() {
@@ -311,9 +297,8 @@ export class EmailComponent {
         break;
     }
   }
-  
-
   //---------------- FIM DAS PROPRIEDADES ----------------
+
 
   //---------------- CARREGAR TEXTOS ----------------
   carregarOpcoesTipografias() {
@@ -385,35 +370,35 @@ export class EmailComponent {
     this.opcoesLinks = [];
     const links = [
       {
-        nome: 'Link Sublinhado Roxo 16px',
+        nome: 'Sublinhado Roxo 16px',
         path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize16px.html',
       },
       {
-        nome: 'Link Sublinhado Roxo 12px',
+        nome: 'Sublinhado Roxo 12px',
         path: 'assets/componentes/tipografia/LinkSublinhado_Roxo_FonteSize12px.html',
       },
       {
-        nome: 'Link Sublinhado Branco 16px',
+        nome: 'Sublinhado Branco 16px',
         path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize16px.html',
       },
       {
-        nome: 'Link Sublinhado Branco 12px',
+        nome: 'Sublinhado Branco 12px',
         path: 'assets/componentes/tipografia/LinkSublinhado_Branco_FonteSize12px.html',
       },
       {
-        nome: 'Link S/ Sublinhado Roxo 16px',
+        nome: 'S/ Sublinhado Roxo 16px',
         path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize16px.html',
       },
       {
-        nome: 'Link S/ Sublinhado Roxo 12px',
+        nome: 'S/ Sublinhado Roxo 12px',
         path: 'assets/componentes/tipografia/LinkSemSublinhado_Roxo_FonteSize12px.html',
       },
       {
-        nome: 'Link S/ Sublinhado Branco 16px',
+        nome: 'S/ Sublinhado Branco 16px',
         path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize16px.html',
       },
       {
-        nome: 'Link S/ Sublinhado Branco 12px',
+        nome: 'S/ Sublinhado Branco 12px',
         path: 'assets/componentes/tipografia/LinkSemSublinhado_Branco_FonteSize12px.html',
       },
     ];
@@ -444,19 +429,17 @@ export class EmailComponent {
   }
 
  // Função para atualizar o HTML após as mudanças
- // Função para atualizar o HTML após as mudanças
- atualizarHTML() {
-  const emailContainer = document.getElementById('email-container');
-  if (emailContainer) {
-    const combinedHTML = emailContainer.innerHTML;
-    // Atualiza o conteúdo HTML bruto e seguro
-    this.headerHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
-    this.contentHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
-    this.footerHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
+  atualizarHTML() {
+    const emailContainer = document.getElementById('email-container');
+    if (emailContainer) {
+      const combinedHTML = emailContainer.innerHTML;
+      // Atualiza o conteúdo HTML bruto e seguro
+      this.headerHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
+      this.contentHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
+      this.footerHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
+    }
   }
-}
   
-
   aplicaEstiloSelecionado(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     if (!selectedValue) return; // Sai se nenhum valor estiver selecionado
@@ -606,6 +589,53 @@ export class EmailComponent {
       this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
     }
   }
+
+  alinhamentoSelecionado(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    if (!selectedValue) return;
+  
+    const editableContainer = document.getElementById('email-container');
+    if (!editableContainer) return;
+  
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+  
+    const range = selection.getRangeAt(0);
+  
+    // Remove qualquer div existente com o atributo de estilo
+    const existingDiv = editableContainer.querySelector('div[style]');
+    if (existingDiv) {
+      existingDiv.outerHTML = existingDiv.innerHTML;
+    }
+  
+    // Cria um elemento <div> para envolver o conteúdo selecionado
+    const div = document.createElement('div');
+  
+    // Define o estilo de acordo com o valor selecionado
+    switch (selectedValue) {
+      case 'left':
+        div.style.textAlign = 'left';
+        break;
+      case 'center':
+        div.style.textAlign = 'center';
+        break;
+      case 'right':
+        div.style.textAlign = 'right';
+        break;
+      default:
+        break;
+    }
+  
+    this.saveState(); // Salvar o estado antes de fazer a alteração
+  
+    // Move o conteúdo selecionado para dentro do <div> com o estilo de alinhamento
+    div.appendChild(range.extractContents());
+    range.insertNode(div);
+  
+    // Atualiza o HTML editável
+    this.rawEmailHTML = editableContainer.innerHTML;
+    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
   //---------------- FIM DOS BOTOES  ----------------
 
 
@@ -624,11 +654,11 @@ export class EmailComponent {
     this.opcoesCards = [];
     const tamanhos = [
       {
-        nome: 'Card de Conteudo Branco',
+        nome: 'Conteudo Branco',
         path: 'assets/componentes/cards/card_conteudo.html',
       },
       {
-        nome: 'Card de Conteudo Cinza',
+        nome: 'Conteudo Cinza',
         path: 'assets/componentes/cards/card_conteudo_alternativo.html',
       },
       
@@ -662,19 +692,19 @@ export class EmailComponent {
     const descricoes = [
       {
         nome: 'Plano 1',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao1.html',
+        path: 'assets/componentes/plano/vitrine_plano_opcao1.html',
       },
       {
         nome: 'Plano 2',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao2.html',
+        path: 'assets/componentes/plano/vitrine_plano_opcao2.html',
       },
       {
         nome: 'Plano 3',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao3.html',
+        path: 'assets/componentes/plano/vitrine_plano_opcao3.html',
       },
       {
         nome: 'Plano 4',
-        path: 'assets/componentes/vitrine/vitrine_plano_opcao4.html',
+        path: 'assets/componentes/plano/vitrine_plano_opcao4.html',
       },
     ];
 
@@ -748,6 +778,7 @@ export class EmailComponent {
   }
 
   onFileSelected(event: any) {
+    this.saveState(); // Salvar o estado antes de deletar
     const file: File = event.target.files[0];
     if (file) {
       this.uploadFile(file);
@@ -760,7 +791,7 @@ export class EmailComponent {
       const img = document.createElement('img');
       img.src = e.target.result;
       img.style.height = 'auto';
-  
+
       // Define a largura com base no tamanho selecionado
       switch (this.selectedImageSize) {
         case 'P':
@@ -773,33 +804,32 @@ export class EmailComponent {
           img.style.width = '100%';
           break;
       }
-  
+
       img.draggable = true;
       img.ondragstart = (ev: DragEvent) => {
         ev.dataTransfer?.setData('text/plain', img.src);
       };
-  
+
       // Seleciona o container onde a imagem será inserida
       let container: HTMLElement | null = null;
       if (this.mostrarHeader) {
         container = this.elRef.nativeElement.querySelector('#header-container');
-      } else if (this.mostrarFooter) {
-        container = this.elRef.nativeElement.querySelector('#footer-container');
+      } else {
+        container = this.elRef.nativeElement.querySelector('#content-container');
       }
-  
+
       if (container) {
         // Insere a imagem no container selecionado
         container.appendChild(img);
-  
+
         // Salva o conteúdo HTML atualizado
-        this.rawEmailHTML = `${this.headerHTML}${this.contentHTML}${this.footerHTML}`;
+        this.rawEmailHTML = `${this.elRef.nativeElement.querySelector('#header-container').innerHTML}${this.elRef.nativeElement.querySelector('#content-container').innerHTML}${this.elRef.nativeElement.querySelector('#footer-container').innerHTML}`;
         this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
       }
     };
-  
+
     reader.readAsDataURL(file);
   }
-  
   //---------------- FIM ANEXAR IMAGEM FIM ----------------
 
 
@@ -861,8 +891,6 @@ export class EmailComponent {
       console.error('Erro ao processar imagens:', error);
     });
   }
-  
-  
 
   removeContentEditable(html: string): string {
     // Cria um elemento DOM temporário para manipulação
@@ -876,6 +904,27 @@ export class EmailComponent {
     });
 
     return tempDiv.innerHTML;
+  }
+
+  saveChanges() {
+    const headerContainer = this.elRef.nativeElement.querySelector('#header-container');
+    const contentContainer = this.elRef.nativeElement.querySelector('#content-container');
+    const footerContainer = this.elRef.nativeElement.querySelector('#footer-container');
+  
+    if (headerContainer && contentContainer && footerContainer) {
+      const headerHTML = headerContainer.outerHTML;
+      const contentHTML = contentContainer.outerHTML;
+      const footerHTML = footerContainer.outerHTML;
+  
+      const combinedHTML = `${headerHTML}${contentHTML}${footerHTML}`;
+      const cleanedHTML = this.removeContentEditable(combinedHTML);
+  
+      this.rawEmailHTML = combinedHTML;
+      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(cleanedHTML);
+      console.log('HTML atualizado:', cleanedHTML);
+  
+      this.downloadHTML(cleanedHTML, 'Email.html');
+    }
   }
   //---------------- FIM SALVAR HTML ----------------
 
@@ -948,37 +997,50 @@ export class EmailComponent {
       }
     }
   }
-  
-  
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
-  //---------------- DESFAZER MUDANÇA NO HTML ----------------
-  saveChanges() {
-    const headerContainer = this.elRef.nativeElement.querySelector('#header-container');
-    const contentContainer = this.elRef.nativeElement.querySelector('#content-container');
-    const footerContainer = this.elRef.nativeElement.querySelector('#footer-container');
-  
-    if (headerContainer && contentContainer && footerContainer) {
-      const headerHTML = headerContainer.outerHTML;
-      const contentHTML = contentContainer.outerHTML;
-      const footerHTML = footerContainer.outerHTML;
-  
-      const combinedHTML = `${headerHTML}${contentHTML}${footerHTML}`;
-      const cleanedHTML = this.removeContentEditable(combinedHTML);
-  
-      this.rawEmailHTML = combinedHTML;
-      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(cleanedHTML);
-      console.log('HTML atualizado:', cleanedHTML);
-  
-      this.downloadHTML(cleanedHTML, 'Email.html');
-    }
-  }
-  
-  
 
+  //---------------- DESFAZER MUDANÇA NO HTML ----------------
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Delete' || event.key === 'Backspace') {
       this.saveState(); // Salvar o estado antes de deletar
+    }
+  }
+
+  saveState() {
+    const headerContainer = document.getElementById('header-container');
+    const contentContainer = document.getElementById('content-container');
+    const footerContainer = document.getElementById('footer-container');
+  
+    if (headerContainer && contentContainer && footerContainer) {
+      const currentState = {
+        header: headerContainer.innerHTML,
+        content: contentContainer.innerHTML,
+        footer: footerContainer.innerHTML,
+      };
+  
+      this.undoStack.push(currentState);
+    }
+  }
+
+  desfazer() {
+    if (this.undoStack.length > 0) {
+      const prevState = this.undoStack.pop();
+  
+      if (prevState) {
+        const headerContainer = document.getElementById('header-container');
+        const contentContainer = document.getElementById('content-container');
+        const footerContainer = document.getElementById('footer-container');
+  
+        if (headerContainer && contentContainer && footerContainer) {
+          headerContainer.innerHTML = prevState.header;
+          contentContainer.innerHTML = prevState.content;
+          footerContainer.innerHTML = prevState.footer;
+  
+          this.rawEmailHTML = headerContainer.innerHTML + contentContainer.innerHTML + footerContainer.innerHTML;
+          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+        }
+      }
     }
   }
   //---------------- DESFAZER MUDANÇA NO HTML ----------------

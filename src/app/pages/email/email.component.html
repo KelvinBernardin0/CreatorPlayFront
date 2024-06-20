@@ -116,17 +116,41 @@
     <div class="col-md-6 emailfundo" id="email-container" [style.backgroundColor]="selectedBackgroundColor">
       <div class="centered-content">
         <!-- Header Section -->
-        <div id="header-container" [innerHTML]="headerHTML" contenteditable="true" [ngStyle]="{ 'max-width.px': 600 }" (click)="makeEditable($event)" (keydown)="onKeyDown($event)">
+        <div
+          id="header-container"
+          [innerHTML]="headerHTML"
+          contenteditable="true"
+          [ngStyle]="{ 'max-width.px': 600 }"
+          (click)="makeEditable($event)"
+          (keydown)="onKeyDown($event)"
+
+        >
           <!-- Conteúdo do header será adicionado aqui -->
         </div>
     
         <!-- Content Section -->
-        <div id="content-container" [innerHTML]="contentHTML" contenteditable="true" [ngStyle]="{ 'max-width.px': 600 }" (click)="makeEditable($event)" (keydown)="onKeyDown($event)">
+        <div
+          id="content-container"
+          [innerHTML]="contentHTML"
+          contenteditable="true"
+          [ngStyle]="{ 'max-width.px': 600 }"
+          (click)="makeEditable($event)"
+          (keydown)="onKeyDown($event)"
+
+        >
           <!-- Conteúdo principal será adicionado aqui -->
         </div>
     
         <!-- Footer Section -->
-        <div id="footer-container" [innerHTML]="footerHTML" contenteditable="true" [ngStyle]="{ 'max-width.px': 600 }" (click)="makeEditable($event)" (keydown)="onKeyDown($event)">
+        <div
+          id="footer-container"
+          [innerHTML]="footerHTML"
+          contenteditable="true"
+          [ngStyle]="{ 'max-width.px': 600 }"
+          (click)="makeEditable($event)"
+          (keydown)="onKeyDown($event)"
+
+        >
           <!-- Conteúdo do footer será adicionado aqui -->
         </div>
       </div>
@@ -156,7 +180,6 @@
             </select>
           </div>
         </div>
-        
         <!-- HEADER -->
 
         <!-- FOOTER -->
@@ -238,91 +261,91 @@
 
         <!-- TIPOGRAFIAS -->
         <div *ngIf="mostrarTipografia">
-          <h5 style="margin-bottom: 50px">Tipografias</h5>
-          <div class="form-group">
-            <label for="esquemaCores">Titulos: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'content')"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesTitulos"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
+          <div class="btn-options-container">
+              <h5 style="margin-bottom: 20px">Tipografias</h5>
+              <label for="esquemaCores">Arraste a opção para onde voce quer que fique! </label>
 
-          <div class="form-group">
-            <label for="esquemaCores">Descrições: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'content')"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesDescricoes"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
+              <label class="titulosComponentes">Titulos: </label>
+              <div class="form-group">
+                <div class="card-container">
+                  <!-- Lista de cards que podem ser arrastados -->
+                  <div
+                    class="card-list"
+                    *ngFor="let opcao of opcoesTitulos"
+                    draggable="true"
+                    (dragstart)="onDragStart($event, opcao)"
+                  >
+                    {{ opcao.nome }}
+                  </div>
+                </div>
+              </div>
+              
+              <label class="titulosComponentes">Descrições: </label>
+              <div class="form-group">
+                <div class="card-container">
+                  <!-- Lista de cards que podem ser arrastados -->
+                  <div
+                    class="card-list"
+                    *ngFor="let opcoes of opcoesDescricoes"
+                    draggable="true"
+                    (dragstart)="onDragStart($event, opcoes)"
+                  >
+                    {{ opcoes.nome }}
+                  </div>
+                </div>
+              </div>
 
-          <div class="form-group">
-            <label for="esquemaCores">Links: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'content')"
-            >
-              <option disabled selected>Tamanhos e Cores</option>
-              <option
-                *ngFor="let opcoes of opcoesLinks"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
+              
+              <label class="titulosComponentes">Links: </label>
 
-          <div class="form-group">
-            <label for="esquemaCores">Cor: </label>
-            <select class="form-select" aria-label="Default select example" #corSelect (change)="AplicaCor(corSelect.value)">
-              <option disabled selected>Cor do Texto</option>
-              <option value="#49066B" style="background-color: #49066B; color: #FFFFFF;">Roxo</option>
-              <option value="#660099" style="background-color: #660099; color: #FFFFFF;">Roxo Claro</option>
-              <option value="#000000" style="background-color: #000000; color: #FFFFFF;">Preto</option>
-              <option value="#666666" style="background-color: #666666; color: #FFFFFF;">Cinza</option>
-              <option value="#FFFFFF" style="background-color: #FFFFFF; color: #000000;">Branco</option>
-            </select>
-            <!-- <button class="btn btn-secondary btn-smaller" (click)="AplicaCor(corSelect.value)">Aplicar</button> -->
-          </div>
+              <div class="form-group">
+                <div class="card-container">
+                  <!-- Lista de cards que podem ser arrastados -->
+                  <div
+                    class="card-list"
+                    *ngFor="let opcoes of opcoesLinks"
+                    draggable="true"
+                    (dragstart)="onDragStart($event, opcoes)"
+                  >
+                    {{ opcoes.nome }}
+                  </div>
+                </div>
+              </div>
 
-          <div class="form-group">
-            <label>Estilo:</label>
-            <select class="form-select" (change)="aplicaEstiloSelecionado($event)">
-              <option disabled selected >Selecione</option>
-              <option value="bold" style="font-weight: bold;">Negrito</option>
-              <option value="italic" style="font-style: italic;">Itálico</option>
-              <option value="underline" style="text-decoration: underline;">Sublinhado</option>            </select>
-          </div>
+              <div class="form-group">
+                <label for="esquemaCores">Cor: </label>
+                <select class="form-select" aria-label="Default select example" #corSelect (change)="AplicaCor(corSelect.value)">
+                  <option disabled selected>Cor do Texto</option>
+                  <option value="#49066B" style="background-color: #49066B; color: #FFFFFF;">Roxo</option>
+                  <option value="#660099" style="background-color: #660099; color: #FFFFFF;">Roxo Claro</option>
+                  <option value="#000000" style="background-color: #000000; color: #FFFFFF;">Preto</option>
+                  <option value="#666666" style="background-color: #666666; color: #FFFFFF;">Cinza</option>
+                  <option value="#FFFFFF" style="background-color: #FFFFFF; color: #000000;">Branco</option>
+                </select>
+                <!-- <button class="btn btn-secondary btn-smaller" (click)="AplicaCor(corSelect.value)">Aplicar</button> -->
+              </div>
+
+              <div class="form-group">
+                <label>Estilo:</label>
+                <select class="form-select" (change)="aplicaEstiloSelecionado($event)">
+                  <option disabled selected >Selecione</option>
+                  <option value="bold" style="font-weight: bold;">Negrito</option>
+                  <option value="italic" style="font-style: italic;">Itálico</option>
+                  <option value="underline" style="text-decoration: underline;">Sublinhado</option>            </select>
+              </div>
+              
+              <!-- <label>Inserir Link:
+                <button  class="btn btn-secondary btn-smaller btn-link" (click)="inserirLink()">Clique aqui </button>
+              </label> -->
           
-          <!-- <label>Inserir Link:
-            <button  class="btn btn-secondary btn-smaller btn-link" (click)="inserirLink()">Clique aqui </button>
-          </label> -->
-
-          
+          </div>
         </div>
         <!-- TIPOGRAFIAS -->
 
         <!-- IMAGEM -->
         <div *ngIf="mostrarImagem">
-          <h5 style="margin-bottom: 50px">Propriedades das Imagens</h5>
+          <h5 style="margin-bottom: 50px">Adicionar Imagens</h5>
+          <p>Selecione o local aonde voce quer adicionar a imagem</p>
           <select class="form-select" style="margin-bottom: 30px"
           [(ngModel)]="selectedImageSize">
             <option value="P">Pequena (25%)</option>
@@ -342,6 +365,12 @@
               Escolher arquivo
             </label>
           </div>
+
+          <!-- <div class="form-group">
+            <label>Anexar Imagem:</label>
+            <input class="custom-file-upload" type="file" (change)="onFileSelected($event)" [disabled]="!termosDeUsoAceitos">
+          </div> -->
+          
         </div>
         <!-- IMAGEM -->
 
@@ -349,12 +378,13 @@
         <!-- BOTAO -->
         <div *ngIf="mostrarBotao">
           <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
-          <label for="esquemaCores">Escolha um botão: </label>
+          <label for="esquemaCores">Arraste o Botão para onde voce quer que fique! </label>
+
         
           <div class="form-group">
             <div class="btn-options-container">
-              <div class="btn-options">
-                <img *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } } , 'content')" class="btn-img">
+              <div class="btn-options ">
+                <img  class="btn-img" *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } } , 'content')">
               </div>
             </div>
           </div>
@@ -362,6 +392,22 @@
           <label>Inserir Link:
             <button  class="btn btn-secondary btn-smaller btn-link" (click)="inserirLink()">Clique aqui </button>
           </label>
+
+          <!-- Novos botões para alinhamento -->
+          <div class="form-group">
+            <label>Alinhamento:</label>
+            <select class="form-select" (change)="alinhamentoSelecionado($event)">
+              <option disabled selected>Selecione</option>
+              <option value="left">Esquerda</option>
+              <option value="center">Centro</option>
+              <option value="right">Direita</option>
+            </select>
+          </div>
+          
+          
+          
+          
+          
         </div>
         
         <!-- BOTAO -->
@@ -369,27 +415,24 @@
         <!-- CARDS -->
         <div *ngIf="mostrarCards">
           <h5 style="margin-bottom: 50px">Propriedades dos Cards</h5>
-          <div class="form-group">
-            <label for="esquemaCores">Cards: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'content')"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesCards"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
+          <label for="esquemaCores">Arraste o Card para onde voce quer que fique! </label>
 
+          <div class="form-group">
+            <!-- Lista de cards que podem ser arrastados -->
+            <div style="margin-right: 5px"
+              class="card-list"
+              *ngFor="let opcao of opcoesCards"
+              draggable="true"
+              (dragstart)="onDragStart($event, opcao)"
+            >
+              {{ opcao.nome }}
+            </div>
+          </div>
+        
           <div>
-            <h2 style="margin: 50px 0px 20px 0px">Propriedades das Imagens</h2>
-            <select class="form-select" style="margin-bottom: 30px"
-            [(ngModel)]="selectedImageSize">
+            <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagens</h2>
+            <p>Selecione o local aonde voce quer adicionar a imagem</p>            
+            <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>
               <option value="M">Média (50%)</option>
               <option value="G">Grande (100%)</option>
@@ -400,7 +443,7 @@
                 <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
                 Eu aceito os termos de uso
               </label>
-            
+        
               <!-- Botão personalizado para upload de arquivo -->
               <label class="custom-file-upload">
                 <input type="file" (change)="onFileSelected($event)" [disabled]="!termosDeUsoAceitos" />
@@ -408,16 +451,15 @@
               </label>
             </div>
           </div>
-
-          
         </div>
+        
         <!-- CARDS -->
 
         <!-- PLANOS -->
         <div *ngIf="mostrarPlanos">
           <h5 style="margin-bottom: 50px">Propriedades dos Planos</h5>
           
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="esquemaCores">Planos: </label>
             <select
               class="form-select"
@@ -432,10 +474,26 @@
                 {{ opcoes.nome }}
               </option>
             </select>
-          </div>
+          </div> -->
+
+          <label for="esquemaCores">Arraste o Plano para onde voce quer que fique! </label>
+          <div class="form-group">
+                <div class="card-container">
+                  <!-- Lista de cards que podem ser arrastados -->
+                  <div
+                    class="card-list"
+                    *ngFor="let opcao of opcoesVitrinePlanos"
+                    draggable="true"
+                    (dragstart)="onDragStart($event, opcao)"
+                  >
+                    {{ opcao.nome }}
+                  </div>
+                </div>
+              </div>
 
           <div>
-            <h2 style="margin: 50px 0px 20px 0px">Propriedades das Imagens</h2>
+            <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagens</h2>
+            <p>Selecione o local aonde voce quer adicionar a imagem</p>            
             <select class="form-select" style="margin-bottom: 30px"
             [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>
@@ -463,7 +521,7 @@
         <!-- VITRINE -->
         <div *ngIf="mostrarVitrine">
           <h5 style="margin-bottom: 50px">Propriedades das Vitrines</h5>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="esquemaCores">Vitrine: </label>
             <select
               class="form-select"
@@ -478,10 +536,26 @@
                 {{ opcoes.nome }}
               </option>
             </select>
-          </div>
+          </div> -->
+
+          <label for="esquemaCores">Arraste a Vitrine para onde voce quer que fique! </label>
+          <div class="form-group">
+                <div class="card-container">
+                  <!-- Lista de cards que podem ser arrastados -->
+                  <div
+                    class="card-list"
+                    *ngFor="let opcoes of opcoesVitrineEquipamento"
+                    draggable="true"
+                    (dragstart)="onDragStart($event, opcoes)"
+                  >
+                    {{ opcoes.nome }}
+                  </div>
+                </div>
+              </div>
 
           <div>
-            <h2 style="margin: 50px 0px 20px 0px">Propriedades das Imagens</h2>
+            <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagens</h2>
+            <p>Selecione o local aonde voce quer adicionar a imagem</p>
             <select class="form-select" style="margin-bottom: 30px"
             [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>

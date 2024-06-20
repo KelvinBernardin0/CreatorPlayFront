@@ -2,6 +2,7 @@
 .structure-blocks {
   padding: 20px 10px 0px 10px;
   border-radius: 10px;
+  
 }
 
 .square-card {
@@ -88,8 +89,8 @@
 
 /* styles.css ou email.component.css */
 #email-container {
-  max-width: 600px;
-  margin: 0 auto; /* Centralizar o conteúdo */
+  max-width: 100%;
+  margin: 0 auto; 
 }
 
 
@@ -209,19 +210,27 @@ option
 }
 
 .btn-img {
-  cursor: pointer;
+  border-radius: 25px; /* Borda mais arredondada */
+  cursor: move; /* Cursor de arraste */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra sutil */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+  background: #f0f0f0;
+}
+
+
+.btn-img:hover {
+  background-color: #f9f9f9; /* Cor de fundo ao passar o mouse */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada ao passar o mouse */
+  transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
 }
 
 .btn-options-container {
-  max-height: 70vh; /* Define a altura máxima para o contêiner */
+  max-height: 100vh; /* Define a altura máxima para o contêiner */
   overflow-y: auto; /* Adiciona a barra de rolagem vertical */
   padding: 10px; /* Adiciona um espaçamento interno (opcional) */
-  background: #ebebeb;
+  background: #f6f6f6;
 }
 
-.btn-img:hover {
-  border-color: #007bff;
-}
 
 .btn-link{
   background: #5e008d;
@@ -229,6 +238,36 @@ option
   border-radius: 5px;
   text-decoration: none;
   margin: 15px;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os cards quebrem para baixo quando não couberem mais na largura */
+  gap: 10px; /* Espaço entre os cards */
+}
+
+.card-list {
+  max-width: 200px; /* Largura máxima dos cards */
+  padding: 10px 10px; /* Espaçamento interno ajustado */
+  border: 1.5px solid #5e008d; /* Borda sólida */
+  border-radius: 10px; /* Borda mais arredondada */
+  background-color: #ffffff; /* Cor de fundo padrão */
+  cursor: move; /* Cursor de arraste */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra sutil */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+}
+
+.card-list:hover {
+  background-color: #f9f9f9; /* Cor de fundo ao passar o mouse */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada ao passar o mouse */
+  transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
+}
+
+
+.titulosComponentes{
+  font-size: 20px;
+  margin-top: 20px;
+
 }
 
 /* ------------------- 3 PARTE ------------------- */
