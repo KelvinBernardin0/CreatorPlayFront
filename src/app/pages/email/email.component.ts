@@ -53,6 +53,8 @@ export class EmailComponent {
 
   selectedBackgroundColor = ''; // Cor de fundo selecionada
 
+  selectedImageElement: HTMLElement | null = null;
+
   
   @ViewChild('contentContainer', { static: false }) contentContainerRef!: ElementRef;
   @ViewChild('headerContainer', { static: false }) headerContainerRef!: ElementRef;
@@ -765,71 +767,110 @@ export class EmailComponent {
     this.mostrarVitrine = false;
   }
 
-  handleDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
 
-  handleDrop(event: DragEvent) {
-    event.preventDefault();
-    const files = event.dataTransfer?.files;
-    if (files && files.length > 0) {
-      this.uploadFile(files[0]);
-    }
-  }
-
-  onFileSelected(event: any) {
-    this.saveState(); // Salvar o estado antes de deletar
+  uploadFile(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.uploadFile(file);
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.maxWidth = '100%';
+        img.draggable = true;
+        img.ondragstart = (ev: DragEvent) => {
+          ev.dataTransfer?.setData('text/plain', img.src);
+        };
+
+        // Define o tamanho da imagem com base na seleção do usuário
+        switch (this.selectedImageSize) {
+          case 'P':
+            img.style.width = '25%';
+            break;
+          case 'M':
+            img.style.width = '50%';
+            break;
+          case 'G':
+            img.style.width = '100%';
+            break;
+          default:
+            img.style.width = '50%'; // Caso padrão: médio
+            break;
+        }
+
+        const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
+        if (editableContainer) {
+          editableContainer.innerHTML = ''; // Limpa o conteúdo existente antes de inserir a imagem
+          editableContainer.appendChild(img); // Insere a nova imagem
+          this.rawEmailHTML = editableContainer.innerHTML; // Atualiza o HTML editável
+          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML); // Atualiza o HTML seguro
+        }
+      };
+
+      reader.readAsDataURL(file);
     }
   }
 
-  uploadFile(file: File) {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.style.height = 'auto';
-
-      // Define a largura com base no tamanho selecionado
-      switch (this.selectedImageSize) {
-        case 'P':
-          img.style.width = '25%';
-          break;
-        case 'M':
-          img.style.width = '50%';
-          break;
-        case 'G':
-          img.style.width = '100%';
-          break;
-      }
-
-      img.draggable = true;
-      img.ondragstart = (ev: DragEvent) => {
-        ev.dataTransfer?.setData('text/plain', img.src);
-      };
-
-      // Seleciona o container onde a imagem será inserida
-      let container: HTMLElement | null = null;
-      if (this.mostrarHeader) {
-        container = this.elRef.nativeElement.querySelector('#header-container');
-      } else {
-        container = this.elRef.nativeElement.querySelector('#content-container');
-      }
-
-      if (container) {
-        // Insere a imagem no container selecionado
-        container.appendChild(img);
-
-        // Salva o conteúdo HTML atualizado
-        this.rawEmailHTML = `${this.elRef.nativeElement.querySelector('#header-container').innerHTML}${this.elRef.nativeElement.querySelector('#content-container').innerHTML}${this.elRef.nativeElement.querySelector('#footer-container').innerHTML}`;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-      }
-    };
-
-    reader.readAsDataURL(file);
+  uploadFileHeader(event: any) {
+    this.uploadFileToContainer('[data-replaceable-image-header]', event);
   }
+  
+  uploadFileVitrine1(event: any) {
+    this.uploadFileToContainer('[data-replaceable-image-vitrine1]', event);
+  }
+  
+  uploadFileVitrine2(event: any) {
+    this.uploadFileToContainer('[data-replaceable-image-vitrine2]', event);
+  }
+  
+  uploadFileCard(event: any) {
+    this.uploadFileToContainer('[data-replaceable-image-card]', event);
+  }
+  
+  private uploadFileToContainer(selector: string, event: any) {
+    this.saveState(); // Salvar o estado antes de fazer a alteração
+
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.height = 'auto';
+  
+        img.draggable = true;
+        img.ondragstart = (ev: DragEvent) => {
+          ev.dataTransfer?.setData('text/plain', img.src);
+        };
+  
+        // Seleciona o container específico onde a imagem será inserida
+        const container = this.elRef.nativeElement.querySelector(selector);
+  
+        if (container) {
+          container.src = img.src; // Atualiza o atributo src do elemento img no container específico
+          container.style.width = img.style.width; // Atualiza o estilo width do elemento img no container específico
+          container.style.height = img.style.height; // Atualiza o estilo height do elemento img no container específico
+          container.style.display = img.style.display; // Atualiza o estilo display do elemento img no container específico
+          this.updateEmailHTML(); // Atualiza o HTML editável
+        }
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+  
+
+  updateEmailHTML() {
+    const headerHTML = this.elRef.nativeElement.querySelector('#header-container')?.innerHTML || '';
+    const contentHTML = this.elRef.nativeElement.querySelector('#content-container')?.innerHTML || '';
+    const footerHTML = this.elRef.nativeElement.querySelector('#footer-container')?.innerHTML || '';
+  
+    this.rawEmailHTML = `${headerHTML}${contentHTML}${footerHTML}`;
+    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+  }
+  
+  
+
+ 
   //---------------- FIM ANEXAR IMAGEM FIM ----------------
 
 

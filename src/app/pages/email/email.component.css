@@ -7,13 +7,22 @@
 
 .square-card {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #5e008d; /* Borda sólida */
   border-radius: 10px;
   text-align: center;
   width: 100%;
   font-size: 13px;
   margin-bottom: 20px;
-}
+  background-color: #ffffff; /* Cor de fundo padrão */
+  cursor: move; /* Cursor de arraste */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+
+} 
+/* .square-card:hover {
+  background-color: #f9f9f9; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); 
+} */
 
 .card-deck {
   margin: 30px 0px 50px 0px;
@@ -183,6 +192,7 @@ option
   font-size: 14px;
   color: #333;
   transition: background-color 0.3s, color 0.3s;
+  margin: 5px;
 }
 
 .custom-file-upload:hover {
@@ -253,14 +263,14 @@ option
   border-radius: 10px; /* Borda mais arredondada */
   background-color: #ffffff; /* Cor de fundo padrão */
   cursor: move; /* Cursor de arraste */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra sutil */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra sutil */
   transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
 }
 
 .card-list:hover {
   background-color: #f9f9f9; /* Cor de fundo ao passar o mouse */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada ao passar o mouse */
-  transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Sombra mais pronunciada ao passar o mouse */
+  transform: translateY(-3px); /* Efeito de leve elevação ao passar o mouse */
 }
 
 
