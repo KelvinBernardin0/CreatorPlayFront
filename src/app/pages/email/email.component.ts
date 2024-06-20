@@ -16,8 +16,13 @@ export class EmailComponent {
   emailHTML: SafeHtml = '';
   rawEmailHTML: string = '';
 
-  undoStack: string[] = []; // Pilha de históricos para refazer as alterações
+  headerHTML: SafeHtml = '';
+  contentHTML: SafeHtml = '';
+  footerHTML: SafeHtml = '';
 
+  undoStack: { header: string, content: string, footer: string }[] = [];
+
+  
 
   mostrarPropriedades: boolean = true;
   mostrarHeader: boolean = false;
@@ -48,8 +53,12 @@ export class EmailComponent {
   lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
   termosDeUsoAceitos: boolean = false;
 
-  @ViewChild('editableContainer') editableContainerRef!: ElementRef;
+  selectedBackgroundColor = ''; // Cor de fundo selecionada
 
+  @ViewChild('contentContainer', { static: false }) contentContainerRef!: ElementRef;
+  @ViewChild('headerContainer', { static: false }) headerContainerRef!: ElementRef;
+  @ViewChild('footerContainer', { static: false }) footerContainerRef!: ElementRef;
+  @ViewChild('emailContainer') emailContainerRef!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -61,46 +70,83 @@ export class EmailComponent {
     this.route.queryParams.subscribe((params) => {
       if (params['emailHTML']) {
         this.rawEmailHTML = params['emailHTML'];
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-          this.rawEmailHTML
-        );
+        this.divideHTML(this.rawEmailHTML);
       }
 
       this.saveState(); // Salvar o estado antes de fazer a alteração
-
     });
   }
 
-  saveState() {
-    const editableContainer = document.getElementById('editable-container');
-    if (editableContainer) {
-      this.undoStack.push(editableContainer.innerHTML);
-    }
+  divideHTML(html: string) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    const headerElement = doc.querySelector('#header-container');
+    const contentElement = doc.querySelector('#content-container');
+    const footerElement = doc.querySelector('#footer-container');
+
+    this.headerHTML = this.sanitizer.bypassSecurityTrustHtml(
+      headerElement ? headerElement.innerHTML : ''
+    );
+    this.contentHTML = this.sanitizer.bypassSecurityTrustHtml(
+      contentElement ? contentElement.innerHTML : ''
+    );
+    this.footerHTML = this.sanitizer.bypassSecurityTrustHtml(
+      footerElement ? footerElement.innerHTML : ''
+    );
   }
 
-  desfazer() {
-    if (this.undoStack.length > 0) {
-      const editableContainer = document.getElementById('editable-container');
-      if (editableContainer) {
-        const lastState = this.undoStack.pop();
-        if (lastState) {
-          editableContainer.innerHTML = lastState;
-          this.rawEmailHTML = editableContainer.innerHTML;
-          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+    //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
+    carregarEmail(url: string) {
+      this.http.get(url, { responseType: 'text' }).subscribe((data) => {
+        this.emailHTML = data;
+        this.router.navigate(['/email'], {
+          queryParams: { emailHTML: this.emailHTML },
+        });
+      });
+    }
+
+
+    saveState() {
+      const headerContainer = document.getElementById('header-container');
+      const contentContainer = document.getElementById('content-container');
+      const footerContainer = document.getElementById('footer-container');
+    
+      if (headerContainer && contentContainer && footerContainer) {
+        const currentState = {
+          header: headerContainer.innerHTML,
+          content: contentContainer.innerHTML,
+          footer: footerContainer.innerHTML,
+        };
+    
+        this.undoStack.push(currentState);
+      }
+    }
+    
+
+    desfazer() {
+      if (this.undoStack.length > 0) {
+        const prevState = this.undoStack.pop();
+    
+        if (prevState) {
+          const headerContainer = document.getElementById('header-container');
+          const contentContainer = document.getElementById('content-container');
+          const footerContainer = document.getElementById('footer-container');
+    
+          if (headerContainer && contentContainer && footerContainer) {
+            headerContainer.innerHTML = prevState.header;
+            contentContainer.innerHTML = prevState.content;
+            footerContainer.innerHTML = prevState.footer;
+    
+            this.rawEmailHTML = headerContainer.innerHTML + contentContainer.innerHTML + footerContainer.innerHTML;
+            this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+          }
         }
       }
     }
-  }
+    
 
-  //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
-  carregarEmail(url: string) {
-    this.http.get(url, { responseType: 'text' }).subscribe((data) => {
-      this.emailHTML = data;
-      this.router.navigate(['/email'], {
-        queryParams: { emailHTML: this.emailHTML },
-      });
-    });
-  }
+
 
   //A função makeEditable armazena a posição do cursor atual na variável 
   //currentRange sempre que o usuário clica dentro da área editável
@@ -175,15 +221,7 @@ export class EmailComponent {
     });
   }
 
-  /**
-   * Função chamada quando uma opção é selecionada
-   * @param event - Evento de mudança no select
-   */
-  opcaoSelecionada(event: any) {
-    debugger;
-    const selectedPath = event.target.value;
-    this.carregarEmail(selectedPath);
-  }
+ 
   //---------------- FIM CARREGAR HERADES ----------------
 
 
@@ -256,31 +294,25 @@ export class EmailComponent {
   }
   
   mudarCorFundo(event: Event) {
- 
-
     const selectedValue = (event.target as HTMLSelectElement).value;
-    const editableContainer = document.getElementById('editable-container');
 
-
-    if (editableContainer) {
-      switch (selectedValue) {
-        case 'branco':
-          editableContainer.style.backgroundColor = '#FFFFFF';
-          break;
-        case 'cinza':
-          editableContainer.style.backgroundColor = '#666666';
-          break;
-        case 'roxo':
-          editableContainer.style.backgroundColor = '#49066B'; 
-          break;
-        default:
-          editableContainer.style.backgroundColor = 'transparent';
-          break;
-      }
-
-
+    switch (selectedValue) {
+      case 'branco':
+        this.selectedBackgroundColor = '#FFFFFF';
+        break;
+      case 'cinza':
+        this.selectedBackgroundColor = '#666666';
+        break;
+      case 'roxo':
+        this.selectedBackgroundColor = '#49066B';
+        break;
+      default:
+        this.selectedBackgroundColor = 'transparent';
+        break;
     }
   }
+  
+
   //---------------- FIM DAS PROPRIEDADES ----------------
 
   //---------------- CARREGAR TEXTOS ----------------
@@ -411,14 +443,19 @@ export class EmailComponent {
     }
   }
 
-  // Atualiza o HTML após as alterações
-  atualizarHTML() {
-    const editableContainer = this.editableContainerRef.nativeElement;
-    this.rawEmailHTML = editableContainer.innerHTML;
-    
-    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-    
+ // Função para atualizar o HTML após as mudanças
+ // Função para atualizar o HTML após as mudanças
+ atualizarHTML() {
+  const emailContainer = document.getElementById('email-container');
+  if (emailContainer) {
+    const combinedHTML = emailContainer.innerHTML;
+    // Atualiza o conteúdo HTML bruto e seguro
+    this.headerHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
+    this.contentHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
+    this.footerHTML = this.sanitizer.bypassSecurityTrustHtml(combinedHTML);
   }
+}
+  
 
   aplicaEstiloSelecionado(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -723,9 +760,8 @@ export class EmailComponent {
       const img = document.createElement('img');
       img.src = e.target.result;
       img.style.height = 'auto';
-      // img.style.width = 'auto';
   
-      //Define a largura com base no tamanho selecionado
+      // Define a largura com base no tamanho selecionado
       switch (this.selectedImageSize) {
         case 'P':
           img.style.width = '25%';
@@ -743,95 +779,81 @@ export class EmailComponent {
         ev.dataTransfer?.setData('text/plain', img.src);
       };
   
-      const editableContainer = this.elRef.nativeElement.querySelector(
-        '#editable-container'
-      );
-      if (editableContainer) {
-        const selection = window.getSelection();
-        if (selection) {
-          if (this.currentRange) {
-            //Remove o conteúdo existente no intervalo
-            this.currentRange.deleteContents();
+      // Seleciona o container onde a imagem será inserida
+      let container: HTMLElement | null = null;
+      if (this.mostrarHeader) {
+        container = this.elRef.nativeElement.querySelector('#header-container');
+      } else if (this.mostrarFooter) {
+        container = this.elRef.nativeElement.querySelector('#footer-container');
+      }
   
-            this.saveState(); // Salvar o estado antes de fazer a alteração
-
-            //Insere a imagem no intervalo
-            this.currentRange.insertNode(img);
+      if (container) {
+        // Insere a imagem no container selecionado
+        container.appendChild(img);
   
-            // Move o cursor para o final do conteúdo recém-inserido
-            const range = document.createRange();
-            range.setStartAfter(img);
-            range.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(range);
-          } else {
-            // Acrescenta a imagem no final se nenhum intervalo for armazenado
-            editableContainer.appendChild(img);
-          }
-  
-          //Salva o conteúdo HTML atualizado
-          this.rawEmailHTML = editableContainer.innerHTML;
-          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-            this.rawEmailHTML
-          );
-        }
+        // Salva o conteúdo HTML atualizado
+        this.rawEmailHTML = `${this.headerHTML}${this.contentHTML}${this.footerHTML}`;
+        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
       }
     };
+  
     reader.readAsDataURL(file);
   }
+  
   //---------------- FIM ANEXAR IMAGEM FIM ----------------
 
 
   //---------------- SALVAR HTML ----------------
-
-
   downloadHTML(html: string, filename: string) {
-    // Regex para encontrar todas as tags <img> no HTML
     const imgRegex = /<img.*?src="(.*?)".*?>/g;
     const matches = html.matchAll(imgRegex);
-
-    // Array para armazenar as Promises de carregamento de base64 das imagens
+  
     const promises = [];
-
+  
+    // Função para carregar imagens e converter para base64
+    const loadImageToBase64 = (src: string) => {
+      return new Promise<string>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            resolve(reader.result as string); // Resolve com o conteúdo base64 da imagem
+          };
+          reader.onerror = reject;
+          xhr.responseType = 'blob'; // Definir o responseType antes de abrir o request
+          xhr.open('GET', src);
+          xhr.send();
+        };
+        xhr.onerror = reject;
+        xhr.open('GET', src); // Abertura do request
+        xhr.send(); // Envio do request
+      });
+    };
+  
     // Iterar sobre todas as correspondências de tags <img>
     for (const match of matches) {
       const imgSrc = match[1]; // Captura o atributo src da tag <img>
-
-      // Função para carregar imagem e converter para base64
-      const loadImageToBase64 = (src: string) => {
-        return new Promise<string>((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.onload = function() {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-              resolve(reader.result as string); // Resolve com o conteúdo base64 da imagem
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(xhr.response);
-          };
-          xhr.onerror = reject;
-          xhr.open('GET', src);
-          xhr.responseType = 'blob';
-          xhr.send();
-        });
-      };
-
-      // Adicionar promessa de carregamento de base64 ao array
       promises.push(loadImageToBase64(imgSrc).then((base64) => {
-        // Substituir src da imagem pelo conteúdo base64 no HTML
-        html = html.replace(imgSrc, base64.toString());
+        html = html.replace(imgSrc, base64.toString()); // Substituir src da imagem pelo conteúdo base64 no HTML
       }).catch((error) => {
         console.error('Erro ao carregar imagem:', error);
       }));
     }
-
-    // Após todas as promessas de carregamento de base64 serem resolvidas
+  
+    // Aguardar todas as promessas de carregamento de imagens serem resolvidas
     Promise.all(promises).then(() => {
-      // Agora podemos prosseguir com o download do HTML modificado
-      const blob = new Blob([html], { type: 'text/html' });
+      // Estilizar o HTML com a cor de fundo selecionada
+      const styledHTML = `<html><head><style>body { background-color: ${this.selectedBackgroundColor}; }</style></head><body>${html}</body></html>`;
+  
+      // Criar o Blob com o HTML estilizado
+      const blob = new Blob([styledHTML], { type: 'text/html' });
+  
+      // Criar um link temporário para o download
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = filename;
+  
+      // Adicionar o link ao documento e simular o clique para iniciar o download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -839,6 +861,8 @@ export class EmailComponent {
       console.error('Erro ao processar imagens:', error);
     });
   }
+  
+  
 
   removeContentEditable(html: string): string {
     // Cria um elemento DOM temporário para manipulação
@@ -857,12 +881,26 @@ export class EmailComponent {
 
 
   //---------------- APLICA MUDANÇA NO HTML ----------------
-  AplicaMudanca(event: any) {
+  AplicaMudanca(event: any, section: 'header' | 'content' | 'footer') {
     const selectedValue = event.target.value;
-    const editableContainer = document.getElementById('editable-container');
+    let editableContainer: HTMLElement | null = null;
+  
+    // Seleciona a seção apropriada com base no parâmetro `section`
+    switch (section) {
+      case 'header':
+        editableContainer = document.getElementById('header-container');
+        break;
+      case 'content':
+        editableContainer = document.getElementById('content-container');
+        break;
+      case 'footer':
+        editableContainer = document.getElementById('footer-container');
+        break;
+    }
+  
     if (editableContainer) {
       let selectedOption: { nome: string, html?: string, path?: string } | undefined;
-
+  
       // Verifica em qual array de opções está o valor selecionado
       selectedOption =
         this.opcoesPropriedades.find((opcoes) => opcoes.nome === selectedValue) ||
@@ -875,11 +913,12 @@ export class EmailComponent {
         this.opcoesVitrineEquipamento.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesVitrinePlanos.find((opcoes) => opcoes.nome === selectedValue) ||
         this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesPropriedadesEmpresas.find((opcoes) => opcoes.nome === selectedValue);
-
+        this.opcoesPropriedadesEmpresas.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesHeaders.find((opcoes) => opcoes.nome === selectedValue);
+  
       if (selectedOption) {
         const div = document.createElement('div');
-
+  
         if (selectedOption.html) {
           div.innerHTML = selectedOption.html;
         } else if (selectedOption.path) {
@@ -887,45 +926,55 @@ export class EmailComponent {
           img.src = selectedOption.path;
           div.appendChild(img);
         }
-
+  
         const frag = document.createDocumentFragment();
         let node;
         while ((node = div.firstChild)) {
           frag.appendChild(node);
         }
-
+  
         this.saveState(); // Salvar o estado antes de fazer a alteração
-
-
-        if (this.currentRange) {
-          this.currentRange.deleteContents();
-          this.currentRange.insertNode(frag);
-          this.currentRange = null; // Reset the stored range
+  
+        // Adiciona o conteúdo à seção apropriada
+        if (section === 'content') {
+          editableContainer.appendChild(frag);
+          this.rawEmailHTML = editableContainer.innerHTML;
+          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
         } else {
-          editableContainer.appendChild(frag); // Append to the end if no range is stored
+          // Para header e footer, substitui o conteúdo inteiro
+          editableContainer.innerHTML = '';
+          editableContainer.appendChild(frag);
         }
-
-        this.rawEmailHTML = editableContainer.innerHTML;
-        this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-      
-
-      
-      } 
+      }
     }
   }
+  
+  
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
   //---------------- DESFAZER MUDANÇA NO HTML ----------------
   saveChanges() {
-    const editableContainer = this.elRef.nativeElement.querySelector('#editable-container');
-    if (editableContainer) {
-      this.rawEmailHTML = editableContainer.innerHTML;
-      const cleanedHTML = this.removeContentEditable(this.rawEmailHTML);
+    const headerContainer = this.elRef.nativeElement.querySelector('#header-container');
+    const contentContainer = this.elRef.nativeElement.querySelector('#content-container');
+    const footerContainer = this.elRef.nativeElement.querySelector('#footer-container');
+  
+    if (headerContainer && contentContainer && footerContainer) {
+      const headerHTML = headerContainer.outerHTML;
+      const contentHTML = contentContainer.outerHTML;
+      const footerHTML = footerContainer.outerHTML;
+  
+      const combinedHTML = `${headerHTML}${contentHTML}${footerHTML}`;
+      const cleanedHTML = this.removeContentEditable(combinedHTML);
+  
+      this.rawEmailHTML = combinedHTML;
       this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(cleanedHTML);
       console.log('HTML atualizado:', cleanedHTML);
+  
       this.downloadHTML(cleanedHTML, 'Email.html');
     }
   }
+  
+  
 
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Delete' || event.key === 'Backspace') {

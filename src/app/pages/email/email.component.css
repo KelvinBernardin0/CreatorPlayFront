@@ -86,6 +86,13 @@
   transform: translate(-50%, -50%);
 } */
 
+/* styles.css ou email.component.css */
+#email-container {
+  max-width: 600px;
+  margin: 0 auto; /* Centralizar o conteúdo */
+}
+
+
 .emailfundo {
   background: #dddddd;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Adiciona sombra com 10px de deslocamento horizontal e vertical */

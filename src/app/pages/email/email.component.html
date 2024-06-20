@@ -14,13 +14,7 @@
             >
               Header
             </button>
-            <!-- <button
-              class="btn btn-light header"
-              type="button"
-              (click)="redirecionarParaEmailComImagem()"
-            >
-              Header
-            </button> -->
+
             <button
               class="btn btn-light footer"
               type="button"
@@ -119,18 +113,28 @@
     <!-- TEMPLATE -->
     
 
-    <div class="col-md-6 emailfundo">
+    <div class="col-md-6 emailfundo" id="email-container" [style.backgroundColor]="selectedBackgroundColor">
       <div class="centered-content">
-        <div
-          id="editable-container"
-          contenteditable="true"
-          [innerHTML]="emailHTML"
-          (click)="makeEditable($event)"
-          (keydown)="onKeyDown($event)"
-        ></div>
-        <!-- <button (click)="saveChanges()">Salvar Alterações</button> -->
+        <!-- Header Section -->
+        <div id="header-container" [innerHTML]="headerHTML" contenteditable="true" [ngStyle]="{ 'max-width.px': 600 }" (click)="makeEditable($event)" (keydown)="onKeyDown($event)">
+          <!-- Conteúdo do header será adicionado aqui -->
+        </div>
+    
+        <!-- Content Section -->
+        <div id="content-container" [innerHTML]="contentHTML" contenteditable="true" [ngStyle]="{ 'max-width.px': 600 }" (click)="makeEditable($event)" (keydown)="onKeyDown($event)">
+          <!-- Conteúdo principal será adicionado aqui -->
+        </div>
+    
+        <!-- Footer Section -->
+        <div id="footer-container" [innerHTML]="footerHTML" contenteditable="true" [ngStyle]="{ 'max-width.px': 600 }" (click)="makeEditable($event)" (keydown)="onKeyDown($event)">
+          <!-- Conteúdo do footer será adicionado aqui -->
+        </div>
       </div>
     </div>
+    
+    
+    
+    
     <!-- TEMPLATE -->
 
     <!-- PROPRIEDADES DO EMAIL -->
@@ -139,21 +143,20 @@
         <!-- HEADER -->
         <div *ngIf="mostrarHeader" class="propriedades">
           <h5 style="margin-bottom: 50px">Propriedades do Header</h5>
-
           <div class="form-group">
             <label for="Headers">Headers: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="opcaoSelecionada($event)"
-            >
+            <select class="form-select" aria-label="Default select example" (change)="AplicaMudanca($event, 'header')">
               <option disabled selected>Escolher</option>
-              <option *ngFor="let opcao of opcoesHeaders" [value]="opcao.path">
-                {{ opcao.nome }}
-              </option>
+              <option
+              *ngFor="let opcoes of opcoesHeaders"
+              [value]="opcoes.nome"
+            >
+              {{ opcoes.nome }}
+            </option>
             </select>
           </div>
         </div>
+        
         <!-- HEADER -->
 
         <!-- FOOTER -->
@@ -165,7 +168,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'footer')"
             >
               <option disabled selected>Escolher</option>
               <option
@@ -201,6 +204,7 @@
               <option value="roxo">Roxo</option>
             </select>
           </div>
+          
 
           <!-- <div class="form-group">
             <label for="tipoTemplate">Tipo de template</label>
@@ -240,7 +244,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'content')"
             >
               <option disabled selected>Tamanhos e Cores</option>
               <option
@@ -257,7 +261,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'content')"
             >
               <option disabled selected>Tamanhos e Cores</option>
               <option
@@ -274,7 +278,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'content')"
             >
               <option disabled selected>Tamanhos e Cores</option>
               <option
@@ -350,7 +354,7 @@
           <div class="form-group">
             <div class="btn-options-container">
               <div class="btn-options">
-                <img *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } })" class="btn-img">
+                <img *ngFor="let opcao of opcoesBotoes" [src]="opcao.path" [alt]="opcao.nome" (click)="AplicaMudanca({ target: { value: opcao.nome } } , 'content')" class="btn-img">
               </div>
             </div>
           </div>
@@ -370,7 +374,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'content')"
             >
               <option disabled selected>Escolher</option>
               <option
@@ -418,7 +422,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'content')"
             >
               <option disabled selected>Escolher</option>
               <option
@@ -464,7 +468,7 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
+              (change)="AplicaMudanca($event, 'content')"
             >
               <option disabled selected>Escolher</option>
               <option
