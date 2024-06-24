@@ -2,23 +2,28 @@
 .structure-blocks {
   padding: 20px 10px 0px 10px;
   border-radius: 10px;
-  
+
 }
 
 .square-card {
   padding: 10px;
-  border: 1px solid #5e008d; /* Borda sólida */
+  /* Borda sólida */
   border-radius: 10px;
   text-align: center;
   width: 100%;
   font-size: 13px;
   margin-bottom: 20px;
-  background-color: #ffffff; /* Cor de fundo padrão */
-  cursor: move; /* Cursor de arraste */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+  background-color: #ffffff;
+  /* Cor de fundo padrão */
+  
+  /* Cursor de arraste */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Sombra sutil */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  /* Transição suave */
 
-} 
+}
+
 /* .square-card:hover {
   background-color: #f9f9f9; 
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); 
@@ -27,21 +32,24 @@
 .card-deck {
   margin: 30px 0px 50px 0px;
   text-align: center;
-  width: 100%; /* Garante que a largura ocupe o espaço disponível */
+  width: 100%;
+  /* Garante que a largura ocupe o espaço disponível */
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente dentro do deck */
-  
+  justify-content: center;
+  /* Centraliza horizontalmente dentro do deck */
+
 }
 
 .avancar {
   display: flex;
   border-radius: 5px;
   font-size: 16px;
-  justify-content: center; /* Centraliza horizontalmente dentro do deck */
+  justify-content: center;
+  /* Centraliza horizontalmente dentro do deck */
   margin: 50px 0px 20px 0px;
 }
 
-.desfazer{
+.desfazer {
   font-size: 20px;
 
 }
@@ -75,11 +83,15 @@
 
 
 .img-icon {
-  width: 20px; /* Ajuste o tamanho conforme necessário */
-  height: 20px; /* Ajuste o tamanho conforme necessário */
+  width: 20px;
+  /* Ajuste o tamanho conforme necessário */
+  height: 20px;
+  /* Ajuste o tamanho conforme necessário */
   display: block;
-  margin: 0 auto 10px; /* Centraliza a imagem e adiciona margem inferior */
+  margin: 0 auto 10px;
+  /* Centraliza a imagem e adiciona margem inferior */
 }
+
 /* ------------------- 1 PARTE ------------------- */
 
 /* ------------------- 2 PARTE ------------------- */
@@ -99,20 +111,19 @@
 /* styles.css ou email.component.css */
 #email-container {
   max-width: 100%;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 
 .emailfundo {
   background: #dddddd;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Adiciona sombra com 10px de deslocamento horizontal e vertical */
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  /* Adiciona sombra com 10px de deslocamento horizontal e vertical */
   height: 100%;
 }
 
 
-option
-
-.edit-view-btns {
+option .edit-view-btns {
   margin-bottom: 20px;
   padding: 20px;
   text-align: center;
@@ -120,7 +131,7 @@ option
 
 .edit-view-btns button {
   margin-right: 10px;
-  
+
 }
 
 .editarvisualizar {
@@ -154,20 +165,32 @@ option
 }
 
 .form-group label {
-  flex: 1; /* Faz com que as labels ocupem todo o espaço disponível */
+  flex: 1;
+  /* Faz com que as labels ocupem todo o espaço disponível */
 }
 
 
 
-.form-group{
+.form-group {
   margin: 20px 0px 0px 0px;
 }
 
 .form-select {
   width: auto;
   border-radius: 10px;
-  display: inline-block; /* Para que o seletor tenha apenas a largura necessária */
-  width: 70%; /* Garante que o seletor ocupe todo o espaço disponível */
+  display: inline-block;
+  /* Para que o seletor tenha apenas a largura necessária */
+  width: 70%;
+  /* Garante que o seletor ocupe todo o espaço disponível */
+}
+
+.form-select-alinhamento {
+  width: auto;
+  border-radius: 5px;
+  display: inline-block;
+  /* Para que o seletor tenha apenas a largura necessária */
+  width: 30%;
+  /* Garante que o seletor ocupe todo o espaço disponível */
 }
 
 .image-upload-container {
@@ -220,64 +243,73 @@ option
 }
 
 .btn-img {
-  border-radius: 25px; /* Borda mais arredondada */
-  cursor: move; /* Cursor de arraste */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra sutil */
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
-  background: #f0f0f0;
+  cursor: pointer;
 }
 
-
-.btn-img:hover {
-  background-color: #f9f9f9; /* Cor de fundo ao passar o mouse */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada ao passar o mouse */
-  transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
-}
 
 .btn-options-container {
-  max-height: 100vh; /* Define a altura máxima para o contêiner */
-  overflow-y: auto; /* Adiciona a barra de rolagem vertical */
-  padding: 10px; /* Adiciona um espaçamento interno (opcional) */
+  max-height: 100vh;
+  /* Define a altura máxima para o contêiner */
+  overflow-y: auto;
+  /* Adiciona a barra de rolagem vertical */
+  padding: 10px;
+  /* Adiciona um espaçamento interno (opcional) */
   background: #f6f6f6;
 }
 
 
-.btn-link{
+.btn-link {
   background: #5e008d;
   color: #ffffff;
   border-radius: 5px;
   text-decoration: none;
   margin: 15px;
+
 }
 
 .card-container {
   display: flex;
-  flex-wrap: wrap; /* Permite que os cards quebrem para baixo quando não couberem mais na largura */
-  gap: 10px; /* Espaço entre os cards */
+  flex-wrap: wrap;
+  /* Permite que os cards quebrem para baixo quando não couberem mais na largura */
+  gap: 10px;
+  /* Espaço entre os cards */
 }
 
 .card-list {
-  max-width: 200px; /* Largura máxima dos cards */
-  padding: 10px 10px; /* Espaçamento interno ajustado */
-  border: 1.5px solid #5e008d; /* Borda sólida */
-  border-radius: 10px; /* Borda mais arredondada */
-  background-color: #ffffff; /* Cor de fundo padrão */
-  cursor: move; /* Cursor de arraste */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra sutil */
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+  max-width: 200px;
+  /* Largura máxima dos cards */
+  padding: 10px 10px;
+  /* Espaçamento interno ajustado */
+  border: 1.5px solid #5e008d;
+  /* Borda sólida */
+  border-radius: 10px;
+  /* Borda mais arredondada */
+  background-color: #ffffff;
+  /* Cor de fundo padrão */
+  cursor: move;
+  /* Cursor de arraste */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  /* Sombra sutil */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  /* Transição suave */
+  cursor: move;
 }
 
 .card-list:hover {
-  background-color: #f9f9f9; /* Cor de fundo ao passar o mouse */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Sombra mais pronunciada ao passar o mouse */
-  transform: translateY(-3px); /* Efeito de leve elevação ao passar o mouse */
+  background-color: #f9f9f9;
+  /* Cor de fundo ao passar o mouse */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  /* Sombra mais pronunciada ao passar o mouse */
+  transform: translateY(-3px);
+  /* Efeito de leve elevação ao passar o mouse */
 }
 
 
-.titulosComponentes{
+.titulosComponentes {
   font-size: 20px;
   margin-top: 20px;
 
 }
+
 
 /* ------------------- 3 PARTE ------------------- */

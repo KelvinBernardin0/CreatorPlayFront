@@ -15,6 +15,7 @@ import { AutenticacaoInterceptor } from './common/autenticacao/autenticacao.inte
 import { HeaderComponent } from './pages/header/header.component';
 import { DatePipe } from '@angular/common';
 import { EmailComponent } from './pages/email/email.component';
+import { DragDropModule } from '@angular/cdk/drag-drop'; // Import DragDropModule
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -68,6 +69,7 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    DragDropModule
   ],
 
   providers: [
