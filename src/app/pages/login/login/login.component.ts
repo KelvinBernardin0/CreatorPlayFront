@@ -41,7 +41,6 @@ export class LoginComponent {
     var dadosLogin = this.loginForm.getRawValue() as LoginModel;
     this.loginService.LoginUsuario(dadosLogin).subscribe(
       (data: any) => {
-        debugger;
         console.log(data);
         const decodedToken = this.autenticacaoToken.decodeToken(data.token);
         const userRole =

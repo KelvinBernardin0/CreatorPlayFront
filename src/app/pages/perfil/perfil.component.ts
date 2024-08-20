@@ -37,15 +37,15 @@ export class PerfilComponent implements OnInit {
   }
 
   carregarPerfilUsuario(): void {
+    debugger;
     this.showSpinner = true; // Exibe o spinner (carregamento)
-
     const token = localStorage.getItem('JwtTokenBearer');
 
+    debugger;
     if (token) {
       const headers = new HttpHeaders({
         Authorization: token,
       });
-
       this.perfilService.obterPerfilUsuario(headers).subscribe(
         (response) => {
           this.showSpinner = false; // Esconda o spinner quando o processo for concluído
@@ -78,6 +78,8 @@ export class PerfilComponent implements OnInit {
   }
 
   atualizarPerfil(): void {
+
+    debugger;
     this.showSpinner = true; // Exibe o spinner
     if (this.perfilForm.valid) {
       this.perfil.id = this.perfilForm.value.id;

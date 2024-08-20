@@ -14,37 +14,43 @@
       <h1>Registre-se no CreatorPlay</h1>
       <div class="form-group"></div>
       <div class="form-group">
-        <input
-          formControlName="email"
-          type="email"
-          id="registrase-email"
-          name="email"
-          required
-          class="input"
-          placeholder="E-mail"
-        />
+        <input formControlName="email"
+               type="email"
+               id="registrase-email"
+               name="email"
+               required
+               class="input"
+               placeholder="E-mail" />
+      </div>
+
+      <div class="form-group">
+        <select formControlName="roleid"
+                class="form-select"
+                id="c">
+          <option disabled selected>Perfil de Acesso</option>
+          <option selected *ngFor="let item of perfis" [value]="item.id">
+            {{ item.accessProfile }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input formControlName="password"
+               type="password"
+               id="registrase-senha"
+               name="password"
+               required
+               class="input"
+               placeholder="Senha" />
       </div>
       <div class="form-group">
-        <input
-          formControlName="password"
-          type="password"
-          id="registrase-senha"
-          name="password"
-          required
-          class="input"
-          placeholder="Senha"
-        />
-      </div>
-      <div class="form-group">
-        <input
-          formControlName="passwordConfirmation"
-          type="password"
-          id="registrase-confirma-senha"
-          name="passwordConfirmation"
-          required
-          class="input"
-          placeholder="Confirmar Senha"
-        />
+        <input formControlName="passwordConfirmation"
+               type="password"
+               id="registrase-confirma-senha"
+               name="passwordConfirmation"
+               required
+               class="input"
+               placeholder="Confirmar Senha" />
       </div>
       <div class="botoes">
         <button type="button" class="button-cancelar" routerLink="/login">
