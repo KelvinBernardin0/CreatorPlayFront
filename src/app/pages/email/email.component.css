@@ -5,6 +5,17 @@
 
 }
 
+/* Seleciona elementos com a classe hoverble ou com contentEditable=true */
+.hoverble {
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  transition: border-color;
+}
+
+ .hoverble:hover {
+  border-color: #302c2c; /* Cor da borda ao passar o mouse */
+}
+
 .square-card {
   padding: 10px;
   /* Borda sólida */
@@ -15,7 +26,7 @@
   margin-bottom: 20px;
   background-color: #ffffff;
   /* Cor de fundo padrão */
-  
+
   /* Cursor de arraste */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   /* Sombra sutil */
@@ -25,8 +36,8 @@
 }
 
 /* .square-card:hover {
-  background-color: #f9f9f9; 
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); 
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 } */
 
 .card-deck {
