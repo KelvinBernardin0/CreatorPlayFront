@@ -2,6 +2,8 @@ import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, ViewEncapsu
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+import {ContextMenuComponent} from './context-menu/context-menu.component';
+import {HoverBorderComponent} from './hover-border/hover-border.component';
 interface OpcaoHeader {
   nome: string;
   path: string;
@@ -61,6 +63,8 @@ export class EmailComponent implements AfterViewInit{
   @ViewChild('headerContainer', { static: false }) headerContainerRef!: ElementRef;
   @ViewChild('footerContainer', { static: false }) footerContainerRef!: ElementRef;
   @ViewChild('emailContainer') emailContainerRef!: ElementRef;
+  @ViewChild(ContextMenuComponent) contextMenuComponent!: ContextMenuComponent;
+  @ViewChild(HoverBorderComponent) hoverBorderComponent!: HoverBorderComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,7 +72,7 @@ export class EmailComponent implements AfterViewInit{
     private router: Router,
     private http: HttpClient,
     private elRef: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['emailHTML']) {
@@ -88,8 +92,7 @@ export class EmailComponent implements AfterViewInit{
     const centerElements = this.elRef.nativeElement.querySelectorAll("#email-container *");
     centerElements.forEach((element: HTMLElement) => {
       const isHtmlElement = element.nodeType===1;
-      if(isHtmlElement) {
-        this.renderer.addClass(element, "hoverble");
+      if(isHtmlElement && element.tagName !== "APP-CONTEXT-MENU") {
         element.addEventListener('mouseenter',() => this.onMouseEnter(element));
         element.addEventListener('mouseleave',() => this.onMouseLeave(element));
       }
@@ -97,19 +100,14 @@ export class EmailComponent implements AfterViewInit{
   }
 
   onMouseEnter(element: HTMLElement) {
-    // Remove a classe hoverble de todos os elementos
-    const elementos = this.elRef.nativeElement.querySelectorAll("#email-container *");
-    elementos.forEach((el: HTMLElement) => {
-      this.renderer.removeClass(el, "hoverble");
-    });
-
-    // Adiciona a classe hoverble apenas ao elemento atual
-    this.renderer.addClass(element, "hoverble");
+    const elementPosition = element
+    this.hoverBorderComponent.displayComponentOn(element)
   }
 
   onMouseLeave(element: HTMLElement) {
-    this.renderer.removeClass(element, "hoverble")
+    this.hoverBorderComponent.hide()
   }
+
   //---------------- FUNCIONAMENTO DO HTML ----------------
   //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
   carregarEmail(url: string) {
@@ -147,6 +145,9 @@ export class EmailComponent implements AfterViewInit{
     const target = event.target as HTMLElement;
     if (target && target.nodeType === 1) {
       target.setAttribute('contenteditable', 'true');
+      this.contextMenuComponent.displayComponentOn(target)
+    }else{
+      this.contextMenuComponent.hide()
     }
 
     const selection = window.getSelection();

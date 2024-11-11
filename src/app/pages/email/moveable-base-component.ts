@@ -6,7 +6,7 @@ export abstract class MovableBaseComponent {
   width: number = 0;
   height: number = 0;
   show: boolean = false;
-  htmlElememnt: HTMLElement | null = null;
+  innerElement: Element | null = null;
 
   displayComponentAt(elementPosition: Position): void {
     this.top = elementPosition.top;
@@ -16,12 +16,12 @@ export abstract class MovableBaseComponent {
     this.show = true;
   }
 
-  displayComponentOn(element: HTMLElement): void {
-    if (element === this.htmlElememnt) return;
+  displayComponentOn(element: Element): void {
+    if (element === this.innerElement) return;
 
-    this.htmlElememnt = element;
+    this.innerElement = element;
     const bodyPosition = document.body.getBoundingClientRect();
-    const elementPosition = this.htmlElememnt.getBoundingClientRect();
+    const elementPosition = this.innerElement.getBoundingClientRect();
     this.top = elementPosition.top - bodyPosition.top;
     this.left = elementPosition.left - bodyPosition.left;
     this.width = elementPosition.width;
@@ -30,7 +30,7 @@ export abstract class MovableBaseComponent {
   }
 
   hide(): void {
-    this.htmlElememnt = null;
+    this.innerElement = null;
     this.show = false;
   }
 }

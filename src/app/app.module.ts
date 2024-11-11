@@ -15,7 +15,9 @@ import { AutenticacaoInterceptor } from './common/autenticacao/autenticacao.inte
 import { HeaderComponent } from './pages/header/header.component';
 import { DatePipe } from '@angular/common';
 import { EmailComponent } from './pages/email/email.component';
-import { DragDropModule } from '@angular/cdk/drag-drop'; // Import DragDropModule
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ContextMenuComponent } from './pages/email/context-menu/context-menu.component';
+import { HoverBorderComponent } from './pages/email/hover-border/hover-border.component'; // Import DragDropModule
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -61,6 +63,8 @@ const routes: Routes = [
     HeaderComponent,
     PerfilComponent,
     EmailComponent,
+    ContextMenuComponent,
+    HoverBorderComponent,
   ],
   imports: [
     BrowserModule,

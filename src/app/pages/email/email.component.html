@@ -115,7 +115,10 @@
         class="centered-content"
         [style.backgroundColor]="selectedBackgroundColor"
       >
-        <!-- Header Section -->
+        <app-context-menu/>
+        <app-hover-border/>
+
+      <!-- Header Section -->
         <div
           id="header-container"
           [innerHTML]="headerHTML"
@@ -183,7 +186,7 @@
 
           <div>
             <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagem</h2>
-            <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>            
+            <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
             <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>
               <option value="M">Média (50%)</option>
@@ -402,7 +405,7 @@
               </div>
             </div>
 
-            
+
 
 
           </div>
@@ -492,7 +495,7 @@
             </div>
           </div>
 
-          
+
         </div>
 
         <!-- BOTAO -->
@@ -529,7 +532,7 @@
 
           <div>
             <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-            <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>            
+            <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
             <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>
               <option value="M">Média (50%)</option>
@@ -611,7 +614,7 @@
 
           <div>
             <!-- <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagens</h2>
-            <p>Selecione o local aonde voce quer adicionar a imagem</p>            
+            <p>Selecione o local aonde voce quer adicionar a imagem</p>
             <select class="form-select" style="margin-bottom: 30px"
             [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>
@@ -621,7 +624,7 @@
             <div class="image-upload-container">
               <!-- Checkbox para confirmar termos de uso -->
               <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-          
+
             <label style="display: block; margin-bottom: 10px;">
               <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
               Eu aceito os termos de uso
@@ -693,12 +696,12 @@
 
           <div>
             <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-          
+
             <label style="display: block; margin-bottom: 10px;">
               <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
               Eu aceito os termos de uso
             </label>
-          
+
             <label class="custom-file-upload" style="display: block; margin-bottom: 10px;">
               <input
                 type="file"
@@ -707,7 +710,7 @@
               />
               Escolher Imagem 1
             </label>
-            
+
             <label class="custom-file-upload" style="display: block;">
               <input
                 type="file"
@@ -717,7 +720,7 @@
               Escolher Imagem 2
             </label>
           </div>
-          
+
         </div>
         <!-- VITRINE -->
       </div>

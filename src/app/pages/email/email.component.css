@@ -5,17 +5,6 @@
 
 }
 
-/* Seleciona elementos com a classe hoverble ou com contentEditable=true */
-.hoverble {
-  box-sizing: border-box;
-  border: 2px solid transparent;
-  transition: border-color;
-}
-
- .hoverble:hover {
-  border-color: #302c2c; /* Cor da borda ao passar o mouse */
-}
-
 .square-card {
   padding: 10px;
   /* Borda sólida */

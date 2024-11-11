@@ -3,6 +3,7 @@
   border: #49066B 1px solid;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  pointer-events: none;
 }
 
 #context-menu {
@@ -24,6 +25,7 @@
   font-size: 12px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  pointer-events: all;
 }
 
 #context-menu > .menu-item > img {
@@ -32,9 +34,11 @@
 
 #delete-item {
   background-color: #CC1F59;
+  cursor: pointer;
 }
 
 #reorder-item {
   background-color: #49066B;
+  cursor: move;
 }
 
