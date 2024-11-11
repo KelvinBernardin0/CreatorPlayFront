@@ -1,0 +1,40 @@
+#outer-border{
+  position: absolute;
+  border: #49066B 1px solid;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#context-menu {
+  display: flex;
+  flex-direction:row;
+  justify-content:space-between;
+  position:relative;
+  top: -22px;
+  width: 100%;
+  color: white;
+  align-items: center;
+}
+
+#context-menu > .menu-item {
+  display: flex;
+  padding: 2px 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+#context-menu > .menu-item > img {
+  margin: 2px 6px;
+}
+
+#delete-item {
+  background-color: #CC1F59;
+}
+
+#reorder-item {
+  background-color: #49066B;
+}
+
