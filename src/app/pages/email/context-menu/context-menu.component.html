@@ -6,10 +6,10 @@
   'height': height + 'px',
   }">
   <div id="context-menu" >
-    <div id="delete-item" class="menu-item" (click)="hide()">
+    <div id="delete-item" class="menu-item" (click)="deleteContent()">
       <img src="assets\imagens\trash-can-regular.svg" alt="Icone de lixeira"> <span>Deletar bloco</span>
     </div>
-    <div id="reorder-item" class="menu-item">
+    <div id="reorder-item" class="menu-item" (dragend)="onDragEnd($event)" (dragstart)="onDragStart($event)" draggable="true">
       Reordenar <img src="assets\imagens\reorder-icon.svg" alt="Icone de reordenação">
     </div>
   </div>

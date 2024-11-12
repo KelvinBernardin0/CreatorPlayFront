@@ -115,7 +115,9 @@
         class="centered-content"
         [style.backgroundColor]="selectedBackgroundColor"
       >
-        <app-context-menu/>
+        <app-context-menu
+          (saveState)="saveState()"
+          (updateHoverbleElements)="updateHoverbleElements()"/>
         <app-hover-border/>
 
       <!-- Header Section -->
@@ -368,6 +370,7 @@
                   *ngFor="let opcao of opcoesTitulos"
                   draggable="true"
                   (dragstart)="onDragStart($event, opcao)"
+                  (dragend)="onDrop($event)"
                 >
                   {{ opcao.nome }}
                 </div>
@@ -383,6 +386,7 @@
                   *ngFor="let opcoes of opcoesDescricoes"
                   draggable="true"
                   (dragstart)="onDragStart($event, opcoes)"
+                  (dragend)="onDrop($event)"
                 >
                   {{ opcoes.nome }}
                 </div>
@@ -399,6 +403,7 @@
                   *ngFor="let opcoes of opcoesLinks"
                   draggable="true"
                   (dragstart)="onDragStart($event, opcoes)"
+                  (dragend)="onDrop($event)"
                 >
                   {{ opcoes.nome }}
                 </div>
@@ -515,6 +520,7 @@
               *ngFor="let opcao of opcoesCards"
               draggable="true"
               (dragstart)="onDragStart($event, opcao)"
+              (dragend)="onDrop($event)"
             >
               {{ opcao.nome }}
             </div>
@@ -594,6 +600,7 @@
                 *ngFor="let opcao of opcoesVitrinePlanos"
                 draggable="true"
                 (dragstart)="onDragStart($event, opcao)"
+                (dragend)="onDrop($event)"
               >
                 {{ opcao.nome }}
               </div>
@@ -677,6 +684,7 @@
                 *ngFor="let opcoes of opcoesVitrineEquipamento"
                 draggable="true"
                 (dragstart)="onDragStart($event, opcoes)"
+                (dragend)="onDrop($event)"
               >
                 {{ opcoes.nome }}
               </div>

@@ -88,23 +88,26 @@ export class EmailComponent implements AfterViewInit{
     this.updateHoverbleElements();
   }
 
-  private updateHoverbleElements() {
-    const centerElements = this.elRef.nativeElement.querySelectorAll("#email-container *");
-    centerElements.forEach((element: HTMLElement) => {
+  protected updateHoverbleElements() {
+    const centerElements = document.querySelectorAll("#email-container *")
+    centerElements.forEach((element: Element) => {
       const isHtmlElement = element.nodeType===1;
-      if(isHtmlElement && element.tagName !== "APP-CONTEXT-MENU") {
-        element.addEventListener('mouseenter',() => this.onMouseEnter(element));
-        element.addEventListener('mouseleave',() => this.onMouseLeave(element));
+      if(isHtmlElement && element.tagName !== 'APP-CONTEXT-MENU' && element.tagName !== 'APP-HOVER-BORDER') {
+        this.addHoverEventsOn(element);
       }
     });
   }
 
-  onMouseEnter(element: HTMLElement) {
-    const elementPosition = element
+  private addHoverEventsOn(element: Element): void {
+    element.addEventListener('mouseenter',() => this.onMouseEnter(element));
+    element.addEventListener('mouseleave',() => this.onMouseLeave(element));
+  }
+
+  protected onMouseEnter(element: Element): void{
     this.hoverBorderComponent.displayComponentOn(element)
   }
 
-  onMouseLeave(element: HTMLElement) {
+  protected onMouseLeave(element: Element): void {
     this.hoverBorderComponent.hide()
   }
 
@@ -163,12 +166,7 @@ export class EmailComponent implements AfterViewInit{
   onDragStart(event: DragEvent, opcao: any) {
     this.saveState(); // Salvar o estado antes de fazer a alteração
 
-    const tempDiv: Element = document.createElement('div');
-    tempDiv.innerHTML = opcao.html.trim();
-    const htmlElement: HTMLElement = tempDiv.firstChild as HTMLElement;
-    this.renderer.addClass(htmlElement, "hoverble");
-    const html=htmlElement.outerHTML;
-    event.dataTransfer?.setData('text/html', html);
+    event.dataTransfer?.setData('text/html', opcao.html);
     this.updateHoverbleElements()
   }
 
@@ -176,19 +174,8 @@ export class EmailComponent implements AfterViewInit{
   onDrop(event: DragEvent) {
 
     event.preventDefault();
-    const htmlContent = event.dataTransfer?.getData('text/html');
-    if (htmlContent) {
-      this.saveState(); // Salvar o estado antes de fazer a alteração
 
-      const selection = window.getSelection();
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        range.deleteContents();
-        const fragment = range.createContextualFragment(htmlContent);
-        range.insertNode(fragment);
-        this.updateHoverbleElements()
-      }
-    }
+    this.updateHoverbleElements()
   }
 
   // Função para permitir soltar elementos arrastados no conteúdo editável
@@ -1101,8 +1088,15 @@ export class EmailComponent implements AfterViewInit{
 
   //---------------- DESFAZER MUDANÇA NO HTML ----------------
   onKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Delete' || event.key === 'Backspace') {
+    const deleteEvent=event.key==='Delete'||event.key==='Backspace';
+    if (deleteEvent) {
       this.saveState(); // Salvar o estado antes de deletar
+    }
+    const undoEvent = (event.metaKey || event.ctrlKey) && ( event.key === "z" || event.key === "Z");
+    if (undoEvent) {
+      event.preventDefault();
+      this.desfazer();
+      this.contextMenuComponent.hide()
     }
   }
 
@@ -1138,6 +1132,7 @@ export class EmailComponent implements AfterViewInit{
           footerContainer.innerHTML = prevState.footer;
 
           this.atualizarHTML(); // Atualiza o HTML após desfazer
+          this.updateHoverbleElements();
         }
       }
     }
