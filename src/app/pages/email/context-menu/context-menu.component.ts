@@ -9,6 +9,8 @@ import {MovableBaseComponent} from '../moveable-base-component';
 })
 export class ContextMenuComponent extends MovableBaseComponent{
 
+  protected MINIMUM_WIDTH_SIZE: number =  250
+
   constructor(
     private renderer: Renderer2,
   ){
@@ -23,7 +25,6 @@ export class ContextMenuComponent extends MovableBaseComponent{
     this.saveState.emit()
     event.dataTransfer?.setData('text/html', this.innerElement!.outerHTML);
     console.log(`Finalizando método onDragStart`)
-
   }
 
   protected onDragEnd(event: DragEvent){

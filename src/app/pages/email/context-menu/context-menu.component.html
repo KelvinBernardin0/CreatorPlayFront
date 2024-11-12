@@ -1,4 +1,3 @@
-
 <div id="outer-border" *ngIf="show" [ngStyle]="{
   'top':top + 'px',
   'left': left + 'px',
@@ -6,11 +5,19 @@
   'height': height + 'px',
   }">
   <div id="context-menu" >
-    <div id="delete-item" class="menu-item" (click)="deleteContent()">
-      <img src="assets\imagens\trash-can-regular.svg" alt="Icone de lixeira"> <span>Deletar bloco</span>
+    <div id="delete-item"
+        class="menu-item"
+        (click)="deleteContent()">
+      <img src="assets\imagens\trash-can-regular.svg" alt="Icone de lixeira">
+      <span *ngIf="width > MINIMUM_WIDTH_SIZE">Deletar bloco</span>
     </div>
-    <div id="reorder-item" class="menu-item" (dragend)="onDragEnd($event)" (dragstart)="onDragStart($event)" draggable="true">
-      Reordenar <img src="assets\imagens\reorder-icon.svg" alt="Icone de reordenação">
+    <div id="reorder-item"
+        class="menu-item"
+        (dragend)="onDragEnd($event)"
+        (dragstart)="onDragStart($event)"
+        draggable="true">
+      <span *ngIf="width > MINIMUM_WIDTH_SIZE">Reordenar </span>
+      <img src="assets\imagens\reorder-icon.svg" alt="Icone de reordenação">
     </div>
   </div>
 </div>
