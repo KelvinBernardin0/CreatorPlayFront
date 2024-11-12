@@ -21,19 +21,15 @@ export class ContextMenuComponent extends MovableBaseComponent{
   @Output() updateHoverbleElements = new EventEmitter()
 
   protected onDragStart(event: DragEvent) {
-    console.log(`Iniciando método onDragStart`)
     this.saveState.emit()
     event.dataTransfer?.setData('text/html', this.innerElement!.outerHTML);
-    console.log(`Finalizando método onDragStart`)
   }
 
   protected onDragEnd(event: DragEvent){
-    console.log(`Iniciando método onDragLeave`)
     event.preventDefault()
     this.renderer.removeChild(this.innerElement?.parentNode, this.innerElement)
     this.hide()
     this.updateHoverbleElements.emit()
-    console.log(`Finalizando método onDragLeave`)
   }
 
    protected deleteContent(){
