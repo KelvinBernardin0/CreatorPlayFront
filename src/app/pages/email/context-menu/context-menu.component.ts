@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output, Renderer2, ViewEncapsulation } from '@angular/core';
 import {MovableBaseComponent} from '../moveable-base-component';
+import DragMoveCommand from '../command/drag-move-command';
+import DragCommand from '../command/drag-command';
 
 @Component({
   selector: 'app-context-menu',
@@ -10,31 +12,28 @@ import {MovableBaseComponent} from '../moveable-base-component';
 export class ContextMenuComponent extends MovableBaseComponent{
 
   protected MINIMUM_WIDTH_SIZE: number =  250
+  protected dragMoveCommand: DragCommand
 
   constructor(
-    private renderer: Renderer2,
+    protected renderer: Renderer2,
   ){
     super()
+    this.dragMoveCommand = new DragMoveCommand({
+      renderer: renderer,
+      saveState: this.saveState,
+      updateHoverbleElements: this.updateHoverbleElements,
+      hideElement: () => this.hide()
+    })
   }
 
   @Output() saveState = new EventEmitter()
   @Output() updateHoverbleElements = new EventEmitter()
 
-  protected onDragStart(event: DragEvent) {
-    this.saveState.emit()
-    event.dataTransfer?.setData('text/html', this.innerElement!.outerHTML);
-  }
-
-  protected onDragEnd(event: DragEvent){
-    event.preventDefault()
-    this.renderer.removeChild(this.innerElement?.parentNode, this.innerElement)
-    this.hide()
-    this.updateHoverbleElements.emit()
-  }
 
    protected deleteContent(){
     this.saveState.emit()
     this.renderer.removeChild(this.innerElement?.parentNode, this.innerElement)
     this.hide()
   }
+
 }
