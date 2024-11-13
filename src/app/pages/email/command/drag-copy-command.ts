@@ -1,5 +1,4 @@
-import DragCommand from "./drag-command";
-import {EmailComponent} from "../email.component";
+import DragCommand from './drag-command';
 
 type DragDropCommandParams= {
   saveState: () => void;

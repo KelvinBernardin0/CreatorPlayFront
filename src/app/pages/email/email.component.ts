@@ -1,9 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
+import {AfterViewInit,Component,ElementRef,Renderer2,ViewChild,ViewEncapsulation} from '@angular/core';
+import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
+import {ActivatedRoute,Router} from '@angular/router';
 import {ContextMenuComponent} from './context-menu/context-menu.component';
 import {HoverBorderComponent} from './hover-border/hover-border.component';
+import DragCopyCommand from './command/drag-copy-command';
+import DragCommand from './command/drag-command';
+
 interface OpcaoHeader {
   nome: string;
   path: string;
@@ -15,7 +18,7 @@ interface OpcaoHeader {
   styleUrls: ['./email.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class EmailComponent implements AfterViewInit{
+export class EmailComponent implements AfterViewInit {
   emailHTML: SafeHtml = '';
   rawEmailHTML: string = '';
 
@@ -66,6 +69,7 @@ export class EmailComponent implements AfterViewInit{
   @ViewChild(ContextMenuComponent) contextMenuComponent!: ContextMenuComponent;
   @ViewChild(HoverBorderComponent) hoverBorderComponent!: HoverBorderComponent;
 
+  protected dragCopyCommand: DragCommand
   constructor(
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -73,6 +77,7 @@ export class EmailComponent implements AfterViewInit{
     private http: HttpClient,
     private elRef: ElementRef,
     private renderer: Renderer2,
+
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['emailHTML']) {
@@ -82,6 +87,13 @@ export class EmailComponent implements AfterViewInit{
 
       this.saveState(); // Salvar o estado antes de fazer a alteração
     });
+    this.dragCopyCommand = new DragCopyCommand({
+      saveState: () => this.saveState(),
+      blockUndraggableArea: () => this.blockUndraggableArea(),
+      hideContextMenu: () => this.contextMenuComponent.hide()
+    }
+
+    )
   }
 
   ngAfterViewInit(): void {
@@ -92,13 +104,16 @@ export class EmailComponent implements AfterViewInit{
     const centerElements = document.querySelectorAll("#email-container *")
     centerElements.forEach((element: Element) => {
       const isHtmlElement = element.nodeType===1;
-      if(isHtmlElement && element.tagName !== 'APP-CONTEXT-MENU' && element.tagName !== 'APP-HOVER-BORDER') {
+      const moveableComponents = ['APP-CONTEXT-MENU', 'APP-HOVER-BORDER'].includes(element.tagName)
+      if(isHtmlElement && !moveableComponents) {
         this.addHoverEventsOn(element);
       }
     });
   }
 
   private addHoverEventsOn(element: Element): void {
+    element.removeEventListener('mouseenter',() => this.onMouseEnter(element))
+    element.removeEventListener('mouseleave',() => this.onMouseLeave(element));
     element.addEventListener('mouseenter',() => this.onMouseEnter(element));
     element.addEventListener('mouseleave',() => this.onMouseLeave(element));
   }
@@ -162,27 +177,11 @@ export class EmailComponent implements AfterViewInit{
     this.lastUploadedImg = null;
   }
 
-  // Função chamada quando o usuário inicia o arraste de um card
-  onDragStart(event: DragEvent, opcao: any) {
-    this.saveState(); // Salvar o estado antes de fazer a alteração
 
-    event.dataTransfer?.setData('text/html', opcao.html);
-    this.updateHoverbleElements()
-  }
 
-  // Função chamada quando o usuário solta um card no conteúdo editável
-  onDrop(event: DragEvent) {
-
-    event.preventDefault();
-
-    this.updateHoverbleElements()
-  }
-
-  // Função para permitir soltar elementos arrastados no conteúdo editável
-  onDragOver(event: DragEvent) {
-    this.saveState(); // Salvar o estado antes de fazer a alteração
-
-    event.preventDefault();
+  blockUndraggableArea() {
+    const undraggableArea = document.querySelectorAll(".undraggable-area *");
+    undraggableArea.forEach((e: Element) => (e as HTMLElement).contentEditable="false");
   }
 
   // Função para atualizar o HTML após as mudanças
@@ -1100,7 +1099,7 @@ export class EmailComponent implements AfterViewInit{
     }
   }
 
-  saveState() {
+  saveState(): void{
     const headerContainer = document.getElementById('header-container');
     const contentContainer = document.getElementById('content-container');
     const footerContainer = document.getElementById('footer-container');
@@ -1133,6 +1132,7 @@ export class EmailComponent implements AfterViewInit{
 
           this.atualizarHTML(); // Atualiza o HTML após desfazer
           this.updateHoverbleElements();
+          this.contextMenuComponent.hide()
         }
       }
     }

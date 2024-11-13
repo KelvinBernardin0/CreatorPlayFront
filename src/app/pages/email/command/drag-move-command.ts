@@ -1,6 +1,6 @@
 import { EventEmitter, Renderer2 } from '@angular/core';
-import { ContextMenuComponent } from '../context-menu/context-menu.component';
-import DragCommand from "./drag-command";
+
+import DragCommand from './drag-command';
 
 type DragMoveCommandParams = {
   renderer: Renderer2;

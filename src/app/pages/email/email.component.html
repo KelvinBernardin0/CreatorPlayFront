@@ -114,6 +114,7 @@
       <div
         class="centered-content"
         [style.backgroundColor]="selectedBackgroundColor"
+        (mouseenter)="updateHoverbleElements()"
       >
         <app-context-menu
           (saveState)="saveState()"
@@ -369,8 +370,8 @@
                   class="card-list"
                   *ngFor="let opcao of opcoesTitulos"
                   draggable="true"
-                  (dragstart)="onDragStart($event, opcao)"
-                  (dragend)="onDrop($event)"
+                  (dragstart)="this.dragCopyCommand.onDragStart($event, opcao)"
+                  (dragend)="this.dragCopyCommand.onDragEnd($event)"
                 >
                   {{ opcao.nome }}
                 </div>
@@ -385,8 +386,8 @@
                   class="card-list"
                   *ngFor="let opcoes of opcoesDescricoes"
                   draggable="true"
-                  (dragstart)="onDragStart($event, opcoes)"
-                  (dragend)="onDrop($event)"
+                  (dragstart)="this.dragCopyCommand.onDragStart($event, opcoes)"
+                  (dragend)="this.dragCopyCommand.onDragEnd($event)"
                 >
                   {{ opcoes.nome }}
                 </div>
@@ -402,8 +403,8 @@
                   class="card-list"
                   *ngFor="let opcoes of opcoesLinks"
                   draggable="true"
-                  (dragstart)="onDragStart($event, opcoes)"
-                  (dragend)="onDrop($event)"
+                  (dragstart)="this.dragCopyCommand.onDragStart($event, opcoes)"
+                  (dragend)="this.dragCopyCommand.onDragEnd($event)"
                 >
                   {{ opcoes.nome }}
                 </div>
@@ -519,8 +520,8 @@
               class="card-list"
               *ngFor="let opcao of opcoesCards"
               draggable="true"
-              (dragstart)="onDragStart($event, opcao)"
-              (dragend)="onDrop($event)"
+              (dragstart)="this.dragCopyCommand.onDragStart($event, opcao)"
+              (dragend)="this.dragCopyCommand.onDragEnd($event)"
             >
               {{ opcao.nome }}
             </div>
@@ -599,8 +600,8 @@
                 class="card-list"
                 *ngFor="let opcao of opcoesVitrinePlanos"
                 draggable="true"
-                (dragstart)="onDragStart($event, opcao)"
-                (dragend)="onDrop($event)"
+                (dragstart)="this.dragCopyCommand.onDragStart($event, opcao)"
+                (dragend)="this.dragCopyCommand.onDragEnd($event)"
               >
                 {{ opcao.nome }}
               </div>
@@ -683,8 +684,8 @@
                 class="card-list"
                 *ngFor="let opcoes of opcoesVitrineEquipamento"
                 draggable="true"
-                (dragstart)="onDragStart($event, opcoes)"
-                (dragend)="onDrop($event)"
+                (dragstart)="this.dragCopyCommand.onDragStart($event, opcoes)"
+                (dragend)="this.dragCopyCommand.onDragEnd($event)"
               >
                 {{ opcoes.nome }}
               </div>
