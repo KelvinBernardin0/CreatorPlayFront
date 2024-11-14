@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {Position} from '../Position';
-import {MovableBaseComponent} from '../moveable-base-component';
+import {Position} from '../../../../common/types/Position';
+import {MovableBaseComponent} from '../abstract/moveable-base-component';
 
 @Component({
   selector: 'app-hover-border',

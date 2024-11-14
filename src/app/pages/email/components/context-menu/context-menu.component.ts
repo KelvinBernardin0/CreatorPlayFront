@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, Renderer2, ViewEncapsulation } from '@angular/core';
-import {MovableBaseComponent} from '../moveable-base-component';
-import DragMoveCommand from '../command/drag-move-command';
-import DragCommand from '../command/drag-command';
+import {MovableBaseComponent} from '../abstract/moveable-base-component';
+import DragMoveCommand from '../../command/drag-move-command';
+import DragCommand from '../../command/drag-command';
 
 @Component({
   selector: 'app-context-menu',

@@ -1,4 +1,10 @@
-import { Position } from './Position';
+
+export type Position={
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+};
 
 export abstract class MovableBaseComponent {
   top: number = 0;
