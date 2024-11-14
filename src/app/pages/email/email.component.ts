@@ -1081,13 +1081,17 @@ export class EmailComponent implements AfterViewInit {
     const deleteEvent=event.key==='Delete'||event.key==='Backspace';
     if (deleteEvent) {
       this.saveState(); // Salvar o estado antes de deletar
+      return
     }
     const undoEvent = (event.metaKey || event.ctrlKey) && ( event.key === "z" || event.key === "Z");
     if (undoEvent) {
       event.preventDefault();
       this.desfazer();
       this.contextMenuComponent.hide()
+      return
     }
+
+    this.saveState()
   }
 
   saveState(): void{
@@ -1107,26 +1111,38 @@ export class EmailComponent implements AfterViewInit {
   }
 
 
-  desfazer() {
-    if (this.undoStack.length > 0) {
-      const prevState = this.undoStack.pop();
+  desfazer(): void {
+    if(this.undoStack.length <= 0)
+      return
 
-      if (prevState) {
-        const headerContainer = document.getElementById('header-container');
-        const contentContainer = document.getElementById('content-container');
-        const footerContainer = document.getElementById('footer-container');
+    const prevState = this.undoStack.pop();
 
-        if (headerContainer && contentContainer && footerContainer) {
-          headerContainer.innerHTML = prevState.header;
-          contentContainer.innerHTML = prevState.content;
-          footerContainer.innerHTML = prevState.footer;
+    if (!prevState)
+      return
 
-          this.atualizarHTML(); // Atualiza o HTML após desfazer
-          this.updateHoverbleElements();
-          this.contextMenuComponent.hide()
-        }
-      }
-    }
+    const headerContainer = document.getElementById('header-container');
+    const contentContainer = document.getElementById('content-container');
+    const footerContainer = document.getElementById('footer-container');
+
+    if (!(headerContainer && contentContainer && footerContainer))
+      return
+
+    const sameState =
+      headerContainer.innerHTML === prevState.header &&
+      contentContainer.innerHTML === prevState.content &&
+      footerContainer.innerHTML === prevState.footer;
+
+    if (sameState)
+      return
+
+    headerContainer.innerHTML = prevState.header;
+    contentContainer.innerHTML = prevState.content;
+    footerContainer.innerHTML = prevState.footer;
+
+    this.atualizarHTML(); // Atualiza o HTML após desfazer
+    this.updateHoverbleElements();
+    this.contextMenuComponent.hide();
+
   }
   //---------------- DESFAZER MUDANÇA NO HTML ----------------
 
