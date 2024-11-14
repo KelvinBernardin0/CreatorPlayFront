@@ -2,8 +2,8 @@ import {HttpClient} from '@angular/common/http';
 import {AfterViewInit,Component,ElementRef,Renderer2,ViewChild,ViewEncapsulation} from '@angular/core';
 import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
 import {ActivatedRoute,Router} from '@angular/router';
-import {ContextMenuComponent} from './context-menu/context-menu.component';
-import {HoverBorderComponent} from './hover-border/hover-border.component';
+import {ContextMenuComponent} from './components/context-menu/context-menu.component';
+import {HoverBorderComponent} from './components/hover-border/hover-border.component';
 import DragCopyCommand from './command/drag-copy-command';
 import DragCommand from './command/drag-command';
 
@@ -75,9 +75,7 @@ export class EmailComponent implements AfterViewInit {
     private sanitizer: DomSanitizer,
     private router: Router,
     private http: HttpClient,
-    private elRef: ElementRef,
-    private renderer: Renderer2,
-
+    private elRef: ElementRef
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['emailHTML']) {
@@ -89,7 +87,6 @@ export class EmailComponent implements AfterViewInit {
     });
     this.dragCopyCommand = new DragCopyCommand({
       saveState: () => this.saveState(),
-      blockUndraggableArea: () => this.blockUndraggableArea(),
       hideContextMenu: () => this.contextMenuComponent.hide()
     }
 
@@ -107,6 +104,7 @@ export class EmailComponent implements AfterViewInit {
       const moveableComponents = ['APP-CONTEXT-MENU', 'APP-HOVER-BORDER'].includes(element.tagName)
       if(isHtmlElement && !moveableComponents) {
         this.addHoverEventsOn(element);
+        element.setAttribute('draggable', 'false')
       }
     });
   }
@@ -175,13 +173,6 @@ export class EmailComponent implements AfterViewInit {
 
     // Limpe a última imagem carregada ao tornar o conteúdo editável novamente
     this.lastUploadedImg = null;
-  }
-
-
-
-  blockUndraggableArea() {
-    const undraggableArea = document.querySelectorAll(".undraggable-area *");
-    undraggableArea.forEach((e: Element) => (e as HTMLElement).contentEditable="false");
   }
 
   // Função para atualizar o HTML após as mudanças

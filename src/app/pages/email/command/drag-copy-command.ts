@@ -1,21 +1,20 @@
 import DragCommand from './drag-command';
 
-type DragDropCommandParams= {
+type DragCopyCommandParams= {
   saveState: () => void;
-  blockUndraggableArea: () => void;
   hideContextMenu: () => void;
 }
 export default class DragCopyCommand extends DragCommand{
-  private params: DragDropCommandParams
+  private params: DragCopyCommandParams
 
-  constructor(params: DragDropCommandParams){
+  constructor(params: DragCopyCommandParams){
     super()
     this.params = params
   }
 
   override onDragStart(event: DragEvent, opcao?: any): void {
     this.params.saveState()
-    this.params.blockUndraggableArea()
+    this.blockUndraggableArea()
     event.dataTransfer?.setData('text/html', opcao.html)
     this.params.hideContextMenu()
   }
