@@ -1,0 +1,10 @@
+<label for="selection">{{ label }}</label>
+<select
+  class="form-select w-100 my-2 p-3"
+  id="selection"
+  (change)="onChange($event)"
+>
+  <!-- (change)="mudarCorFundo($event)" -->
+  <option disabled selected>{{ disabledOption }}</option>
+  <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+</select>

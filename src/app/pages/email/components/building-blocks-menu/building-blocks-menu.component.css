@@ -1,0 +1,7 @@
+.item-icon {
+  margin: 8px;
+}
+
+.accordion-button:not(.collapsed){
+  background-color: white;
+}

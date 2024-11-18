@@ -1,0 +1,113 @@
+<div ngbAccordion [closeOthers]="true" id="building-blocks-accordion">
+  <div ngbAccordionItem>
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton>
+        <img
+          class="item-icon"
+          src="assets/imagens/settings-regular.svg"
+          alt="ícone de engrenagem"
+        />Estrutura
+      </button>
+    </h2>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody class="form-group my-2 mx-2">
+        <app-selection-input
+          [label]="'Modelo do email'"
+          [disabledOption]="'Escolha um modelo'"
+          [options]="opcoesModeloEstrutura"
+          [onChange]="onChange"
+        />
+
+        <app-selection-input
+          [label]="'Cor de fundo '"
+          [disabledOption]="'Escolha uma cor'"
+          [options]="opcoesCorFundo"
+          [onChange]="onChange"
+        />
+
+        <app-selection-input
+          [label]="'Escolha um esquema de cor'"
+          [disabledOption]="'Escolha um esquema de cor'"
+          [options]="opcoesEsquemaCor"
+          [onChange]="onChange"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div ngbAccordionItem>
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton>
+        <img
+          class="item-icon"
+          src="assets/imagens/controls-regular.svg"
+          alt="ícone de engrenagem"
+        />
+        Header
+      </button>
+    </h2>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <app-selection-input
+          [label]="'Modelo do header'"
+          [disabledOption]="'Escolha um modelo'"
+          [options]="opcoesModeloHeader"
+          [onChange]="onChange"
+        />
+        <app-selection-input
+          [label]="'Logo do email'"
+          [disabledOption]="'Escolha uma marca'"
+          [options]="opcoesLogo"
+          [onChange]="onChange"
+        />
+
+        <app-file-input
+          [label]="'Imagem do header'"
+          [disabled]="false"
+          />
+
+          <app-text-input
+            [label]="'Título'"
+            [placeholder]="'Digite o título'"
+            [onChange]="onChange"
+            />
+      </div>
+    </div>
+  </div>
+
+  <div ngbAccordionItem>
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton>
+        <img
+          class="item-icon"
+          src="assets/imagens/controls-regular.svg"
+          alt="ícone de engrenagem"
+        />
+        Footer
+      </button>
+    </h2>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>Content for the second item</ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div ngbAccordionItem>
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton>
+        <img
+          class="item-icon"
+          src="assets/imagens/code-regular.svg"
+          alt="ícone de engrenagem"
+        />
+        Blocos
+      </button>
+    </h2>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>Content for the second item</ng-template>
+      </div>
+    </div>
+  </div>
+</div>

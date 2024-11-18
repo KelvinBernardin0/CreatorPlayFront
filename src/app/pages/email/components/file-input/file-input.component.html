@@ -1,0 +1,9 @@
+<label>{{ label }}</label>
+<label class="custom-file-upload" style="display: block;">
+  <input
+    type="file"
+    (change)="onFileSelected($event)"
+    [disabled]="disabled"
+  />
+  {{ fileName || "Nenhum arquivo selecionado" }}
+</label>
