@@ -1,169 +1,136 @@
 <app-header></app-header>
-<div class="container-fluid">
+<app-hover-border/>
+<app-context-menu [editorMediator]="mediator"/>
+<div class="container-fluid px-0">
   <div class="row">
     <!-- BLOCOS -->
-    <div class="col-md-3">
-      <div class="structure-blocks">
-        <h5>Estrutura</h5>
-        <div class="card-deck">
-          <div class="d-grid gap-3 col-8 mx-auto">
-            <button
-              class="btn btn-light header"
-              type="button"
-              (click)="carregarOpcoesHeaders()"
-            >
-              Header
-            </button>
+      <div class="col-md-3">
+       <div class="structure-blocks">
+         <h5>Estrutura</h5>
+         <div class="card-deck">
+           <div class="d-grid gap-3 col-8 mx-auto">
+             <button
+               class="btn btn-light header"
+               type="button"
+               (click)="carregarOpcoesHeaders()"
+             >
+               Header
+             </button>
 
-            <button
-              class="btn btn-light footer"
-              type="button"
-              (click)="carregarOpcoesFooters()"
-            >
-              Footer
-            </button>
-            <button
-              class="btn btn-light propriedadesbotao"
-              type="button"
-              (click)="carregarOpcoesPropriedades()"
-            >
-              Propriedades
-            </button>
-          </div>
-        </div>
-        <h5 style="margin-bottom: 30px">Blocos</h5>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card square-card" (click)="carregarOpcoesTipografias()">
-              <img
-                src="assets/imagens/blocos/texto-icon.png"
-                alt="Texto"
-                class="img-icon"
-                draggable="false"
-              />
-              Texto
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card square-card" (click)="AnexarImagem()">
-              <img
-                src="assets/imagens/blocos/imagem-icon.png"
-                alt="imagem"
-                class="img-icon"
-                draggable="false"
-              />Imagem
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card square-card" (click)="carregarOpcoesBotoes()">
-              <img
-                src="assets/imagens/blocos/botao-icon.png"
-                alt="botao"
-                class="img-icon"
-                draggable="false"
-              />
-              Botão
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card square-card" (click)="carregarOpcoesCards()">
-              <img
-                src="assets/imagens/blocos/cards-icon.png"
-                alt="cards"
-                class="img-icon"
-                draggable="false"
-              />
-              Cards
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card square-card" (click)="carregarOpcoesPlanos()">
-              <img
-                src="assets/imagens/blocos/planos-icon.png"
-                alt="planos"
-                class="img-icon"
-                draggable="false"
-              />
-              Planos
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card square-card" (click)="carregarOpcoesVitrine()">
-              <img
-                src="assets/imagens/blocos/vitrine-icon.png"
-                alt="vitrine"
-                class="img-icon"
-                draggable="false"
-              />
-              Vitrine
-            </div>
-          </div>
-        </div>
-        <div class="avancar">
-          <button (click)="saveChanges()" class="btn btn-primary">
-            Salvar HTML
-          </button>
-        </div>
-        <div class="avancar">
-          <button (click)="desfazer()" class="btn btn-danger desfazer">
-            Desfazer
-          </button>
-        </div>
-      </div>
-    </div>
+             <button
+               class="btn btn-light footer"
+               type="button"
+               (click)="carregarOpcoesFooters()"
+             >
+               Footer
+             </button>
+             <button
+               class="btn btn-light propriedadesbotao"
+               type="button"
+               (click)="carregarOpcoesPropriedades()"
+             >
+               Propriedades
+             </button>
+           </div>
+         </div>
+         <h5 style="margin-bottom: 30px">Blocos</h5>
+         <div class="row">
+           <div class="col-md-4">
+             <div class="card square-card" (click)="carregarOpcoesTipografias()">
+               <img
+                 src="assets/imagens/blocos/texto-icon.png"
+                 alt="Texto"
+                 class="img-icon"
+                 draggable="false"
+               />
+               Texto
+             </div>
+           </div>
+           <div class="col-md-4">
+             <div class="card square-card" (click)="AnexarImagem()">
+               <img
+                 src="assets/imagens/blocos/imagem-icon.png"
+                 alt="imagem"
+                 class="img-icon"
+                 draggable="false"
+               />Imagem
+             </div>
+           </div>
+           <div class="col-md-4">
+             <div class="card square-card" (click)="carregarOpcoesBotoes()">
+               <img
+                 src="assets/imagens/blocos/botao-icon.png"
+                 alt="botao"
+                 class="img-icon"
+                 draggable="false"
+               />
+               Botão
+             </div>
+           </div>
+         </div>
+         <div class="row">
+           <div class="col-md-4">
+             <div class="card square-card" (click)="carregarOpcoesCards()">
+               <img
+                 src="assets/imagens/blocos/cards-icon.png"
+                 alt="cards"
+                 class="img-icon"
+                 draggable="false"
+               />
+               Cards
+             </div>
+           </div>
+           <div class="col-md-4">
+             <div class="card square-card" (click)="carregarOpcoesPlanos()">
+               <img
+                 src="assets/imagens/blocos/planos-icon.png"
+                 alt="planos"
+                 class="img-icon"
+                 draggable="false"
+               />
+               Planos
+             </div>
+           </div>
+           <div class="col-md-4">
+             <div class="card square-card" (click)="carregarOpcoesVitrine()">
+               <img
+                 src="assets/imagens/blocos/vitrine-icon.png"
+                 alt="vitrine"
+                 class="img-icon"
+                 draggable="false"
+               />
+               Vitrine
+             </div>
+           </div>
+         </div>
+         <div class="avancar">
+           <button (click)="saveChanges()" class="btn btn-primary">
+             Salvar HTML
+           </button>
+         </div>
+         <div class="avancar">
+           <button (click)="this.mediator.undoEditorState()" class="btn btn-danger desfazer">
+             Desfazer
+           </button>
+         </div>
+       </div>
+     </div>
+
+
     <!-- BLOCOS -->
 
     <!-- TEMPLATE -->
-    <div class="col-md-6 emailfundo" id="email-container">
-      <div
-        class="centered-content"
-        [style.backgroundColor]="selectedBackgroundColor"
-        (mouseenter)="updateHoverbleElements()"
+
+
+    <app-centered-content
+      [editorMediator]="mediator"
+      [contentHTML]="contentHTML"
+      [headerHTML]="headerHTML"
+      [footerHTML]="footerHTML"
+      id="email-container"
+      class="col-md-6 px-0 mx-3 emailfundo"
       >
-        <app-context-menu
-          (saveState)="saveState()"
-          (updateHoverbleElements)="updateHoverbleElements()"/>
-        <app-hover-border/>
-
-      <!-- Header Section -->
-        <div
-          id="header-container"
-          [innerHTML]="headerHTML"
-          contenteditable="true"
-          [ngStyle]="{ 'max-width.px': 600 }"
-          (click)="makeEditable($event)"
-          (keydown)="onKeyDown($event)"
-        >
-          <!-- Conteúdo do header será adicionado aqui -->
-        </div>
-
-        <!-- Content Section -->
-        <div
-          id="content-container"
-          [innerHTML]="contentHTML"
-          contenteditable="true"
-          [ngStyle]="{ 'max-width.px': 600 }"
-          (click)="makeEditable($event)"
-          (keydown)="onKeyDown($event)"
-        >
-          <!-- Conteúdo principal será adicionado aqui -->
-        </div>
-
-        <!-- Footer Section -->
-        <div
-          id="footer-container"
-          [innerHTML]="footerHTML"
-          contenteditable="true"
-          [ngStyle]="{ 'max-width.px': 600 }"
-          (click)="makeEditable($event)"
-          (keydown)="onKeyDown($event)"
-        >
-          <!-- Conteúdo do footer será adicionado aqui -->
-        </div>
-      </div>
-    </div>
+    </app-centered-content>
     <!-- TEMPLATE -->
 
     <!-- PROPRIEDADES DO EMAIL -->
@@ -376,8 +343,8 @@
                   class="card-list"
                   *ngFor="let opcao of opcoesTitulos"
                   draggable="true"
-                  (dragstart)="this.dragCopyCommand.onDragStart($event, opcao)"
-                  (dragend)="this.dragCopyCommand.onDragEnd($event)"
+                  (dragstart)="this.mediator.dragCopyStart($event, opcao)"
+                  (dragend)="this.mediator.dragCopyEnd($event)"
                 >
                   {{ opcao.nome }}
                 </div>
@@ -392,8 +359,8 @@
                   class="card-list"
                   *ngFor="let opcoes of opcoesDescricoes"
                   draggable="true"
-                  (dragstart)="this.dragCopyCommand.onDragStart($event, opcoes)"
-                  (dragend)="this.dragCopyCommand.onDragEnd($event)"
+                  (dragstart)="this.mediator.dragCopyStart($event, opcoes)"
+                  (dragend)="this.mediator.dragCopyEnd($event)"
                 >
                   {{ opcoes.nome }}
                 </div>
@@ -409,8 +376,8 @@
                   class="card-list"
                   *ngFor="let opcoes of opcoesLinks"
                   draggable="true"
-                  (dragstart)="this.dragCopyCommand.onDragStart($event, opcoes)"
-                  (dragend)="this.dragCopyCommand.onDragEnd($event)"
+                  (dragstart)="this.mediator.dragCopyStart($event, opcoes)"
+                  (dragend)="this.mediator.dragCopyEnd($event)"
                 >
                   {{ opcoes.nome }}
                 </div>
@@ -526,8 +493,8 @@
               class="card-list"
               *ngFor="let opcao of opcoesCards"
               draggable="true"
-              (dragstart)="this.dragCopyCommand.onDragStart($event, opcao)"
-              (dragend)="this.dragCopyCommand.onDragEnd($event)"
+              (dragstart)="this.mediator.dragCopyStart($event, opcao)"
+              (dragend)="this.mediator.dragCopyEnd($event)"
             >
               {{ opcao.nome }}
             </div>
@@ -606,8 +573,8 @@
                 class="card-list"
                 *ngFor="let opcao of opcoesVitrinePlanos"
                 draggable="true"
-                (dragstart)="this.dragCopyCommand.onDragStart($event, opcao)"
-                (dragend)="this.dragCopyCommand.onDragEnd($event)"
+                (dragstart)="this.mediator.dragCopyStart($event, opcao)"
+                (dragend)="this.mediator.dragCopyEnd($event)"
               >
                 {{ opcao.nome }}
               </div>
@@ -690,8 +657,8 @@
                 class="card-list"
                 *ngFor="let opcoes of opcoesVitrineEquipamento"
                 draggable="true"
-                (dragstart)="this.dragCopyCommand.onDragStart($event, opcoes)"
-                (dragend)="this.dragCopyCommand.onDragEnd($event)"
+                (dragstart)="this.mediator.dragCopyStart($event, opcoes)"
+                (dragend)="this.mediator.dragCopyEnd($event)"
               >
                 {{ opcoes.nome }}
               </div>

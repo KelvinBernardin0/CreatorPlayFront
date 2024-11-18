@@ -5,6 +5,10 @@
 
 }
 
+#menu {
+  background-color: white;
+}
+
 .square-card {
   padding: 10px;
   /* Borda sólida */

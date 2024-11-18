@@ -1,0 +1,47 @@
+<div id="email-container">
+  <div
+    class="centered-content"
+    [style.backgroundColor]="selectedBackgroundColor"
+    (mouseenter)="updateHoverbleElements()"
+  >
+    <!-- <app-context-menu
+    [editorMediator]="editorMediator"/>
+    <app-hover-border/> -->
+
+  <!-- Header Section -->
+    <div
+      id="header-container"
+      [innerHTML]="headerHTML"
+      contenteditable="true"
+      [ngStyle]="{ 'max-width.px': 600 }"
+      (click)="makeEditable($event)"
+      (keydown)="onKeyDown($event)"
+    >
+      <!-- Conteúdo do header será adicionado aqui -->
+    </div>
+
+    <!-- Content Section -->
+    <div
+      id="content-container"
+      [innerHTML]="contentHTML"
+      contenteditable="true"
+      [ngStyle]="{ 'max-width.px': 600 }"
+      (click)="makeEditable($event)"
+      (keydown)="onKeyDown($event)"
+    >
+      <!-- Conteúdo principal será adicionado aqui -->
+    </div>
+
+    <!-- Footer Section -->
+    <div
+      id="footer-container"
+      [innerHTML]="footerHTML"
+      contenteditable="true"
+      [ngStyle]="{ 'max-width.px': 600 }"
+      (click)="makeEditable($event)"
+      (keydown)="onKeyDown($event)"
+    >
+      <!-- Conteúdo do footer será adicionado aqui -->
+    </div>
+  </div>
+</div>

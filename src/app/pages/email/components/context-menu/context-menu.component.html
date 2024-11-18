@@ -13,8 +13,8 @@
     </div>
     <div id="reorder-item"
         class="menu-item"
-        (dragend)="this.dragMoveCommand.onDragEnd($event)"
-        (dragstart)="this.dragMoveCommand.onDragStart($event, this.innerElement)"
+        (dragstart)="this.editorMediator.dragMoveStart($event, this.innerElement)"
+        (dragend)="this.editorMediator.dragMoveEnd($event)"
         draggable="true">
       <span *ngIf="width > MINIMUM_WIDTH_SIZE">Reordenar </span>
       <img src="assets\imagens\reorder-icon.svg" alt="Icone de reordenação">

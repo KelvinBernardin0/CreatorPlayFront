@@ -1,11 +1,10 @@
 import {EventEmitter,Renderer2} from '@angular/core';
 import DragCommand from './drag-command';
+import {EditorMediator} from '../../mediator/editor_mediator';
 
 type DragMoveCommandParams = {
   renderer: Renderer2;
-  saveState: EventEmitter<any>;
-  updateHoverbleElements: EventEmitter<any>;
-  hideElement: () => void;
+  editorMediator: EditorMediator;
 };
 export default class DragMoveCommand extends DragCommand {
   private element: Element | null = null;
@@ -15,8 +14,9 @@ export default class DragMoveCommand extends DragCommand {
   }
 
   override onDragStart(event: DragEvent, opcao?: any): void {
-    this.params.saveState.emit();
+    this.params.editorMediator.saveCurrentEditorState();
     this.element = opcao;
+    this.element?.setAttribute('draggable', 'true')
     this.blockUndraggableArea();
     event.dataTransfer?.setData('text/html', this.element!.outerHTML);
   }
@@ -25,12 +25,14 @@ export default class DragMoveCommand extends DragCommand {
     event.preventDefault();
     const target = document.elementFromPoint(event.clientX, event.clientY);
 
-    if (this.hasUndraggableParent(target))
+    const dropNotAllowed = event.dataTransfer?.dropEffect === 'none'
+
+    if (dropNotAllowed || this.hasUndraggableParent(target?.parentElement!))
       return;
 
     this.params.renderer.removeChild(this.element?.parentNode, this.element);
-    this.params.hideElement();
-    this.params.updateHoverbleElements.emit();
+    this.params.editorMediator.hideContextMenu()
+    this.params.editorMediator.updateHoverbleElements();
   }
 
   private hasUndraggableParent(element: Element | null): boolean {
