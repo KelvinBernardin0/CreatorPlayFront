@@ -1,0 +1,45 @@
+<div>
+  <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
+  <label style="margin-bottom: 30px" for="esquemaCores"
+    >Arraste o Botão para onde voce quer que fique!
+  </label>
+
+  <label
+    >Quer inserir link? Selecione o botão e:
+    <button
+      class="btn btn-secondary btn-smaller btn-link"
+      (click)="inserirLink()"
+    >
+      Clique aqui
+    </button>
+  </label>
+
+  <!-- Novos botões para alinhamento -->
+  <div style="margin-bottom: 20px" class="form-group">
+    <label>Alinhamento? Selecione o botão e:</label>
+    <select
+      class="form-select-alinhamento"
+      (change)="alinhamentoSelecionado($event)"
+    >
+      <option disabled selected>Selecione</option>
+      <option value="left">Esquerda</option>
+      <option value="center">Centro</option>
+      <option value="right">Direita</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <div class="btn-options-container">
+      <div class="btn-options">
+        <img
+          class="btn-img"
+          *ngFor="let opcao of opcoesBotoes"
+          [src]="opcao.path"
+          [alt]="opcao.nome"
+          draggable="true"
+          (click)="AplicaMudanca({ target: { value: opcao.nome } }, 'content')"
+        />
+      </div>
+    </div>
+  </div>
+</div>

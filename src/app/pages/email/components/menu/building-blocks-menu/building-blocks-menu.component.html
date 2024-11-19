@@ -1,0 +1,167 @@
+<div id="building-blocks-menu">
+  <div ngbAccordion [closeOthers]="true" id="building-blocks-accordion">
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          <img
+            class="item-icon"
+            src="assets/imagens/settings-regular.svg"
+            alt="ícone de engrenagem"
+          />Estrutura
+        </button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody class="form-group my-2 mx-2">
+          <app-selection-input
+            [label]="'Modelo do email'"
+            [disabledOption]="'Escolha um modelo'"
+            [options]="opcoesModeloEstrutura"
+            [onChange]="onChange"
+          />
+
+          <app-selection-input
+            [label]="'Cor de fundo '"
+            [disabledOption]="'Escolha uma cor'"
+            [options]="opcoesCorFundo"
+            [onChange]="onChange"
+          />
+
+          <app-selection-input
+            [label]="'Escolha um esquema de cor'"
+            [disabledOption]="'Escolha um esquema de cor'"
+            [options]="opcoesEsquemaCor"
+            [onChange]="onChange"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          <img
+            class="item-icon"
+            src="assets/imagens/controls-regular.svg"
+            alt="ícone de engrenagem"
+          />
+          Header
+        </button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <app-selection-input
+            [label]="'Modelo do header'"
+            [disabledOption]="'Escolha um modelo'"
+            [options]="opcoesModeloHeader"
+            [onChange]="onChange"
+          />
+          <app-selection-input
+            [label]="'Logo do email'"
+            [disabledOption]="'Escolha uma marca'"
+            [options]="opcoesLogo"
+            [onChange]="onChange"
+          />
+
+          <app-file-input [label]="'Imagem do header'" [disabled]="false" />
+
+          <app-text-input
+            [label]="'Título'"
+            [placeholder]="'Digite o título'"
+            [onChange]="onChange"
+          />
+
+          <app-toggle-input
+            [label]="'Incluir pré-título'"
+            (onChange)="this.mostrarPreTitulo = $event"
+          />
+          <app-toggle-input
+            [label]="'Incluir subtítulo'"
+            (onChange)="this.mostrarSubTitulo = $event"
+          />
+          <app-toggle-input
+            [label]="'Incluir botão'"
+            (onChange)="this.mostrarBotao = $event"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          <img
+            class="item-icon"
+            src="assets/imagens/controls-regular.svg"
+            alt="ícone de engrenagem"
+          />
+          Footer
+        </button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <app-selection-input
+            [label]="'Esquema de cor do footer'"
+            [disabledOption]="'Escolha um esquema de cor'"
+            [options]="this.opcoesEsquemaCor"
+            [onChange]="onChange"
+          />
+          <app-toggle-input
+            [label]="'Incluir texto legal'"
+            (onChange)="this.mostrarTextoLegal = $event"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          <img
+            class="item-icon"
+            src="assets/imagens/code-regular.svg"
+            alt="ícone de engrenagem"
+          />
+          Blocos
+        </button>
+      </h2>
+
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <div class="row">
+              <ng-container *ngFor="let block of blocks">
+                <div class="col-md-4">
+                  <div
+                    class="card square-card"
+                    (click)="this.changeState(block.text)"
+                  >
+                    <img
+                      src="{{ block.imagePath }}"
+                      alt="Texto"
+                      class="img-icon"
+                      draggable="false"
+                    />
+                    {{ block.text }}
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="avancar">
+    <button
+    class="btn btn-primary">
+    Salvar HTML
+  </button>
+  <!-- (click)="saveChanges()"  -->
+  </div>
+  <div class="avancar">
+    <button (click)="this.mediator.undoEditorState()" class="btn btn-danger desfazer">
+      Desfazer
+    </button>
+  </div>
+</div>

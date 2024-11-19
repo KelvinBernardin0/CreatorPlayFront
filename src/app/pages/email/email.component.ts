@@ -2,7 +2,10 @@ import {HttpClient} from '@angular/common/http';
 import {AfterViewInit,Component,ElementRef,Renderer2,ViewChild,ViewEncapsulation} from '@angular/core';
 import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
 import {ActivatedRoute,Router} from '@angular/router';
+import {NamedPath} from 'src/app/common/types/NamedPath';
 import {CenteredContentComponent} from './components/centered-content/centered-content.component';
+import {ContextMenuComponent} from './components/menu/context-menu/context-menu.component';
+import {HoverBorderComponent} from './components/menu/hover-border/hover-border.component';
 import {botoes} from './data/botoes';
 import {cards} from './data/cards';
 import {descricoes} from './data/descricoes';
@@ -13,10 +16,10 @@ import {links} from './data/links';
 import {planos} from './data/planos';
 import {propriedades} from './data/propriedades';
 import {titulos} from './data/titulos';
-import {EmailEditorMediator} from './mediator/email-editor-mediator';
-import {EditorMediator} from './mediator/editor_mediator';
-import {HoverBorderComponent} from './components/hover-border/hover-border.component';
-import {ContextMenuComponent} from './components/context-menu/context-menu.component';
+import {EditorMediator} from './patterns/mediator/editor_mediator';
+import {EmailEditorMediator} from './patterns/mediator/email-editor-mediator';
+import {PropertyState} from './patterns/state/propertie-state';
+
 
 interface OpcaoHeader {
   nome: string;
@@ -30,6 +33,7 @@ interface OpcaoHeader {
   encapsulation: ViewEncapsulation.None
 })
 export class EmailComponent implements AfterViewInit{
+
   emailHTML: SafeHtml = '';
   rawEmailHTML: string = '';
 
@@ -80,6 +84,7 @@ export class EmailComponent implements AfterViewInit{
   @ViewChild(ContextMenuComponent) contextMenuComponent!: ContextMenuComponent;
 
   protected mediator!: EditorMediator
+  protected propertyState: PropertyState = 'Vazio'
   constructor(
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -93,7 +98,7 @@ export class EmailComponent implements AfterViewInit{
 
 
   ngAfterViewInit(): void {
-    this.mediator = new EmailEditorMediator(this.renderer, this.centeredContentComponent, this.contextMenuComponent, this.hoverBorderComponent)
+    this.mediator = new EmailEditorMediator(this, this.renderer, this.centeredContentComponent, this.contextMenuComponent, this.hoverBorderComponent)
     this.route.queryParams
     .subscribe((params) => {
       if (params['emailHTML']) {
@@ -101,6 +106,7 @@ export class EmailComponent implements AfterViewInit{
         this.divideHTML(this.rawEmailHTML);
       }
     })
+    this.carregarOpcoesBotoes()
   }
 
   //---------------- FUNCIONAMENTO DO HTML ----------------
@@ -401,13 +407,15 @@ export class EmailComponent implements AfterViewInit{
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0) return;
 
-    const range = selection.getRangeAt(0);
+    const range = this.mediator.getSelectedElement();
+    if(!range)
+      return;
 
     // Remove qualquer div existente com o atributo de estilo
-    const existingDiv = editableContainer.querySelector('div[style]');
-    if (existingDiv) {
-      existingDiv.outerHTML = existingDiv.innerHTML;
-    }
+    // const existingDiv = editableContainer.querySelector('div[style]');
+    // if (existingDiv) {
+    //   existingDiv.outerHTML = existingDiv.innerHTML;
+    // }
 
     // Cria um elemento <div> para envolver o conteúdo selecionado
     const div = document.createElement('div');
@@ -430,12 +438,16 @@ export class EmailComponent implements AfterViewInit{
     this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
 
     // Move o conteúdo selecionado para dentro do <div> com o estilo de alinhamento
-    div.appendChild(range.extractContents());
-    range.insertNode(div);
+
+    div.appendChild(range.cloneNode(true));
+    range.replaceWith(div)
+    this.mediator.displayContextMenuOn(div.firstChild as Element)
+    this.mediator.saveCurrentEditorState()
+    // range.insertNode(div);
 
     // Atualiza o HTML editável
-    this.rawEmailHTML = editableContainer.innerHTML;
-    this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+    // this.rawEmailHTML = editableContainer.innerHTML;
+    // this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
   }
   //---------------- FIM DOS BOTOES  ----------------
 
@@ -797,6 +809,21 @@ export class EmailComponent implements AfterViewInit{
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
 
-  //---------------- DESFAZER MUDANÇA NO HTML ----------------
+  changePropertiesState(state: PropertyState) {
+    this.propertyState = state
+  }
 
+  dragStart(event: DragEvent, target: { value: string }): void {
+    const selectedValue = target.value;
+    const value: NamedPath = this.opcoesBotoes.find(
+      (opcao) => opcao.nome === selectedValue
+    )!;
+    const img = document.createElement('img');
+    img.src = value.path;
+    this.mediator.dragCopyStart(event, img.outerHTML);
+  }
+
+  dragEnd(event: DragEvent){
+    this.mediator.dragCopyEnd(event)
+  }
 }

@@ -1,0 +1,14 @@
+.form-check > .form-check-input{
+  float: right;
+}
+
+.form-check-input{
+  background-color: #949494;
+  background-image: url('/assets/imagens/inactive-toggle.svg');
+}
+
+.form-check-input:checked {
+  background-color: #E0CCEB;
+  background-image: url('/assets/imagens/active-toggle.svg');
+  height: 1,5em;
+}

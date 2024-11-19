@@ -1,5 +1,5 @@
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {DatePipe} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {HTTP_INTERCEPTORS,HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
@@ -10,8 +10,8 @@ import {AppComponent} from './app.component';
 import {AutenticacaoGuard} from './common/autenticacao/autenticacao.guard';
 import {AutenticacaoInterceptor} from './common/autenticacao/autenticacao.interceptor';
 import {CenteredContentComponent} from './pages/email/components/centered-content/centered-content.component'; // Import DragDropModule
-import {ContextMenuComponent} from './pages/email/components/context-menu/context-menu.component';
-import {HoverBorderComponent} from './pages/email/components/hover-border/hover-border.component';
+import {ContextMenuComponent} from './pages/email/components/menu/context-menu/context-menu.component';
+import {HoverBorderComponent} from './pages/email/components/menu/hover-border/hover-border.component';
 import {EmailComponent} from './pages/email/email.component';
 import {HeaderComponent} from './pages/header/header.component';
 import {InicioComponent} from './pages/inicio/inicio.component';
@@ -19,11 +19,15 @@ import {EsqueciSenhaComponent} from './pages/login/esqueci-senha/esqueci-senha.c
 import {LoginComponent} from './pages/login/login/login.component';
 import {RegistraseComponent} from './pages/login/registrase/registrase.component';
 import {PerfilComponent} from './pages/perfil/perfil.component';
-import { BuildingBlocksMenuComponent } from './pages/email/components/building-blocks-menu/building-blocks-menu.component';
+import { BuildingBlocksMenuComponent } from './pages/email/components/menu/building-blocks-menu/building-blocks-menu.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SelectionInputComponent } from './pages/email/components/selection-input/selection-input.component';
-import { FileInputComponent } from './pages/email/components/file-input/file-input.component';
-import { TextInputComponent } from './pages/email/components/text-input/text-input.component';
+import { SelectionInputComponent } from './pages/email/components/input/selection-input/selection-input.component';
+import { FileInputComponent } from './pages/email/components/input/file-input/file-input.component';
+import { TextInputComponent } from './pages/email/components/input/text-input/text-input.component';
+import { ToggleInputComponent } from './pages/email/components/input/toggle-input/toggle-input.component';
+import { TypographyMenuComponent } from './pages/email/components/menu/typography-menu/typography-menu.component';
+import { ImageMenuComponent } from './pages/email/components/menu/image-menu/image-menu.component';
+import { ButtonMenuComponent } from './pages/email/components/menu/button-menu/button-menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -76,9 +80,14 @@ const routes: Routes = [
     SelectionInputComponent,
     FileInputComponent,
     TextInputComponent,
+    ToggleInputComponent,
+    TypographyMenuComponent,
+    ImageMenuComponent,
+    ButtonMenuComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,

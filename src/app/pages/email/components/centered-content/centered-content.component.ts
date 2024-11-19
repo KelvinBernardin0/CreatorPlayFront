@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
-import {ContextMenuComponent} from '../context-menu/context-menu.component';
-import {HoverBorderComponent} from '../hover-border/hover-border.component';
+import {ContextMenuComponent} from '../menu/context-menu/context-menu.component';
+import {HoverBorderComponent} from '../menu/hover-border/hover-border.component';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import HistoryCommand from '../../command/history/history-command';
+import HistoryCommand from '../../patterns/command/history/history-command';
 import {StringState} from 'src/app/common/types/State';
-import {EditorMediator} from '../../mediator/editor_mediator';
+import {EditorMediator} from '../../patterns/mediator/editor_mediator';
 
 @Component({
   selector: 'app-centered-content',
@@ -12,6 +12,7 @@ import {EditorMediator} from '../../mediator/editor_mediator';
   styleUrls: ['./centered-content.component.css']
 })
 export class CenteredContentComponent implements AfterViewInit {
+
 
   selectedBackgroundColor = ''
 
@@ -117,5 +118,6 @@ export class CenteredContentComponent implements AfterViewInit {
       if (headerContainer && contentContainer && footerContainer)
         task(headerContainer.innerHTML, contentContainer.innerHTML, footerContainer.innerHTML)
     }
+
 
 }

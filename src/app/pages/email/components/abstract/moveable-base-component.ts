@@ -12,7 +12,7 @@ export abstract class MovableBaseComponent {
   width: number = 0;
   height: number = 0;
   show: boolean = false;
-  innerElement: Element | null = null;
+  innerElement!: Element;
 
   public displayComponentAt(elementPosition: Position): void {
     this.top = elementPosition.top;
@@ -36,7 +36,6 @@ export abstract class MovableBaseComponent {
   }
 
   public hide(): void {
-    this.innerElement = null;
     this.show = false;
   }
 }

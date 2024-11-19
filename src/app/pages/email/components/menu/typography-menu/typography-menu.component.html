@@ -1,0 +1,117 @@
+<div>
+  <div class="btn-options-container">
+    <h5 style="margin-bottom: 20px">Tipografias</h5>
+    <label for="esquemaCores"
+      >Arraste a opção para onde voce quer que fique!
+    </label>
+
+    <div class="form-group">
+      <label for="esquemaCores">Cor: </label>
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        #corSelect
+        (change)="AplicaCor(corSelect.value)"
+      >
+        <option disabled selected>Cor do Texto</option>
+        <option
+          value="#49066B"
+          style="background-color: #49066b; color: #ffffff"
+        >
+          Roxo
+        </option>
+        <option
+          value="#660099"
+          style="background-color: #660099; color: #ffffff"
+        >
+          Roxo Claro
+        </option>
+        <option
+          value="#000000"
+          style="background-color: #000000; color: #ffffff"
+        >
+          Preto
+        </option>
+        <option
+          value="#666666"
+          style="background-color: #666666; color: #ffffff"
+        >
+          Cinza
+        </option>
+        <option
+          value="#FFFFFF"
+          style="background-color: #ffffff; color: #000000"
+        >
+          Branco
+        </option>
+      </select>
+      <!-- <button class="btn btn-secondary btn-smaller" (click)="AplicaCor(corSelect.value)">Aplicar</button> -->
+    </div>
+
+    <div class="form-group">
+      <label>Estilo:</label>
+      <select
+        class="form-select"
+        (change)="aplicaEstiloSelecionado($event)"
+      >
+        <option disabled selected>Selecione</option>
+        <option value="bold" style="font-weight: bold">Negrito</option>
+        <option value="italic" style="font-style: italic">
+          Itálico
+        </option>
+        <option value="underline" style="text-decoration: underline">
+          Sublinhado
+        </option>
+      </select>
+    </div>
+
+    <label class="titulosComponentes">Titulos: </label>
+    <div class="form-group">
+      <div class="card-container">
+        <!-- Lista de cards que podem ser arrastados -->
+        <div
+          class="card-list"
+          *ngFor="let opcao of opcoesTitulos"
+          draggable="true"
+          (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
+          (dragend)="this.mediator.dragCopyEnd($event)"
+        >
+          {{ opcao.nome }}
+        </div>
+      </div>
+    </div>
+
+    <label class="titulosComponentes">Descrições: </label>
+    <div class="form-group">
+      <div class="card-container">
+        <!-- Lista de cards que podem ser arrastados -->
+        <div
+          class="card-list"
+          *ngFor="let opcoes of opcoesDescricoes"
+          draggable="true"
+          (dragstart)="this.mediator.dragCopyStart($event, opcoes.html)"
+          (dragend)="this.mediator.dragCopyEnd($event)"
+        >
+          {{ opcoes.nome }}
+        </div>
+      </div>
+    </div>
+
+    <label class="titulosComponentes">Links: </label>
+
+    <div class="form-group">
+      <div class="card-container">
+        <!-- Lista de cards que podem ser arrastados -->
+        <div
+          class="card-list"
+          *ngFor="let opcoes of opcoesLinks"
+          draggable="true"
+          (dragstart)="this.mediator.dragCopyStart($event, opcoes.html)"
+          (dragend)="this.mediator.dragCopyEnd($event)"
+        >
+          {{ opcoes.nome }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

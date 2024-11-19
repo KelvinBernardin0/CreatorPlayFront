@@ -1,0 +1,9 @@
+<label *ngIf="label !== ''" class="w-100">
+  {{ label }}
+</label>
+  <input
+    class="my-2 p-3"
+    type="text"
+    (change)="this.onChange($event)"
+    placeholder="{{ placeholder }}"
+  />

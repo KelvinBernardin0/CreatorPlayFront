@@ -1,0 +1,33 @@
+<div>
+  <h5 style="margin-bottom: 50px">Adicionar Imagens</h5>
+  <p>
+    Antes de inserir a imagem, selecione o local aonde voce quer
+    adicionar
+  </p>
+  <select
+    class="form-select"
+    style="margin-bottom: 30px"
+    [(ngModel)]="selectedImageSize"
+  >
+    <option value="P">Pequena (25%)</option>
+    <option value="M">Média (50%)</option>
+    <option value="G">Grande (100%)</option>
+  </select>
+  <div class="image-upload-container">
+    <!-- Checkbox para confirmar termos de uso -->
+    <label>
+      <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+      Eu aceito os termos de uso
+    </label>
+
+    <!-- Botão personalizado para upload de arquivo -->
+    <label class="custom-file-upload">
+      <input
+        type="file"
+        (change)="uploadFile($event)"
+        [disabled]="!termosDeUsoAceitos"
+      />
+      Escolher arquivo
+    </label>
+  </div>
+</div>

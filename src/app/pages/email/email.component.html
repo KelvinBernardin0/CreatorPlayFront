@@ -4,7 +4,15 @@
 <div class="container-fluid px-0">
   <div class="row">
     <!-- BLOCOS -->
-      <div class="col-md-3">
+
+<!--
+  -->
+  <app-building-blocks-menu
+    [mediator]="mediator"
+   class="bg-body col-md-3 px-0 m-0"/>
+
+
+      <!-- <div class="col-md-3">
        <div class="structure-blocks">
          <h5>Estrutura</h5>
          <div class="card-deck">
@@ -114,7 +122,7 @@
            </button>
          </div>
        </div>
-     </div>
+     </div> -->
 
 
     <!-- BLOCOS -->
@@ -129,8 +137,7 @@
       [footerHTML]="footerHTML"
       id="email-container"
       class="col-md-6 px-0 mx-3 emailfundo"
-      >
-    </app-centered-content>
+      />
     <!-- TEMPLATE -->
 
     <!-- PROPRIEDADES DO EMAIL -->
@@ -213,7 +220,7 @@
         <!-- FOOTER -->
 
         <!-- PROPRIEDADES -->
-        <div *ngIf="mostrarPropriedades" class="propriedades">
+        <div *ngIf="false" class="propriedades">
           <h5 style="margin-bottom: 50px">Propriedades do E-mail</h5>
 
           <!-- <div class="form-group">
@@ -268,167 +275,26 @@
         <!-- PROPRIEDADES -->
 
         <!-- TIPOGRAFIAS -->
-        <div *ngIf="mostrarTipografia">
-          <div class="btn-options-container">
-            <h5 style="margin-bottom: 20px">Tipografias</h5>
-            <label for="esquemaCores"
-              >Arraste a opção para onde voce quer que fique!
-            </label>
+        <app-typography-menu
+          *ngIf="this.propertyState === 'Texto'"
+          [mediator]="this.mediator"
+        />
 
-            <div class="form-group">
-              <label for="esquemaCores">Cor: </label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                #corSelect
-                (change)="AplicaCor(corSelect.value)"
-              >
-                <option disabled selected>Cor do Texto</option>
-                <option
-                  value="#49066B"
-                  style="background-color: #49066b; color: #ffffff"
-                >
-                  Roxo
-                </option>
-                <option
-                  value="#660099"
-                  style="background-color: #660099; color: #ffffff"
-                >
-                  Roxo Claro
-                </option>
-                <option
-                  value="#000000"
-                  style="background-color: #000000; color: #ffffff"
-                >
-                  Preto
-                </option>
-                <option
-                  value="#666666"
-                  style="background-color: #666666; color: #ffffff"
-                >
-                  Cinza
-                </option>
-                <option
-                  value="#FFFFFF"
-                  style="background-color: #ffffff; color: #000000"
-                >
-                  Branco
-                </option>
-              </select>
-              <!-- <button class="btn btn-secondary btn-smaller" (click)="AplicaCor(corSelect.value)">Aplicar</button> -->
-            </div>
-
-            <div class="form-group">
-              <label>Estilo:</label>
-              <select
-                class="form-select"
-                (change)="aplicaEstiloSelecionado($event)"
-              >
-                <option disabled selected>Selecione</option>
-                <option value="bold" style="font-weight: bold">Negrito</option>
-                <option value="italic" style="font-style: italic">
-                  Itálico
-                </option>
-                <option value="underline" style="text-decoration: underline">
-                  Sublinhado
-                </option>
-              </select>
-            </div>
-
-            <label class="titulosComponentes">Titulos: </label>
-            <div class="form-group">
-              <div class="card-container">
-                <!-- Lista de cards que podem ser arrastados -->
-                <div
-                  class="card-list"
-                  *ngFor="let opcao of opcoesTitulos"
-                  draggable="true"
-                  (dragstart)="this.mediator.dragCopyStart($event, opcao)"
-                  (dragend)="this.mediator.dragCopyEnd($event)"
-                >
-                  {{ opcao.nome }}
-                </div>
-              </div>
-            </div>
-
-            <label class="titulosComponentes">Descrições: </label>
-            <div class="form-group">
-              <div class="card-container">
-                <!-- Lista de cards que podem ser arrastados -->
-                <div
-                  class="card-list"
-                  *ngFor="let opcoes of opcoesDescricoes"
-                  draggable="true"
-                  (dragstart)="this.mediator.dragCopyStart($event, opcoes)"
-                  (dragend)="this.mediator.dragCopyEnd($event)"
-                >
-                  {{ opcoes.nome }}
-                </div>
-              </div>
-            </div>
-
-            <label class="titulosComponentes">Links: </label>
-
-            <div class="form-group">
-              <div class="card-container">
-                <!-- Lista de cards que podem ser arrastados -->
-                <div
-                  class="card-list"
-                  *ngFor="let opcoes of opcoesLinks"
-                  draggable="true"
-                  (dragstart)="this.mediator.dragCopyStart($event, opcoes)"
-                  (dragend)="this.mediator.dragCopyEnd($event)"
-                >
-                  {{ opcoes.nome }}
-                </div>
-              </div>
-            </div>
-
-
-
-
-          </div>
-        </div>
+        <app-image-menu
+          *ngIf="this.propertyState === 'Imagem'"
+          [mediator]="this.mediator"
+        />
         <!-- TIPOGRAFIAS -->
 
-        <!-- IMAGEM -->
-        <div *ngIf="mostrarImagem">
-          <h5 style="margin-bottom: 50px">Adicionar Imagens</h5>
-          <p>
-            Antes de inserir a imagem, selecione o local aonde voce quer
-            adicionar
-          </p>
-          <select
-            class="form-select"
-            style="margin-bottom: 30px"
-            [(ngModel)]="selectedImageSize"
-          >
-            <option value="P">Pequena (25%)</option>
-            <option value="M">Média (50%)</option>
-            <option value="G">Grande (100%)</option>
-          </select>
-          <div class="image-upload-container">
-            <!-- Checkbox para confirmar termos de uso -->
-            <label>
-              <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
-              Eu aceito os termos de uso
-            </label>
-
-            <!-- Botão personalizado para upload de arquivo -->
-            <label class="custom-file-upload">
-              <input
-                type="file"
-                (change)="uploadFile($event)"
-                [disabled]="!termosDeUsoAceitos"
-              />
-              Escolher arquivo
-            </label>
-          </div>
-        </div>
-        <!-- IMAGEM -->
 
         <!-- BOTAO -->
-        <div *ngIf="mostrarBotao">
+        <!--
+          -->
+          <app-button-menu
+            [mediator]="this.mediator"
+            *ngIf="this.propertyState === 'Botão'"/>
+
+        <!-- <div *ngIf="this.propertyState === 'Botão'">
           <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
           <label style="margin-bottom: 30px" for="esquemaCores"
             >Arraste o Botão para onde voce quer que fique!
@@ -444,7 +310,7 @@
             </button>
           </label>
 
-          <!-- Novos botões para alinhamento -->
+
           <div style="margin-bottom: 20px;" class="form-group">
             <label>Alinhamento? Selecione o botão e:</label>
             <select
@@ -460,12 +326,16 @@
 
           <div class="form-group">
             <div class="btn-options-container">
-              <div class="btn-options">
+              <div
+              class="btn-options">
                 <img
                   class="btn-img"
                   *ngFor="let opcao of opcoesBotoes"
                   [src]="opcao.path"
                   [alt]="opcao.nome"
+                  draggable="true"
+                  (dragstart)="this.dragStart($event, {value: opcao.nome})"
+                  (dragend)="this.dragEnd($event)"
                   (click)="
                     AplicaMudanca({ target: { value: opcao.nome } }, 'content')
                   "
@@ -475,12 +345,13 @@
           </div>
 
 
-        </div>
+        </div> -->
+
 
         <!-- BOTAO -->
 
         <!-- CARDS -->
-        <div *ngIf="mostrarCards">
+        <div *ngIf="this.propertyState === 'Cards'">
           <h5 style="margin-bottom: 50px">Propriedades dos Cards</h5>
           <label for="esquemaCores"
             >Arraste o Card para onde voce quer que fique!
@@ -493,7 +364,7 @@
               class="card-list"
               *ngFor="let opcao of opcoesCards"
               draggable="true"
-              (dragstart)="this.mediator.dragCopyStart($event, opcao)"
+              (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
               (dragend)="this.mediator.dragCopyEnd($event)"
             >
               {{ opcao.nome }}
@@ -540,7 +411,7 @@
         <!-- CARDS -->
 
         <!-- PLANOS -->
-        <div *ngIf="mostrarPlanos">
+        <div *ngIf="this.propertyState === 'Planos'">
           <h5 style="margin-bottom: 50px">Propriedades dos Planos</h5>
 
           <!-- <div class="form-group">
@@ -573,7 +444,7 @@
                 class="card-list"
                 *ngFor="let opcao of opcoesVitrinePlanos"
                 draggable="true"
-                (dragstart)="this.mediator.dragCopyStart($event, opcao)"
+                (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
                 (dragend)="this.mediator.dragCopyEnd($event)"
               >
                 {{ opcao.nome }}
@@ -626,7 +497,7 @@
         <!-- PLANOS -->
 
         <!-- VITRINE -->
-        <div *ngIf="mostrarVitrine">
+        <div *ngIf="this.propertyState === 'Vitrine'">
           <h5 style="margin-bottom: 50px">Propriedades das Vitrines</h5>
           <!-- <div class="form-group">
             <label for="esquemaCores">Vitrine: </label>
@@ -657,7 +528,7 @@
                 class="card-list"
                 *ngFor="let opcoes of opcoesVitrineEquipamento"
                 draggable="true"
-                (dragstart)="this.mediator.dragCopyStart($event, opcoes)"
+                (dragstart)="this.mediator.dragCopyStart($event, opcoes.html)"
                 (dragend)="this.mediator.dragCopyEnd($event)"
               >
                 {{ opcoes.nome }}
