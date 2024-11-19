@@ -1,0 +1,67 @@
+<div>
+  <h5 style="margin-bottom: 50px">Propriedades dos Planos</h5>
+
+
+  <label for="esquemaCores"
+    >Arraste o Plano para onde voce quer que fique!
+  </label>
+  <div
+  style="margin-bottom: 40px;"
+
+   class="form-group">
+    <div class="card-container">
+      <!-- Lista de cards que podem ser arrastados -->
+      <div
+        class="card-list"
+        *ngFor="let opcao of opcoesVitrinePlanos"
+        draggable="true"
+        (dragstart)="this.dragCopyStart($event, opcao.html)"
+        (dragend)="this.dragCopyEnd($event)"
+      >
+        {{ opcao.nome }}
+      </div>
+    </div>
+  </div>
+
+
+  <label
+
+    >Quer inserir link? Selecione o botão e:
+    <button
+      class="btn btn-secondary btn-smaller btn-link"
+      (click)="inserirLink()"
+    >
+      Clique aqui
+    </button>
+  </label>
+
+  <div>
+    <!-- <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagens</h2>
+    <p>Selecione o local aonde voce quer adicionar a imagem</p>
+    <select class="form-select" style="margin-bottom: 30px"
+    [(ngModel)]="selectedImageSize">
+      <option value="P">Pequena (25%)</option>
+      <option value="M">Média (50%)</option>
+      <option value="G">Grande (100%)</option>
+    </select> -->
+    <div class="image-upload-container">
+      <!-- Checkbox para confirmar termos de uso -->
+      <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
+
+    <label style="display: block; margin-bottom: 10px;">
+      <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+      Eu aceito os termos de uso
+    </label>
+
+      <!-- Botão personalizado para upload de arquivo -->
+      <label class="custom-file-upload">
+        <input
+          type="file"
+          (change)="uploadFileCard($event)"
+          [disabled]="!termosDeUsoAceitos"
+        />
+        Escolher arquivo
+      </label>
+    </div>
+  </div>
+</div>

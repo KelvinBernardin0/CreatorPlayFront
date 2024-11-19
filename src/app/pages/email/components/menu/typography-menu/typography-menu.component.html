@@ -73,8 +73,8 @@
           class="card-list"
           *ngFor="let opcao of opcoesTitulos"
           draggable="true"
-          (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
-          (dragend)="this.mediator.dragCopyEnd($event)"
+          (dragstart)="this.dragCopyStart($event, opcao.html)"
+          (dragend)="this.dragCopyEnd($event)"
         >
           {{ opcao.nome }}
         </div>
@@ -89,8 +89,8 @@
           class="card-list"
           *ngFor="let opcoes of opcoesDescricoes"
           draggable="true"
-          (dragstart)="this.mediator.dragCopyStart($event, opcoes.html)"
-          (dragend)="this.mediator.dragCopyEnd($event)"
+          (dragstart)="this.dragCopyStart($event, opcoes.html)"
+          (dragend)="this.dragCopyEnd($event)"
         >
           {{ opcoes.nome }}
         </div>
@@ -106,8 +106,8 @@
           class="card-list"
           *ngFor="let opcoes of opcoesLinks"
           draggable="true"
-          (dragstart)="this.mediator.dragCopyStart($event, opcoes.html)"
-          (dragend)="this.mediator.dragCopyEnd($event)"
+          (dragstart)="this.dragCopyStart($event, opcoes.html)"
+          (dragend)="this.dragCopyEnd($event)"
         >
           {{ opcoes.nome }}
         </div>

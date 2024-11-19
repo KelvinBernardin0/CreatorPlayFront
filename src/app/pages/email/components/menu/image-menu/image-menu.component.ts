@@ -11,7 +11,7 @@ import {StringState} from 'src/app/common/types/State';
 })
 export class ImageMenuComponent extends PropertiesMenu implements AfterViewInit{
 
-  @Input() mediator!: EditorMediator
+  @Input() override mediator!: EditorMediator
 
   protected selectedImageSize: string = 'G';
   protected lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada

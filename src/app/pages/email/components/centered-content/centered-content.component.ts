@@ -1,8 +1,5 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
-import {ContextMenuComponent} from '../menu/context-menu/context-menu.component';
-import {HoverBorderComponent} from '../menu/hover-border/hover-border.component';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import HistoryCommand from '../../patterns/command/history/history-command';
+import {AfterViewInit,Component,Input} from '@angular/core';
+import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
 import {StringState} from 'src/app/common/types/State';
 import {EditorMediator} from '../../patterns/mediator/editor_mediator';
 

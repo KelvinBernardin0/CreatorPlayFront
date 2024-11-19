@@ -1,38 +1,30 @@
-import { PropertyState } from './../state/propertie-state';
 import {Renderer2} from '@angular/core';
 import {StringState} from 'src/app/common/types/State';
 import {CenteredContentComponent} from '../../components/centered-content/centered-content.component';
 import {ContextMenuComponent} from '../../components/menu/context-menu/context-menu.component';
 import {HoverBorderComponent} from '../../components/menu/hover-border/hover-border.component';
 import {EmailComponent} from '../../email.component';
-import DragCopyCommand from '../command/drag/drag-copy-command';
-import DragMoveCommand from '../command/drag/drag-move-command';
-import HistoryStringStateCommand from '../command/history/history-string-state-command';
+import Command from '../command/drag/drag-start-command';
+import HistoryStringStateStack from '../command/history/history-string-state-stack';
+import {PropertyState} from './../state/propertie-state';
 import {EditorMediator} from './editor_mediator';
 
 export class EmailEditorMediator extends EditorMediator {
-  private historyCommand!: HistoryStringStateCommand;
-  private dragMoveCommand!: DragMoveCommand;
-  private dragCopyCommand!: DragCopyCommand;
+
+  private historyStack!: HistoryStringStateStack;
 
   constructor(
     private emailComponent: EmailComponent,
-    private renderer: Renderer2,
     private centeredContentComponent: CenteredContentComponent,
     private contextMenuComponent: ContextMenuComponent,
     private hoverBorderComponent: HoverBorderComponent
   ) {
     super();
-    this.historyCommand = new HistoryStringStateCommand(this);
-    this.dragCopyCommand = new DragCopyCommand(this);
-    this.dragMoveCommand = new DragMoveCommand({
-      renderer: renderer,
-      editorMediator: this,
-    });
+    this.historyStack = new HistoryStringStateStack(this);
   }
 
   override saveNewEditorState(stringState: StringState): void {
-    this.historyCommand.save(stringState);
+    this.historyStack.save(stringState);
   }
 
   override updateEditorState(state: StringState): void {
@@ -43,7 +35,7 @@ export class EmailEditorMediator extends EditorMediator {
     this.centeredContentComponent.updateHoverbleElements();
   }
   override undoEditorState(): void {
-    this.historyCommand.undo();
+    this.historyStack.undo();
     this.hideContextMenu()
   }
   override getSelectedElement(): Element|null {
@@ -62,21 +54,7 @@ export class EmailEditorMediator extends EditorMediator {
   }
 
   override getCurrentEditorState(): StringState | null{
-    return this.historyCommand.getLastState();
-  }
-
-  override dragCopyStart(event: DragEvent, data: string): void {
-    this.dragCopyCommand.onDragStart(event, data);
-  }
-  override dragCopyEnd(event: DragEvent): void {
-    this.dragCopyCommand.onDragEnd(event);
-  }
-
-  override dragMoveStart(event: DragEvent, opcao?: any): void {
-    this.dragMoveCommand.onDragStart(event, opcao);
-  }
-  override dragMoveEnd(event: DragEvent): void {
-    this.dragMoveCommand.onDragEnd(event);
+    return this.historyStack.getLastState();
   }
 
   override displayHoverBorderOn(element: Element): void {
@@ -90,4 +68,7 @@ export class EmailEditorMediator extends EditorMediator {
     this.emailComponent.changePropertiesState(state);
   }
 
+  override executeCommand(command: Command): void {
+    command.execute();
+  }
 }

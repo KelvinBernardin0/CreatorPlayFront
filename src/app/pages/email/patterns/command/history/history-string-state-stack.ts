@@ -1,10 +1,10 @@
-import HistoryCommand from "./history-command";
-import {StringState as StringState} from "../../../../../common/types/State";
+import {StringState} from "../../../../../common/types/State";
 import {EditorMediator} from "../../mediator/editor_mediator";
+import HistoryStack from "./history-stack";
 
 
-export default class HistoryStringStateCommand extends HistoryCommand<StringState> {
 
+export default class HistoryStringStateStack extends HistoryStack<StringState> {
 
   private state: StringState[] = []
 

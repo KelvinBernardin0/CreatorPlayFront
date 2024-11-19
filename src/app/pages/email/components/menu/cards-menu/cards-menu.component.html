@@ -11,8 +11,8 @@
       class="card-list"
       *ngFor="let opcao of opcoesCards"
       draggable="true"
-      (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
-      (dragend)="this.mediator.dragCopyEnd($event)"
+      (dragstart)="this.dragCopyStart($event, opcao.html)"
+      (dragend)="this.dragCopyEnd($event)"
     >
       {{ opcao.nome }}
     </div>

@@ -1,35 +1,31 @@
-import {HttpClient} from '@angular/common/http';
-import {AfterViewInit,Component,Input} from '@angular/core';
-import {NamedHtml} from 'src/app/common/types/NamedHtml';
-import {cards} from '../../../data/cards';
-import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
-import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start-command';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import {EditorMediator} from '../../../patterns/mediator/editor_mediator';
+import {NamedHtml} from 'src/app/common/types/NamedHtml';
 import PropertiesMenu from '../../abstract/properties-menu';
+import {HttpClient} from '@angular/common/http';
+import {planos} from '../../../data/planos';
+import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start-command';
+import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
 
 @Component({
-  selector: 'app-cards-menu',
-  templateUrl: './cards-menu.component.html',
-  styleUrls: ['./cards-menu.component.css']
+  selector: 'app-plans-menu',
+  templateUrl: './plans-menu.component.html',
+  styleUrls: ['./plans-menu.component.css']
 })
-export class CardsMenuComponent extends PropertiesMenu implements AfterViewInit{
+export class PlansMenuComponent extends PropertiesMenu implements AfterViewInit {
+
 
   @Input() override mediator!: EditorMediator
-
-  opcoesCards: NamedHtml[] = [];
+  protected opcoesVitrinePlanos: NamedHtml[] = [];
   termosDeUsoAceitos: boolean = false;
 
-  constructor(
-    http: HttpClient
-  ){
+  constructor(http: HttpClient){
     super(http)
   }
 
   ngAfterViewInit(): void {
-    cards.forEach((opcao) => this.getAndPushData(opcao, this.opcoesCards));
+    planos.forEach((opcao) => this.getAndPushData(opcao, this.opcoesVitrinePlanos))
   }
-
-
 
   uploadFileCard(event: any) {
     this.uploadFileToContainer('[data-replaceable-image-card]', event);
@@ -71,11 +67,8 @@ export class CardsMenuComponent extends PropertiesMenu implements AfterViewInit{
     const command = new DragCopyEndCommand(this.mediator, event)
     this.mediator.executeCommand(command)
   }
-
   dragCopyStart(event: DragEvent,data: string) {
     const command = new DragCopyStartCommand(this.mediator, event, data)
     this.mediator.executeCommand(command)
   }
-
-
 }

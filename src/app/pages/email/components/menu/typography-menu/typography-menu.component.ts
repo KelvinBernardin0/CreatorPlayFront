@@ -6,6 +6,8 @@ import {links} from '../../../data/links';
 import {titulos} from '../../../data/titulos';
 import {EditorMediator} from '../../../patterns/mediator/editor_mediator';
 import PropertiesMenu from '../../abstract/properties-menu';
+import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
+import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start-command';
 
 @Component({
   selector: 'app-typography-menu',
@@ -14,7 +16,8 @@ import PropertiesMenu from '../../abstract/properties-menu';
 })
 export class TypographyMenuComponent extends PropertiesMenu implements AfterViewInit {
 
-  @Input() mediator!: EditorMediator
+
+  @Input() override mediator!: EditorMediator
   opcoesTitulos: NamedHtml[] = [];
   opcoesDescricoes: NamedHtml[] = [];
   opcoesLinks: NamedHtml[] = [];
@@ -78,5 +81,14 @@ export class TypographyMenuComponent extends PropertiesMenu implements AfterView
 
     // Atualiza o HTML após aplicar o estilo
     this.mediator.saveCurrentEditorState()
+  }
+
+  dragCopyEnd(event: DragEvent) {
+    const command = new DragCopyEndCommand(this.mediator, event)
+    this.mediator.executeCommand(command)
+  }
+  dragCopyStart(event: DragEvent,data: string) {
+    const command = new DragCopyStartCommand(this.mediator, event, data)
+    this.mediator.executeCommand(command)
   }
 }

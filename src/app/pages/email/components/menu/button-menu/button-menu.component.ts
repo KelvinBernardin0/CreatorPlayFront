@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {AfterViewInit,Component,Input} from '@angular/core';
+import {botoes} from '../../../data/botoes';
+import DragButtonStartCommand from '../../../patterns/command/drag/drag-button-start-command';
+import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
+import {EditorMediator} from '../../../patterns/mediator/editor_mediator';
 import PropertiesMenu from '../../abstract/properties-menu';
-import { HttpClient } from '@angular/common/http';
-import { EditorMediator } from '../../../patterns/mediator/editor_mediator';
-import { botoes } from '../../../data/botoes';
-import { NamedPath } from 'src/app/common/types/NamedPath';
 
 @Component({
   selector: 'app-button-menu',
@@ -14,7 +15,7 @@ export class ButtonMenuComponent extends PropertiesMenu implements AfterViewInit
 
 
 
-  @Input() mediator!: EditorMediator;
+  @Input() override mediator!: EditorMediator;
 
   protected opcoesBotoes: Array<{ nome: string; path: string }> = [];
 
@@ -24,44 +25,6 @@ export class ButtonMenuComponent extends PropertiesMenu implements AfterViewInit
 
   ngAfterViewInit(): void {
     this.opcoesBotoes = botoes;
-  }
-
-  inserirLink() {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const container = range.commonAncestorContainer as HTMLElement;
-
-      const imgElement = container.querySelector('img');
-      if (imgElement) {
-        let link = prompt('Digite o URL do link:');
-        if (link) {
-          // Verificar se o link é relativo e convertê-lo para absoluto
-          if (!link.match(/^[a-zA-Z][a-zA-Z\d+\-.]*:/)) {
-            link = 'https://' + link;
-          }
-
-          const aElement = document.createElement('a');
-          aElement.href = link;
-          aElement.target = '_blank';
-          aElement.title = link; // Define o tooltip para exibir o link
-
-          // Clonar a imagem e adicionar ao link
-          const imgClone = imgElement.cloneNode(true);
-          aElement.appendChild(imgClone);
-
-          this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-          // Substituir a imagem original pelo link com a imagem clonada
-          imgElement.parentNode?.replaceChild(aElement, imgElement);
-
-          // Atualizar o HTML
-          // this.atualizarHTML();
-        }
-      } else {
-        alert('Por favor, selecione uma imagem primeiro.');
-      }
-    }
   }
 
   alinhamentoSelecionado(event: Event) {
@@ -176,10 +139,13 @@ export class ButtonMenuComponent extends PropertiesMenu implements AfterViewInit
     const img = document.createElement('img');
     img.src = path;
     img.setAttribute('draggable', 'true')
-    this.mediator.dragCopyStart(event, img.outerHTML);
+    const data = img.outerHTML;
+    const command = new DragButtonStartCommand(this.mediator,event,data);
+    this.mediator.executeCommand(command);
   }
 
   dragEnd(event: DragEvent){
-    this.mediator.dragCopyEnd(event)
+    const command = new DragCopyEndCommand(this.mediator, event);
+    this.mediator.executeCommand(command)
   }
 }

@@ -37,6 +37,8 @@
           [src]="opcao.path"
           [alt]="opcao.nome"
           draggable="true"
+          (dragstart)="this.dragStart($event, opcao.path)"
+          (dragend)="this.dragEnd($event)"
           (click)="AplicaMudanca({ target: { value: opcao.nome } }, 'content')"
         />
       </div>

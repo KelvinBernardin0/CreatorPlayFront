@@ -29,6 +29,7 @@ import { TypographyMenuComponent } from './pages/email/components/menu/typograph
 import { ImageMenuComponent } from './pages/email/components/menu/image-menu/image-menu.component';
 import { ButtonMenuComponent } from './pages/email/components/menu/button-menu/button-menu.component';
 import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/cards-menu.component';
+import { PlansMenuComponent } from './pages/email/components/menu/plans-menu/plans-menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -86,6 +87,7 @@ const routes: Routes = [
     ImageMenuComponent,
     ButtonMenuComponent,
     CardsMenuComponent,
+    PlansMenuComponent,
   ],
   imports: [
     BrowserModule,

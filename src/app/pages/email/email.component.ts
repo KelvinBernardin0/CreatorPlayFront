@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {AfterViewInit,Component,ElementRef,Renderer2,ViewChild,ViewEncapsulation} from '@angular/core';
 import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
 import {ActivatedRoute,Router} from '@angular/router';
-import {NamedPath} from 'src/app/common/types/NamedPath';
 import {CenteredContentComponent} from './components/centered-content/centered-content.component';
 import {ContextMenuComponent} from './components/menu/context-menu/context-menu.component';
 import {HoverBorderComponent} from './components/menu/hover-border/hover-border.component';
@@ -16,6 +15,8 @@ import {links} from './data/links';
 import {planos} from './data/planos';
 import {propriedades} from './data/propriedades';
 import {titulos} from './data/titulos';
+import DragCopyEndCommand from './patterns/command/drag/drag-copy-end-command';
+import DragCopyStartCommand from './patterns/command/drag/drag-copy-start-command';
 import {EditorMediator} from './patterns/mediator/editor_mediator';
 import {EmailEditorMediator} from './patterns/mediator/email-editor-mediator';
 import {PropertyState} from './patterns/state/propertie-state';
@@ -98,7 +99,7 @@ export class EmailComponent implements AfterViewInit{
 
 
   ngAfterViewInit(): void {
-    this.mediator = new EmailEditorMediator(this, this.renderer, this.centeredContentComponent, this.contextMenuComponent, this.hoverBorderComponent)
+    this.mediator = new EmailEditorMediator(this, this.centeredContentComponent, this.contextMenuComponent, this.hoverBorderComponent)
     this.route.queryParams
     .subscribe((params) => {
       if (params['emailHTML']) {
@@ -812,17 +813,13 @@ export class EmailComponent implements AfterViewInit{
     this.propertyState = state
   }
 
-  dragStart(event: DragEvent, target: { value: string }): void {
-    const selectedValue = target.value;
-    const value: NamedPath = this.opcoesBotoes.find(
-      (opcao) => opcao.nome === selectedValue
-    )!;
-    const img = document.createElement('img');
-    img.src = value.path;
-    this.mediator.dragCopyStart(event, img.outerHTML);
+  dragCopyEnd(event: DragEvent) {
+    const command = new DragCopyEndCommand(this.mediator, event)
+    this.mediator.executeCommand(command)
+  }
+  dragCopyStart(event: DragEvent,data: string) {
+    const command = new DragCopyStartCommand(this.mediator, event, data)
+    this.mediator.executeCommand(command)
   }
 
-  dragEnd(event: DragEvent){
-    this.mediator.dragCopyEnd(event)
-  }
 }

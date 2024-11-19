@@ -1,6 +1,6 @@
 <app-header></app-header>
 <app-hover-border/>
-<app-context-menu [editorMediator]="mediator"/>
+<app-context-menu [mediator]="mediator"/>
 <div class="container-fluid px-0">
   <div class="row">
     <!-- BLOCOS -->
@@ -411,26 +411,14 @@
         <!-- CARDS -->
 
         <!-- PLANOS -->
-        <div *ngIf="this.propertyState === 'Planos'">
+
+        <app-plans-menu
+          *ngIf="this.propertyState === 'Planos'"
+          [mediator]="this.mediator"
+        />
+
+        <!-- <div *ngIf="this.propertyState === 'Planos'">
           <h5 style="margin-bottom: 50px">Propriedades dos Planos</h5>
-
-          <!-- <div class="form-group">
-            <label for="esquemaCores">Planos: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'content')"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesVitrinePlanos"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div> -->
-
           <label for="esquemaCores"
             >Arraste o Plano para onde voce quer que fique!
           </label>
@@ -439,7 +427,6 @@
 
            class="form-group">
             <div class="card-container">
-              <!-- Lista de cards que podem ser arrastados -->
               <div
                 class="card-list"
                 *ngFor="let opcao of opcoesVitrinePlanos"
@@ -465,16 +452,7 @@
           </label>
 
           <div>
-            <!-- <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagens</h2>
-            <p>Selecione o local aonde voce quer adicionar a imagem</p>
-            <select class="form-select" style="margin-bottom: 30px"
-            [(ngModel)]="selectedImageSize">
-              <option value="P">Pequena (25%)</option>
-              <option value="M">Média (50%)</option>
-              <option value="G">Grande (100%)</option>
-            </select> -->
             <div class="image-upload-container">
-              <!-- Checkbox para confirmar termos de uso -->
               <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
 
             <label style="display: block; margin-bottom: 10px;">
@@ -482,7 +460,6 @@
               Eu aceito os termos de uso
             </label>
 
-              <!-- Botão personalizado para upload de arquivo -->
               <label class="custom-file-upload">
                 <input
                   type="file"
@@ -493,7 +470,7 @@
               </label>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- PLANOS -->
 
         <!-- VITRINE -->
@@ -528,8 +505,8 @@
                 class="card-list"
                 *ngFor="let opcoes of opcoesVitrineEquipamento"
                 draggable="true"
-                (dragstart)="this.mediator.dragCopyStart($event, opcoes.html)"
-                (dragend)="this.mediator.dragCopyEnd($event)"
+                (dragstart)="this.dragCopyStart($event, opcoes.html)"
+                (dragend)="this.dragCopyEnd($event)"
               >
                 {{ opcoes.nome }}
               </div>
