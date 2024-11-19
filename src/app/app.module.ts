@@ -28,6 +28,7 @@ import { ToggleInputComponent } from './pages/email/components/input/toggle-inpu
 import { TypographyMenuComponent } from './pages/email/components/menu/typography-menu/typography-menu.component';
 import { ImageMenuComponent } from './pages/email/components/menu/image-menu/image-menu.component';
 import { ButtonMenuComponent } from './pages/email/components/menu/button-menu/button-menu.component';
+import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/cards-menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -84,6 +85,7 @@ const routes: Routes = [
     TypographyMenuComponent,
     ImageMenuComponent,
     ButtonMenuComponent,
+    CardsMenuComponent,
   ],
   imports: [
     BrowserModule,

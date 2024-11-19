@@ -1,0 +1,57 @@
+<div>
+  <h5 style="margin-bottom: 50px">Propriedades dos Cards</h5>
+  <label for="esquemaCores"
+    >Arraste o Card para onde voce quer que fique!
+  </label>
+
+  <div class="form-group">
+    <!-- Lista de cards que podem ser arrastados -->
+    <div
+      style="margin-right: 5px; margin-bottom: 40px"
+      class="card-list"
+      *ngFor="let opcao of opcoesCards"
+      draggable="true"
+      (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
+      (dragend)="this.mediator.dragCopyEnd($event)"
+    >
+      {{ opcao.nome }}
+    </div>
+  </div>
+
+  <label
+    >Quer inserir link? Selecione o botão e:
+    <button
+      class="btn btn-secondary btn-smaller btn-link"
+      (click)="inserirLink()"
+    >
+      Clique aqui
+    </button>
+  </label>
+
+  <div>
+    <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
+    <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
+    <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
+      <option value="P">Pequena (25%)</option>
+      <option value="M">Média (50%)</option>
+      <option value="G">Grande (100%)</option>
+    </select> -->
+    <div class="image-upload-container">
+      <!-- Checkbox para confirmar termos de uso -->
+      <label>
+        <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+        Eu aceito os termos de uso
+      </label>
+
+      <!-- Botão personalizado para upload de arquivo -->
+      <label class="custom-file-upload">
+        <input
+          type="file"
+          (change)="uploadFileCard($event)"
+          [disabled]="!termosDeUsoAceitos"
+        />
+        Escolher arquivo
+      </label>
+    </div>
+  </div>
+</div>

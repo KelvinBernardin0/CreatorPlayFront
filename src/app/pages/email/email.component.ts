@@ -106,7 +106,6 @@ export class EmailComponent implements AfterViewInit{
         this.divideHTML(this.rawEmailHTML);
       }
     })
-    this.carregarOpcoesBotoes()
   }
 
   //---------------- FUNCIONAMENTO DO HTML ----------------
@@ -623,7 +622,7 @@ export class EmailComponent implements AfterViewInit{
           container.style.width = img.style.width; // Atualiza o estilo width do elemento img no container específico
           container.style.height = img.style.height; // Atualiza o estilo height do elemento img no container específico
           container.style.display = img.style.display; // Atualiza o estilo display do elemento img no container específico
-          this.updateEmailHTML(); // Atualiza o HTML editável
+          // this.updateEmailHTML(); // Atualiza o HTML editável
         }
       };
 
