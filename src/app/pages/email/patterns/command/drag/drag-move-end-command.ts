@@ -1,6 +1,6 @@
 import {Renderer2} from "@angular/core";
 import {EditorMediator} from "../../mediator/editor_mediator";
-import DragCommand from "./drag-start-command";
+import DragCommand from "./drag-command";
 
 export default class DragMoveEndCommand extends DragCommand{
 

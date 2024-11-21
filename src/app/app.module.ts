@@ -27,9 +27,10 @@ import { TextInputComponent } from './pages/email/components/input/text-input/te
 import { ToggleInputComponent } from './pages/email/components/input/toggle-input/toggle-input.component';
 import { TypographyMenuComponent } from './pages/email/components/menu/typography-menu/typography-menu.component';
 import { ImageMenuComponent } from './pages/email/components/menu/image-menu/image-menu.component';
-import { ButtonMenuComponent } from './pages/email/components/menu/button-menu/button-menu.component';
+import ButtonMenuComponent from './pages/email/components/menu/button-menu/button-menu.component';
 import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/cards-menu.component';
 import { PlansMenuComponent } from './pages/email/components/menu/plans-menu/plans-menu.component';
+import { VitrineMenuComponent } from './pages/email/components/menu/vitrine-menu/vitrine-menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -88,6 +89,7 @@ const routes: Routes = [
     ButtonMenuComponent,
     CardsMenuComponent,
     PlansMenuComponent,
+    VitrineMenuComponent,
   ],
   imports: [
     BrowserModule,

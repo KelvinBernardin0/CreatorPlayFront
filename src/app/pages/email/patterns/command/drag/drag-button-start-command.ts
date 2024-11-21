@@ -1,12 +1,12 @@
 import {EditorMediator} from "../../mediator/editor_mediator";
-import DragCommand from "./drag-start-command";
+import DragCommand from "./drag-command";
 
-export default class DragButtonStartCommand<T> extends DragCommand{
+export default class DragButtonStartCommand extends DragCommand{
 
   constructor(
     protected mediator: EditorMediator,
     protected event: DragEvent,
-    protected data: T
+    protected path: string
   ){
     super()
   }

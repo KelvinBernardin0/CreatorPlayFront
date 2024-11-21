@@ -5,26 +5,22 @@ import DragButtonStartCommand from '../../../patterns/command/drag/drag-button-s
 import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
 import {EditorMediator} from '../../../patterns/mediator/editor_mediator';
 import PropertiesMenu from '../../abstract/properties-menu';
+import {NamedPath} from 'src/app/common/types/NamedPath';
+import {InsertLinkToImageCommand} from '../../../patterns/command/link/insert-link-to-image-command';
 
 @Component({
   selector: 'app-button-menu',
   templateUrl: './button-menu.component.html',
   styleUrls: ['./button-menu.component.css'],
 })
-export class ButtonMenuComponent extends PropertiesMenu implements AfterViewInit{
-
-
+export default class ButtonMenuComponent extends PropertiesMenu {
 
   @Input() override mediator!: EditorMediator;
 
-  protected opcoesBotoes: Array<{ nome: string; path: string }> = [];
+  protected opcoesBotoes: NamedPath[] = botoes;
 
   constructor(http: HttpClient) {
     super(http);
-  }
-
-  ngAfterViewInit(): void {
-    this.opcoesBotoes = botoes;
   }
 
   alinhamentoSelecionado(event: Event) {
@@ -136,16 +132,17 @@ export class ButtonMenuComponent extends PropertiesMenu implements AfterViewInit
   }
 
   dragStart(event: DragEvent, path: string): void {
-    const img = document.createElement('img');
-    img.src = path;
-    img.setAttribute('draggable', 'true')
-    const data = img.outerHTML;
-    const command = new DragButtonStartCommand(this.mediator,event,data);
+    const command = new DragButtonStartCommand(this.mediator,event, path);
     this.mediator.executeCommand(command);
   }
 
   dragEnd(event: DragEvent){
     const command = new DragCopyEndCommand(this.mediator, event);
+    this.mediator.executeCommand(command)
+  }
+
+  inserirLink(){
+    const command = new InsertLinkToImageCommand(this.mediator)
     this.mediator.executeCommand(command)
   }
 }

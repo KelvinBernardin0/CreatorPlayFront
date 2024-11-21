@@ -1,150 +1,31 @@
 <app-header></app-header>
-<app-hover-border/>
-<app-context-menu [mediator]="mediator"/>
+<app-hover-border />
+<app-context-menu [mediator]="this" />
 <div class="container-fluid px-0">
   <div class="row">
     <!-- BLOCOS -->
-
-<!--
-  -->
-  <app-building-blocks-menu
-    [mediator]="mediator"
-   class="bg-body col-md-3 px-0 m-0"/>
-
-
-      <!-- <div class="col-md-3">
-       <div class="structure-blocks">
-         <h5>Estrutura</h5>
-         <div class="card-deck">
-           <div class="d-grid gap-3 col-8 mx-auto">
-             <button
-               class="btn btn-light header"
-               type="button"
-               (click)="carregarOpcoesHeaders()"
-             >
-               Header
-             </button>
-
-             <button
-               class="btn btn-light footer"
-               type="button"
-               (click)="carregarOpcoesFooters()"
-             >
-               Footer
-             </button>
-             <button
-               class="btn btn-light propriedadesbotao"
-               type="button"
-               (click)="carregarOpcoesPropriedades()"
-             >
-               Propriedades
-             </button>
-           </div>
-         </div>
-         <h5 style="margin-bottom: 30px">Blocos</h5>
-         <div class="row">
-           <div class="col-md-4">
-             <div class="card square-card" (click)="carregarOpcoesTipografias()">
-               <img
-                 src="assets/imagens/blocos/texto-icon.png"
-                 alt="Texto"
-                 class="img-icon"
-                 draggable="false"
-               />
-               Texto
-             </div>
-           </div>
-           <div class="col-md-4">
-             <div class="card square-card" (click)="AnexarImagem()">
-               <img
-                 src="assets/imagens/blocos/imagem-icon.png"
-                 alt="imagem"
-                 class="img-icon"
-                 draggable="false"
-               />Imagem
-             </div>
-           </div>
-           <div class="col-md-4">
-             <div class="card square-card" (click)="carregarOpcoesBotoes()">
-               <img
-                 src="assets/imagens/blocos/botao-icon.png"
-                 alt="botao"
-                 class="img-icon"
-                 draggable="false"
-               />
-               Botão
-             </div>
-           </div>
-         </div>
-         <div class="row">
-           <div class="col-md-4">
-             <div class="card square-card" (click)="carregarOpcoesCards()">
-               <img
-                 src="assets/imagens/blocos/cards-icon.png"
-                 alt="cards"
-                 class="img-icon"
-                 draggable="false"
-               />
-               Cards
-             </div>
-           </div>
-           <div class="col-md-4">
-             <div class="card square-card" (click)="carregarOpcoesPlanos()">
-               <img
-                 src="assets/imagens/blocos/planos-icon.png"
-                 alt="planos"
-                 class="img-icon"
-                 draggable="false"
-               />
-               Planos
-             </div>
-           </div>
-           <div class="col-md-4">
-             <div class="card square-card" (click)="carregarOpcoesVitrine()">
-               <img
-                 src="assets/imagens/blocos/vitrine-icon.png"
-                 alt="vitrine"
-                 class="img-icon"
-                 draggable="false"
-               />
-               Vitrine
-             </div>
-           </div>
-         </div>
-         <div class="avancar">
-           <button (click)="saveChanges()" class="btn btn-primary">
-             Salvar HTML
-           </button>
-         </div>
-         <div class="avancar">
-           <button (click)="this.mediator.undoEditorState()" class="btn btn-danger desfazer">
-             Desfazer
-           </button>
-         </div>
-       </div>
-     </div> -->
-
-
+    <app-building-blocks-menu
+      [mediator]="this"
+      class="bg-body col-md-3 px-0 m-0"
+    />
     <!-- BLOCOS -->
 
     <!-- TEMPLATE -->
-
-
     <app-centered-content
-      [editorMediator]="mediator"
+      [editorMediator]="this"
       [contentHTML]="contentHTML"
       [headerHTML]="headerHTML"
       [footerHTML]="footerHTML"
       id="email-container"
       class="col-md-6 px-0 mx-3 emailfundo"
-      />
+    />
     <!-- TEMPLATE -->
 
     <!-- PROPRIEDADES DO EMAIL -->
     <div class="col-md-3">
       <div class="block-properties">
         <!-- HEADER -->
-        <div
+        <!-- <div
           *ngIf="mostrarHeader"
           class="propriedades"
           data-replaceable-image-header
@@ -168,22 +49,22 @@
           </div>
 
           <div>
-            <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagem</h2>
-            <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
+            <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagem</h2> -->
+        <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
             <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
               <option value="P">Pequena (25%)</option>
               <option value="M">Média (50%)</option>
               <option value="G">Grande (100%)</option>
             </select> -->
-            <div class="image-upload-container">
-              <!-- Checkbox para confirmar termos de uso -->
-              <label>
+        <!-- <div class="image-upload-container"> -->
+        <!-- Checkbox para confirmar termos de uso -->
+        <!-- <label>
                 <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
                 Eu aceito os termos de uso
-              </label>
+              </label> -->
 
-              <!-- Botão personalizado para upload de arquivo -->
-              <label class="custom-file-upload">
+        <!-- Botão personalizado para upload de arquivo -->
+        <!-- <label class="custom-file-upload">
                 <input
                   type="file"
                   (change)="uploadFileHeader($event)"
@@ -193,11 +74,11 @@
               </label>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- HEADER -->
 
         <!-- FOOTER -->
-        <div *ngIf="mostrarFooter" class="propriedades">
+        <!-- <div *ngIf="mostrarFooter" class="propriedades">
           <h5 style="margin-bottom: 50px">Footers</h5>
 
           <div class="form-group">
@@ -216,14 +97,14 @@
               </option>
             </select>
           </div>
-        </div>
+        </div> -->
         <!-- FOOTER -->
 
         <!-- PROPRIEDADES -->
-        <div *ngIf="false" class="propriedades">
-          <h5 style="margin-bottom: 50px">Propriedades do E-mail</h5>
+        <!-- <div *ngIf="false" class="propriedades">
+          <h5 style="margin-bottom: 50px">Propriedades do E-mail</h5> -->
 
-          <!-- <div class="form-group">
+        <!-- <div class="form-group">
             <label for="esquemaCores">Esquema de cores</label>
             <select class="form-select" aria-label="Default select example">
               <option disabled selected>Positivo</option>
@@ -232,7 +113,7 @@
             </select>
           </div> -->
 
-          <div class="form-group">
+        <!-- <div class="form-group">
             <label for="corFundo">Cor do fundo do e-mail</label>
             <select
               class="form-select"
@@ -244,9 +125,9 @@
               <option value="cinza">Cinza</option>
               <option value="roxo">Roxo</option>
             </select>
-          </div>
+          </div> -->
 
-          <!-- <div class="form-group">
+        <!-- <div class="form-group">
             <label for="tipoTemplate">Tipo de template</label>
             <select class="form-select" id="tipoTemplate">
               <option disabled selected>Tipo</option>
@@ -255,7 +136,7 @@
             </select>
           </div> -->
 
-          <!-- <div class="form-group">
+        <!-- <div class="form-group">
             <label for="esquemaCores">Empresas: </label>
             <select
               class="form-select"
@@ -271,287 +152,50 @@
               </option>
             </select>
           </div> -->
-        </div>
+        <!-- </div> -->
         <!-- PROPRIEDADES -->
 
         <!-- TIPOGRAFIAS -->
         <app-typography-menu
           *ngIf="this.propertyState === 'Texto'"
-          [mediator]="this.mediator"
+          [mediator]="this"
         />
 
         <app-image-menu
           *ngIf="this.propertyState === 'Imagem'"
-          [mediator]="this.mediator"
+          [mediator]="this"
         />
         <!-- TIPOGRAFIAS -->
 
-
         <!-- BOTAO -->
-        <!--
-          -->
-          <app-button-menu
-            [mediator]="this.mediator"
-            *ngIf="this.propertyState === 'Botão'"/>
-
-        <!-- <div *ngIf="this.propertyState === 'Botão'">
-          <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
-          <label style="margin-bottom: 30px" for="esquemaCores"
-            >Arraste o Botão para onde voce quer que fique!
-          </label>
-
-          <label
-            >Quer inserir link? Selecione o botão e:
-            <button
-              class="btn btn-secondary btn-smaller btn-link"
-              (click)="inserirLink()"
-            >
-              Clique aqui
-            </button>
-          </label>
-
-
-          <div style="margin-bottom: 20px;" class="form-group">
-            <label>Alinhamento? Selecione o botão e:</label>
-            <select
-              class="form-select-alinhamento"
-              (change)="alinhamentoSelecionado($event)"
-            >
-              <option disabled selected>Selecione</option>
-              <option value="left">Esquerda</option>
-              <option value="center">Centro</option>
-              <option value="right">Direita</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <div class="btn-options-container">
-              <div
-              class="btn-options">
-                <img
-                  class="btn-img"
-                  *ngFor="let opcao of opcoesBotoes"
-                  [src]="opcao.path"
-                  [alt]="opcao.nome"
-                  draggable="true"
-                  (dragstart)="this.dragStart($event, {value: opcao.nome})"
-                  (dragend)="this.dragEnd($event)"
-                  (click)="
-                    AplicaMudanca({ target: { value: opcao.nome } }, 'content')
-                  "
-                />
-              </div>
-            </div>
-          </div>
-
-
-        </div> -->
-
-
+        <app-button-menu
+          [mediator]="this"
+          *ngIf="this.propertyState === 'Botão'"
+        />
         <!-- BOTAO -->
 
         <!-- CARDS -->
-
-        <!--
-
-        -->
         <app-cards-menu
           *ngIf="this.propertyState === 'Cards'"
-          [mediator]="this.mediator"/>
+          [mediator]="this"
+        />
 
-
-        <!-- <div *ngIf="this.propertyState === 'Cards'">
-          <h5 style="margin-bottom: 50px">Propriedades dos Cards</h5>
-          <label for="esquemaCores"
-            >Arraste o Card para onde voce quer que fique!
-          </label>
-
-          <div class="form-group">
-            <div
-              style="margin-right: 5px; margin-bottom: 40px"
-              class="card-list"
-              *ngFor="let opcao of opcoesCards"
-              draggable="true"
-              (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
-              (dragend)="this.mediator.dragCopyEnd($event)"
-            >
-              {{ opcao.nome }}
-            </div>
-          </div>
-
-          <label
-            >Quer inserir link? Selecione o botão e:
-            <button
-              class="btn btn-secondary btn-smaller btn-link"
-              (click)="inserirLink()"
-            >
-              Clique aqui
-            </button>
-          </label>
-
-          <div>
-            <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-            <div class="image-upload-container">
-              <label>
-                <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
-                Eu aceito os termos de uso
-              </label>
-
-              <label class="custom-file-upload">
-                <input
-                  type="file"
-                  (change)="uploadFileCard($event)"
-                  [disabled]="!termosDeUsoAceitos"
-                />
-                Escolher arquivo
-              </label>
-            </div>
-          </div>
-        </div> -->
         <!-- CARDS -->
 
         <!-- PLANOS -->
 
         <app-plans-menu
           *ngIf="this.propertyState === 'Planos'"
-          [mediator]="this.mediator"
+          [mediator]="this"
         />
-
-        <!-- <div *ngIf="this.propertyState === 'Planos'">
-          <h5 style="margin-bottom: 50px">Propriedades dos Planos</h5>
-          <label for="esquemaCores"
-            >Arraste o Plano para onde voce quer que fique!
-          </label>
-          <div
-          style="margin-bottom: 40px;"
-
-           class="form-group">
-            <div class="card-container">
-              <div
-                class="card-list"
-                *ngFor="let opcao of opcoesVitrinePlanos"
-                draggable="true"
-                (dragstart)="this.mediator.dragCopyStart($event, opcao.html)"
-                (dragend)="this.mediator.dragCopyEnd($event)"
-              >
-                {{ opcao.nome }}
-              </div>
-            </div>
-          </div>
-
-
-          <label
-
-            >Quer inserir link? Selecione o botão e:
-            <button
-              class="btn btn-secondary btn-smaller btn-link"
-              (click)="inserirLink()"
-            >
-              Clique aqui
-            </button>
-          </label>
-
-          <div>
-            <div class="image-upload-container">
-              <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-
-            <label style="display: block; margin-bottom: 10px;">
-              <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
-              Eu aceito os termos de uso
-            </label>
-
-              <label class="custom-file-upload">
-                <input
-                  type="file"
-                  (change)="uploadFileCard($event)"
-                  [disabled]="!termosDeUsoAceitos"
-                />
-                Escolher arquivo
-              </label>
-            </div>
-          </div>
-        </div> -->
         <!-- PLANOS -->
 
         <!-- VITRINE -->
-        <div *ngIf="this.propertyState === 'Vitrine'">
-          <h5 style="margin-bottom: 50px">Propriedades das Vitrines</h5>
-          <!-- <div class="form-group">
-            <label for="esquemaCores">Vitrine: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'content')"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesVitrineEquipamento"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div> -->
 
-          <label for="esquemaCores"
-            >Arraste a Vitrine para onde voce quer que fique!
-          </label>
-          <div
-          style="margin-bottom: 40px;"
-          class="form-group">
-            <div class="card-container">
-              <!-- Lista de cards que podem ser arrastados -->
-              <div
-                class="card-list"
-                *ngFor="let opcoes of opcoesVitrineEquipamento"
-                draggable="true"
-                (dragstart)="this.dragCopyStart($event, opcoes.html)"
-                (dragend)="this.dragCopyEnd($event)"
-              >
-                {{ opcoes.nome }}
-              </div>
-            </div>
-          </div>
-
-          <label
-
-            >Quer inserir link? Selecione o botão e:
-            <button
-              class="btn btn-secondary btn-smaller btn-link"
-              (click)="inserirLink()"
-            >
-              Clique aqui
-            </button>
-          </label>
-
-          <div>
-            <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-
-            <label style="display: block; margin-bottom: 10px;">
-              <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
-              Eu aceito os termos de uso
-            </label>
-
-            <label class="custom-file-upload" style="display: block; margin-bottom: 10px;">
-              <input
-                type="file"
-                (change)="uploadFileVitrine1($event)"
-                [disabled]="!termosDeUsoAceitos"
-              />
-              Escolher Imagem 1
-            </label>
-
-            <label class="custom-file-upload" style="display: block;">
-              <input
-                type="file"
-                (change)="uploadFileVitrine2($event)"
-                [disabled]="!termosDeUsoAceitos"
-              />
-              Escolher Imagem 2
-            </label>
-          </div>
-
-        </div>
+        <app-vitrine-menu
+          *ngIf="this.propertyState === 'Vitrine'"
+          [mediator]="this"
+        />
         <!-- VITRINE -->
       </div>
     </div>

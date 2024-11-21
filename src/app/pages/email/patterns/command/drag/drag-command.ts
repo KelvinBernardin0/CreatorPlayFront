@@ -1,4 +1,3 @@
-import {EditorMediator} from "../../mediator/editor_mediator";
 import Command from "../command";
 
 export default abstract class DragCommand extends Command{

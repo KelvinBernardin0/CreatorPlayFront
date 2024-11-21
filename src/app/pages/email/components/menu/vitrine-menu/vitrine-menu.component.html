@@ -1,0 +1,60 @@
+<div >
+  <h5 style="margin-bottom: 50px">Propriedades das Vitrines</h5>
+  <label for="esquemaCores"
+    >Arraste a Vitrine para onde voce quer que fique!
+  </label>
+  <div
+  style="margin-bottom: 40px;"
+  class="form-group">
+    <div class="card-container">
+      <div
+        class="card-list"
+        *ngFor="let opcoes of opcoesVitrineEquipamento"
+        draggable="true"
+        (dragstart)="this.dragCopyStart($event, opcoes.html)"
+        (dragend)="this.dragCopyEnd($event)"
+      >
+        {{ opcoes.nome }}
+      </div>
+    </div>
+  </div>
+
+  <label
+
+    >Quer inserir link? Selecione o botão e:
+    <button
+      class="btn btn-secondary btn-smaller btn-link"
+      (click)="inserirLink()"
+    >
+      Clique aqui
+    </button>
+  </label>
+
+  <div>
+    <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
+
+    <label style="display: block; margin-bottom: 10px;">
+      <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+      Eu aceito os termos de uso
+    </label>
+
+    <label class="custom-file-upload" style="display: block; margin-bottom: 10px;">
+      <input
+        type="file"
+        (change)="uploadFileVitrine1($event)"
+        [disabled]="!termosDeUsoAceitos"
+      />
+      Escolher Imagem 1
+    </label>
+
+    <label class="custom-file-upload" style="display: block;">
+      <input
+        type="file"
+        (change)="uploadFileVitrine2($event)"
+        [disabled]="!termosDeUsoAceitos"
+      />
+      Escolher Imagem 2
+    </label>
+  </div>
+
+</div>

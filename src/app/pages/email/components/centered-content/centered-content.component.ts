@@ -10,7 +10,6 @@ import {EditorMediator} from '../../patterns/mediator/editor_mediator';
 })
 export class CenteredContentComponent implements AfterViewInit {
 
-
   selectedBackgroundColor = ''
 
   @Input() headerHTML: SafeHtml = '';

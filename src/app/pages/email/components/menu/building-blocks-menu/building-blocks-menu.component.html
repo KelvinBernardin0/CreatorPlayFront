@@ -70,18 +70,41 @@
             [onChange]="onChange"
           />
 
-          <app-toggle-input
-            [label]="'Incluir pré-título'"
-            (onChange)="this.mostrarPreTitulo = $event"
-          />
-          <app-toggle-input
-            [label]="'Incluir subtítulo'"
-            (onChange)="this.mostrarSubTitulo = $event"
-          />
-          <app-toggle-input
-            [label]="'Incluir botão'"
-            (onChange)="this.mostrarBotao = $event"
-          />
+          <ng-template>
+            <app-toggle-input
+              [label]="'Incluir pré-título'"
+              (onChange)="this.mostrarPreTitulo = $event"
+            />
+
+            <ng-container *ngIf="this.mostrarPreTitulo">
+              <app-text-input
+                [placeholder]="'Digite o pré-título'"
+                [onChange]="onChange"
+              />
+            </ng-container>
+
+            <app-toggle-input
+              [label]="'Incluir subtítulo'"
+              (onChange)="this.mostrarSubTitulo = $event"
+            />
+            <ng-container *ngIf="this.mostrarSubTitulo">
+              <app-text-input
+                [placeholder]="'Digite o subtítulo'"
+                [onChange]="onChange"
+              />
+            </ng-container>
+
+            <app-toggle-input
+              [label]="'Incluir botão'"
+              (onChange)="this.mostrarBotao = $event"
+            />
+            <ng-container *ngIf="this.mostrarBotao">
+              <app-text-input
+                [placeholder]="'Digite o texto do botão'"
+                [onChange]="onChange"
+              />
+            </ng-container>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -153,14 +176,15 @@
   </div>
 
   <div class="avancar">
-    <button
-    class="btn btn-primary">
-    Salvar HTML
-  </button>
-  <!-- (click)="saveChanges()"  -->
+    <button class="btn btn-primary" (click)="this.mediator.saveChanges()">
+      Salvar HTML
+    </button>
   </div>
   <div class="avancar">
-    <button (click)="this.mediator.undoEditorState()" class="btn btn-danger desfazer">
+    <button
+      (click)="this.mediator.undoEditorState()"
+      class="btn btn-danger desfazer"
+    >
       Desfazer
     </button>
   </div>

@@ -16,7 +16,6 @@ import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start
 })
 export class TypographyMenuComponent extends PropertiesMenu implements AfterViewInit {
 
-
   @Input() override mediator!: EditorMediator
   opcoesTitulos: NamedHtml[] = [];
   opcoesDescricoes: NamedHtml[] = [];
@@ -81,14 +80,5 @@ export class TypographyMenuComponent extends PropertiesMenu implements AfterView
 
     // Atualiza o HTML após aplicar o estilo
     this.mediator.saveCurrentEditorState()
-  }
-
-  dragCopyEnd(event: DragEvent) {
-    const command = new DragCopyEndCommand(this.mediator, event)
-    this.mediator.executeCommand(command)
-  }
-  dragCopyStart(event: DragEvent,data: string) {
-    const command = new DragCopyStartCommand(this.mediator, event, data)
-    this.mediator.executeCommand(command)
   }
 }

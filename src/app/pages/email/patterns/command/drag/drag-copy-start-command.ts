@@ -1,5 +1,5 @@
 import {EditorMediator} from '../../mediator/editor_mediator';
-import DragCommand from './drag-start-command';
+import DragCommand from './drag-command';
 
 export default class DragCopyStartCommand extends DragCommand {
 
@@ -16,6 +16,5 @@ export default class DragCopyStartCommand extends DragCommand {
     this.blockUndraggableArea();
     this.event.dataTransfer?.setData('text/html', this.data);
     this.mediator.hideContextMenu();
-    console.log(this.data)
   }
 }

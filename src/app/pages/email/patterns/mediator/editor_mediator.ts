@@ -1,6 +1,6 @@
 
 import {StringState} from '../../../../common/types/State';
-import Command from '../command/drag/drag-start-command';
+import Command from '../command/command';
 import {PropertyState} from '../state/propertie-state';
 
 export abstract class EditorMediator{
@@ -21,5 +21,6 @@ export abstract class EditorMediator{
   abstract hideHoverBorder(): void
 
   abstract executeCommand(command: Command): void
+  abstract saveChanges(): void
 
 }

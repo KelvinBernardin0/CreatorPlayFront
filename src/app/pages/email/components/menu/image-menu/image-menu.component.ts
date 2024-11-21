@@ -9,7 +9,7 @@ import {StringState} from 'src/app/common/types/State';
   templateUrl: './image-menu.component.html',
   styleUrls: ['./image-menu.component.css']
 })
-export class ImageMenuComponent extends PropertiesMenu implements AfterViewInit{
+export class ImageMenuComponent extends PropertiesMenu{
 
   @Input() override mediator!: EditorMediator
 
@@ -18,14 +18,9 @@ export class ImageMenuComponent extends PropertiesMenu implements AfterViewInit{
   protected termosDeUsoAceitos: boolean = false;
 
   constructor(
-    private elRef: ElementRef,
     http: HttpClient
   ){
     super(http)
-  }
-
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
   }
 
   uploadFile(event: any) {

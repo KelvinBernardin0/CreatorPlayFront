@@ -1,26 +1,26 @@
 import {HttpClient} from '@angular/common/http';
-import {AfterViewInit,Component,ElementRef,Renderer2,ViewChild,ViewEncapsulation} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
 import {ActivatedRoute,Router} from '@angular/router';
+import {StringState} from 'src/app/common/types/State';
 import {CenteredContentComponent} from './components/centered-content/centered-content.component';
 import {ContextMenuComponent} from './components/menu/context-menu/context-menu.component';
 import {HoverBorderComponent} from './components/menu/hover-border/hover-border.component';
-import {botoes} from './data/botoes';
-import {cards} from './data/cards';
-import {descricoes} from './data/descricoes';
-import {equipamentos} from './data/equipamentos';
 import {footers} from './data/footers';
 import {headers} from './data/headers';
-import {links} from './data/links';
-import {planos} from './data/planos';
-import {propriedades} from './data/propriedades';
-import {titulos} from './data/titulos';
+import Command from './patterns/command/command';
 import DragCopyEndCommand from './patterns/command/drag/drag-copy-end-command';
 import DragCopyStartCommand from './patterns/command/drag/drag-copy-start-command';
+import HistoryStringStateStack from './patterns/command/history/history-string-state-stack';
 import {EditorMediator} from './patterns/mediator/editor_mediator';
-import {EmailEditorMediator} from './patterns/mediator/email-editor-mediator';
 import {PropertyState} from './patterns/state/propertie-state';
-
 
 interface OpcaoHeader {
   nome: string;
@@ -31,10 +31,9 @@ interface OpcaoHeader {
   selector: 'app-email',
   templateUrl: './email.component.html',
   styleUrls: ['./email.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class EmailComponent implements AfterViewInit{
-
+export class EmailComponent extends EditorMediator implements AfterViewInit {
   emailHTML: SafeHtml = '';
   rawEmailHTML: string = '';
 
@@ -42,82 +41,58 @@ export class EmailComponent implements AfterViewInit{
   contentHTML: SafeHtml = '';
   footerHTML: SafeHtml = '';
 
-  mostrarPropriedades: boolean = true;
+  mostrarPropriedades: boolean = false;
   mostrarHeader: boolean = false;
   mostrarFooter: boolean = false;
-  mostrarTipografia: boolean = false;
-  mostrarImagem: boolean = false;
-  mostrarBotao: boolean = false;
-  mostrarCards: boolean = false;
-  mostrarPlanos: boolean = false;
-  mostrarVitrine: boolean = false;
 
   opcoesPropriedades: { nome: string; html: string }[] = [];
   opcoesPropriedadesEmpresas: { nome: string; html: string }[] = [];
   opcoesHeaders!: OpcaoHeader[];
   opcoesFooters: { nome: string; html: string }[] = [];
-  opcoesTitulos: { nome: string; html: string }[] = [];
-  opcoesDescricoes: { nome: string; html: string }[] = [];
-  opcoesLinks: { nome: string; html: string }[] = [];
-  opcoesBotoes: Array<{ nome: string, path: string }> = [];
-  opcoesCards: { nome: string; html: string }[] = [];
-  opcoesPlanos: { nome: string; html: string }[] = [];
-  opcoesVitrineEquipamento: { nome: string; html: string }[] = [];
-  opcoesVitrinePlanos: { nome: string; html: string }[] = [];
-
-  currentRange: Range | null = null; //Para armazenar a posição atual do cursor
-
-  selectedImageSize: string = 'G'; //Tamanho padrão da imagem
-  lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
-  termosDeUsoAceitos: boolean = false;
 
   selectedBackgroundColor = ''; // Cor de fundo selecionada
 
-  selectedImageElement: HTMLElement | null = null;
+  @ViewChild(CenteredContentComponent)
+  centeredContentComponent!: CenteredContentComponent;
 
-  @ViewChild('contentContainer', { static: false }) contentContainerRef!: ElementRef;
-  @ViewChild('headerContainer', { static: false }) headerContainerRef!: ElementRef;
-  @ViewChild('footerContainer', { static: false }) footerContainerRef!: ElementRef;
-  @ViewChild('emailContainer') emailContainerRef!: ElementRef;
+  @ViewChild(HoverBorderComponent)
+  hoverBorderComponent!: HoverBorderComponent;
 
-  @ViewChild(CenteredContentComponent) centeredContentComponent!: CenteredContentComponent;
-  @ViewChild(HoverBorderComponent) hoverBorderComponent!: HoverBorderComponent;
-  @ViewChild(ContextMenuComponent) contextMenuComponent!: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent)
+  contextMenuComponent!: ContextMenuComponent;
 
-  protected mediator!: EditorMediator
-  protected propertyState: PropertyState = 'Vazio'
+  protected propertyState: PropertyState = 'Vazio';
+  protected historyStack = new HistoryStringStateStack(this);
   constructor(
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private router: Router,
     private http: HttpClient,
     private elRef: ElementRef,
-    private renderer: Renderer2,
+    private changeDetector: ChangeDetectorRef
   ) {
-
+    super()
   }
 
-
   ngAfterViewInit(): void {
-    this.mediator = new EmailEditorMediator(this, this.centeredContentComponent, this.contextMenuComponent, this.hoverBorderComponent)
-    this.route.queryParams
-    .subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
       if (params['emailHTML']) {
         this.rawEmailHTML = params['emailHTML'];
         this.divideHTML(this.rawEmailHTML);
       }
-    })
+    });
+    this.changeDetector.detectChanges()
   }
 
   //---------------- FUNCIONAMENTO DO HTML ----------------
   //CARREGAR PROPRIEDADES INICIAIS DO EMAIL HTML
   carregarEmail(url: string) {
-      this.http.get(url, { responseType: 'text' }).subscribe((data) => {
-        this.emailHTML = data;
-        this.router.navigate(['/email'], {
-          queryParams: { emailHTML: this.emailHTML },
-        });
+    this.http.get(url, { responseType: 'text' }).subscribe((data) => {
+      this.emailHTML = data;
+      this.router.navigate(['/email'], {
+        queryParams: { emailHTML: this.emailHTML },
       });
+    });
   }
 
   //DIVIDINDO HTML EM 3 PARTES
@@ -145,12 +120,6 @@ export class EmailComponent implements AfterViewInit{
     this.mostrarPropriedades = false;
     this.mostrarHeader = true; //MOSTRAR
     this.mostrarFooter = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
 
     this.opcoesHeaders = [];
 
@@ -166,21 +135,13 @@ export class EmailComponent implements AfterViewInit{
   }
   //---------------- FIM CARREGAR HERADES ----------------
 
-
   //---------------- CARREGAR FOOTERS ----------------
   carregarOpcoesFooters() {
     this.mostrarPropriedades = false;
     this.mostrarHeader = false;
     this.mostrarFooter = true; //MOSTRAR
-    this.mostrarTipografia = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
 
     this.opcoesFooters = [];
-
 
     footers.forEach((opcao) => {
       // Renomeando a variável para evitar colisão
@@ -190,29 +151,6 @@ export class EmailComponent implements AfterViewInit{
     });
   }
   //---------------- FIM CARREGAR FOOTERS ----------------
-
-
-  //---------------- INICIO DAS PROPRIEDADES ----------------
-  carregarOpcoesPropriedades() {
-    this.mostrarPropriedades = true;//MOSTRAR
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
-
-    this.opcoesPropriedadesEmpresas= [];
-
-    propriedades.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesPropriedadesEmpresas.push({ nome: opcao.nome, html: data });
-      });
-    });
-  }
 
   mudarCorFundo(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -234,373 +172,12 @@ export class EmailComponent implements AfterViewInit{
   }
   //---------------- FIM DAS PROPRIEDADES ----------------
 
-
-  //---------------- CARREGAR TEXTOS ----------------
-  carregarOpcoesTipografias() {
-    this.mostrarPropriedades = false;
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarTipografia = true; //MOSTRAR TIPOGRAFIAS
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
-
-    this.opcoesTitulos= [];
-
-    titulos.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesTitulos.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesDescricoes = [];
-
-    descricoes.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesDescricoes.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-    this.opcoesLinks = [];
-    links.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesLinks.push({ nome: opcao.nome, html: data });
-      });
-    });
-  }
-
-  // Aplica a cor selecionada ao texto selecionado
-  AplicaCor(cor: string) {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const selectedContents = range.extractContents();
-      const span = document.createElement('span');
-      span.style.color = cor;
-
-      span.appendChild(selectedContents);
-      range.insertNode(span);
-
-      this.mediator.saveCurrentEditorState()
-    }
-  }
-
-  // Aplica o estilo selecionado ao texto selecionado
-  aplicaEstiloSelecionado(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    if (!selectedValue) return; // Retorna se nenhum valor estiver selecionado
-
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return; // Retorna se não houver seleção
-
-    const range = selection.getRangeAt(0);
-    const selectedContents = range.extractContents();
-
-    const span = document.createElement('span');
-    switch (selectedValue) {
-      case 'bold':
-        span.style.fontWeight = 'bold';
-        break;
-      case 'italic':
-        span.style.fontStyle = 'italic';
-        break;
-      case 'underline':
-        span.style.textDecoration = 'underline';
-        break;
-      default:
-        break;
-    }
-
-    span.appendChild(selectedContents);
-    range.insertNode(span);
-
-    // Atualiza o HTML após aplicar o estilo
-    this.mediator.saveCurrentEditorState()
-  }
-
-  // INSERIR LINK
-  inserirLink() {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const container = range.commonAncestorContainer as HTMLElement;
-
-      const imgElement = container.querySelector('img');
-      if (imgElement) {
-        let link = prompt('Digite o URL do link:');
-        if (link) {
-          // Verificar se o link é relativo e convertê-lo para absoluto
-          if (!link.match(/^[a-zA-Z][a-zA-Z\d+\-.]*:/)) {
-            link = 'https://' + link;
-          }
-
-          const aElement = document.createElement('a');
-          aElement.href = link;
-          aElement.target = '_blank';
-          aElement.title = link; // Define o tooltip para exibir o link
-
-          // Clonar a imagem e adicionar ao link
-          const imgClone = imgElement.cloneNode(true);
-          aElement.appendChild(imgClone);
-
-          this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-          // Substituir a imagem original pelo link com a imagem clonada
-          imgElement.parentNode?.replaceChild(aElement, imgElement);
-
-          // Atualizar o HTML
-          // this.atualizarHTML();
-        }
-      } else {
-        alert('Por favor, selecione uma imagem primeiro.');
-      }
-    }
-  }
-
-  //---------------- FIM CARREGAR TEXTOS ----------------
-
-
-  //---------------- CARREGAR BOTOES ----------------
-  carregarOpcoesBotoes() {
-    this.mostrarPropriedades = false;
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = true; //MOSTRAR BOTOES
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
-
-    this.opcoesBotoes = botoes;
-  }
-
-  //INSERE IMAGENS DOS BOTOES
-  insereImagemBotao(path: string) {
-    const editableContainer = document.getElementById('editable-container');
-    if (editableContainer && this.currentRange) {
-      const img = document.createElement('img');
-      img.src = path;
-      this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-      this.currentRange.deleteContents();
-      this.currentRange.insertNode(img);
-      this.currentRange = null; // Reset the stored range
-
-      this.rawEmailHTML = editableContainer.innerHTML;
-      this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-    }
-  }
-
-  alinhamentoSelecionado(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    if (!selectedValue) return;
-
-    const editableContainer = document.getElementById('email-container');
-    if (!editableContainer) return;
-
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-
-    const range = this.mediator.getSelectedElement();
-    if(!range)
-      return;
-
-    // Remove qualquer div existente com o atributo de estilo
-    // const existingDiv = editableContainer.querySelector('div[style]');
-    // if (existingDiv) {
-    //   existingDiv.outerHTML = existingDiv.innerHTML;
-    // }
-
-    // Cria um elemento <div> para envolver o conteúdo selecionado
-    const div = document.createElement('div');
-
-    // Define o estilo de acordo com o valor selecionado
-    switch (selectedValue) {
-      case 'left':
-        div.style.textAlign = 'left';
-        break;
-      case 'center':
-        div.style.textAlign = 'center';
-        break;
-      case 'right':
-        div.style.textAlign = 'right';
-        break;
-      default:
-        break;
-    }
-
-    this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-    // Move o conteúdo selecionado para dentro do <div> com o estilo de alinhamento
-
-    div.appendChild(range.cloneNode(true));
-    range.replaceWith(div)
-    this.mediator.displayContextMenuOn(div.firstChild as Element)
-    this.mediator.saveCurrentEditorState()
-    // range.insertNode(div);
-
-    // Atualiza o HTML editável
-    // this.rawEmailHTML = editableContainer.innerHTML;
-    // this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
-  }
-  //---------------- FIM DOS BOTOES  ----------------
-
-
-  //---------------- INICIO DOS  CARDS ----------------
-  carregarOpcoesCards() {
-    this.mostrarPropriedades = false;
-    this.mostrarTipografia = false;
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = true; //MOSTRAR Cards
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
-
-    this.opcoesCards = [];
-
-    cards.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesCards.push({ nome: opcao.nome, html: data });
-      });
-    });
-
-
-  }
-  //---------------- FIM DOS  CARDS ----------------
-
-
-  //---------------- INICIO DOS  PLANOS ----------------
-  carregarOpcoesPlanos() {
-    this.mostrarPropriedades = false;
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = true; //MOSTRAR Planos
-    this.mostrarVitrine = false;
-
-    this.opcoesVitrinePlanos = [];
-
-    planos.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesVitrinePlanos.push({ nome: opcao.nome, html: data });
-      });
-    });
-  }
-  //---------------- FIM DAS  PLANOS ----------------
-
-
-  //---------------- INICIO DAS  PLANOS ----------------
-  carregarOpcoesVitrine() {
-    this.mostrarPropriedades = false;
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = false;
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = true; //MOSTRAR VITRINE
-
-    this.opcoesVitrineEquipamento = [];
-
-    equipamentos.forEach((opcao) => {
-      // Renomeando a variável para evitar colisão
-      this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-        this.opcoesVitrineEquipamento.push({ nome: opcao.nome, html: data });
-      });
-    });
-  }
-  //---------------- FIM DAS VITRINE ----------------
-
-
-  //---------------- ANEXAR IMAGEM ----------------
-  AnexarImagem() {
-    this.mostrarPropriedades = false;
-    this.mostrarHeader = false;
-    this.mostrarFooter = false;
-    this.mostrarTipografia = false;
-    this.mostrarImagem = true; //MOSTRAR
-    this.mostrarBotao = false;
-    this.mostrarCards = false;
-    this.mostrarPlanos = false;
-    this.mostrarVitrine = false;
-  }
-
-  uploadFile(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.maxWidth = '100%';
-        img.draggable = true;
-        img.ondragstart = (ev: DragEvent) => {
-          ev.dataTransfer?.setData('text/plain', img.src);
-        };
-
-        // Define o tamanho da imagem com base na seleção do usuário
-        switch (this.selectedImageSize) {
-          case 'P':
-            img.style.width = '25%';
-            break;
-          case 'M':
-            img.style.width = '50%';
-            break;
-          case 'G':
-            img.style.width = '100%';
-            break;
-          default:
-            img.style.width = '50%'; // Caso padrão: médio
-            break;
-        }
-        this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-
-        const editableContainer = this.elRef.nativeElement.querySelector('#content-container');
-        if (editableContainer) {
-          editableContainer.innerHTML = ''; // Limpa o conteúdo existente antes de inserir a imagem
-          editableContainer.appendChild(img); // Insere a nova imagem
-          this.rawEmailHTML = editableContainer.innerHTML; // Atualiza o HTML editável
-          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML); // Atualiza o HTML seguro
-        }
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
-
   uploadFileHeader(event: any) {
     this.uploadFileToContainer('[data-replaceable-image-header]', event);
   }
 
-  uploadFileVitrine1(event: any) {
-    this.uploadFileToContainer('[data-replaceable-image-vitrine1]', event);
-  }
-
-  uploadFileVitrine2(event: any) {
-    this.uploadFileToContainer('[data-replaceable-image-vitrine2]', event);
-  }
-
-  uploadFileCard(event: any) {
-    this.uploadFileToContainer('[data-replaceable-image-card]', event);
-  }
-
   private uploadFileToContainer(selector: string, event: any) {
-    this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
+    this.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
 
     const file: File = event.target.files[0];
     if (file) {
@@ -632,16 +209,21 @@ export class EmailComponent implements AfterViewInit{
   }
 
   updateEmailHTML() {
-    const headerHTML = this.elRef.nativeElement.querySelector('#header-container')?.innerHTML || '';
-    const contentHTML = this.elRef.nativeElement.querySelector('#content-container')?.innerHTML || '';
-    const footerHTML = this.elRef.nativeElement.querySelector('#footer-container')?.innerHTML || '';
+    const headerHTML =
+      this.elRef.nativeElement.querySelector('#header-container')?.innerHTML ||
+      '';
+    const contentHTML =
+      this.elRef.nativeElement.querySelector('#content-container')?.innerHTML ||
+      '';
+    const footerHTML =
+      this.elRef.nativeElement.querySelector('#footer-container')?.innerHTML ||
+      '';
 
     this.rawEmailHTML = `${headerHTML}${contentHTML}${footerHTML}`;
     this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
   }
 
   //---------------- FIM ANEXAR IMAGEM FIM ----------------
-
 
   //---------------- SALVAR HTML ----------------
   downloadHTML(html: string, filename: string) {
@@ -654,9 +236,9 @@ export class EmailComponent implements AfterViewInit{
     const loadImageToBase64 = (src: string) => {
       return new Promise<string>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.onload = function() {
+        xhr.onload = function () {
           const reader = new FileReader();
-          reader.onloadend = function() {
+          reader.onloadend = function () {
             resolve(reader.result as string); // Resolve com o conteúdo base64 da imagem
           };
           reader.onerror = reject;
@@ -672,33 +254,39 @@ export class EmailComponent implements AfterViewInit{
     // Iterar sobre todas as correspondências de tags <img>
     for (const match of matches) {
       const imgSrc = match[1]; // Captura o atributo src da tag <img>
-      promises.push(loadImageToBase64(imgSrc).then((base64) => {
-        html = html.replace(imgSrc, base64); // Substituir src da imagem pelo conteúdo base64 no HTML
-      }).catch((error) => {
-        console.error('Erro ao carregar imagem:', error);
-      }));
+      promises.push(
+        loadImageToBase64(imgSrc)
+          .then((base64) => {
+            html = html.replace(imgSrc, base64); // Substituir src da imagem pelo conteúdo base64 no HTML
+          })
+          .catch((error) => {
+            console.error('Erro ao carregar imagem:', error);
+          })
+      );
     }
 
     // Aguardar todas as promessas de carregamento de imagens serem resolvidas
-    Promise.all(promises).then(() => {
-      // Estilizar o HTML com a cor de fundo selecionada
-      const styledHTML = `<html><head><style>body { background-color: ${this.selectedBackgroundColor}; }</style></head><body>${html}</body></html>`;
+    Promise.all(promises)
+      .then(() => {
+        // Estilizar o HTML com a cor de fundo selecionada
+        const styledHTML = `<html><head><style>body { background-color: ${this.selectedBackgroundColor}; }</style></head><body>${html}</body></html>`;
 
-      // Criar o Blob com o HTML estilizado
-      const blob = new Blob([styledHTML], { type: 'text/html' });
+        // Criar o Blob com o HTML estilizado
+        const blob = new Blob([styledHTML], { type: 'text/html' });
 
-      // Criar um link temporário para o download
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
+        // Criar um link temporário para o download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
 
-      // Adicionar o link ao documento e simular o clique para iniciar o download
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }).catch((error) => {
-      console.error('Erro ao processar imagens:', error);
-    });
+        // Adicionar o link ao documento e simular o clique para iniciar o download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error('Erro ao processar imagens:', error);
+      });
   }
 
   removeContentEditable(html: string): string {
@@ -708,17 +296,20 @@ export class EmailComponent implements AfterViewInit{
 
     // Remove o atributo contenteditable de todos os elementos
     const elements = tempDiv.querySelectorAll('[contenteditable]');
-    elements.forEach(element => {
+    elements.forEach((element) => {
       element.removeAttribute('contenteditable');
     });
 
     return tempDiv.innerHTML;
   }
 
-  saveChanges() {
-    const headerContainer = this.elRef.nativeElement.querySelector('#header-container');
-    const contentContainer = this.elRef.nativeElement.querySelector('#content-container');
-    const footerContainer = this.elRef.nativeElement.querySelector('#footer-container');
+  override saveChanges() {
+    const headerContainer =
+      this.elRef.nativeElement.querySelector('#header-container');
+    const contentContainer =
+      this.elRef.nativeElement.querySelector('#content-container');
+    const footerContainer =
+      this.elRef.nativeElement.querySelector('#footer-container');
 
     if (headerContainer && contentContainer && footerContainer) {
       const headerHTML = headerContainer.outerHTML;
@@ -736,7 +327,6 @@ export class EmailComponent implements AfterViewInit{
     }
   }
   //---------------- FIM SALVAR HTML ----------------
-
 
   //---------------- APLICA MUDANÇA NO HTML ----------------
   AplicaMudanca(event: any, section: 'header' | 'content' | 'footer') {
@@ -757,21 +347,19 @@ export class EmailComponent implements AfterViewInit{
     }
 
     if (editableContainer) {
-      let selectedOption: { nome: string, html?: string, path?: string } | undefined;
+      let selectedOption:
+        | { nome: string; html?: string; path?: string }
+        | undefined;
 
       // Verifica em qual array de opções está o valor selecionado
       selectedOption =
-        this.opcoesPropriedades.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesTitulos.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesDescricoes.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesLinks.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesBotoes.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesCards.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesPlanos.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesVitrineEquipamento.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesVitrinePlanos.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesPropriedades.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
         this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesPropriedadesEmpresas.find((opcoes) => opcoes.nome === selectedValue) ||
+        this.opcoesPropriedadesEmpresas.find(
+          (opcoes) => opcoes.nome === selectedValue
+        ) ||
         this.opcoesHeaders.find((opcoes) => opcoes.nome === selectedValue);
 
       if (selectedOption) {
@@ -791,13 +379,15 @@ export class EmailComponent implements AfterViewInit{
           frag.appendChild(node);
         }
 
-        this.mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
+        this.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
 
         // Adiciona o conteúdo à seção apropriada
         if (section === 'content') {
           editableContainer.appendChild(frag);
           this.rawEmailHTML = editableContainer.innerHTML;
-          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
+          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
+            this.rawEmailHTML
+          );
         } else {
           // Para header e footer, substitui o conteúdo inteiro
           editableContainer.innerHTML = '';
@@ -808,18 +398,61 @@ export class EmailComponent implements AfterViewInit{
   }
   //---------------- APLICA MUDANÇA NO HTML ----------------
 
-
-  changePropertiesState(state: PropertyState) {
-    this.propertyState = state
-  }
-
   dragCopyEnd(event: DragEvent) {
-    const command = new DragCopyEndCommand(this.mediator, event)
-    this.mediator.executeCommand(command)
+    const command = new DragCopyEndCommand(this, event);
+    this.executeCommand(command);
   }
-  dragCopyStart(event: DragEvent,data: string) {
-    const command = new DragCopyStartCommand(this.mediator, event, data)
-    this.mediator.executeCommand(command)
+  dragCopyStart(event: DragEvent, data: string) {
+    const command = new DragCopyStartCommand(this, event, data);
+    this.executeCommand(command);
   }
 
+  override saveNewEditorState(stringState: StringState): void {
+    this.historyStack.save(stringState);
+  }
+
+  override updateEditorState(state: StringState): void {
+    this.centeredContentComponent.atualizarHTML(state);
+  }
+
+  override updateHoverbleElements(): void {
+    this.centeredContentComponent.updateHoverbleElements();
+  }
+  override undoEditorState(): void {
+    this.historyStack.undo();
+    this.hideContextMenu()
+  }
+  override getSelectedElement(): Element|null {
+    return this.contextMenuComponent.innerElement
+  }
+  override hideContextMenu(): void {
+    this.contextMenuComponent.hide();
+  }
+
+  override displayContextMenuOn(element: Element): void {
+    this.contextMenuComponent.displayComponentOn(element);
+  }
+
+  override saveCurrentEditorState(): void {
+    this.centeredContentComponent.saveState();
+  }
+
+  override getCurrentEditorState(): StringState | null{
+    return this.historyStack.getLastState();
+  }
+
+  override displayHoverBorderOn(element: Element): void {
+    this.hoverBorderComponent.displayComponentOn(element);
+  }
+  override hideHoverBorder(): void {
+    this.hoverBorderComponent.hide();
+  }
+
+  override changePropertiesState(state: PropertyState): void {
+    this.propertyState = state;
+  }
+
+  override executeCommand(command: Command): void {
+    command.execute();
+  }
 }
