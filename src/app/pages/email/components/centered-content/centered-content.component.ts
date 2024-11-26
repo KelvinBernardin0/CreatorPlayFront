@@ -10,7 +10,7 @@ import {EditorMediator} from '../../patterns/mediator/editor_mediator';
 })
 export class CenteredContentComponent implements AfterViewInit {
 
-  selectedBackgroundColor = ''
+  @Input() selectedBackgroundColor = ''
 
   @Input() headerHTML: SafeHtml = '';
   @Input() contentHTML: SafeHtml = '';
@@ -32,7 +32,7 @@ export class CenteredContentComponent implements AfterViewInit {
 
 
   public updateHoverbleElements() {
-    const centerElements = document.querySelectorAll("#email-container *")
+    const centerElements = document.querySelectorAll("#content-container *")
     centerElements.forEach((element: Element) => {
       const isHtmlElement = element.nodeType===1;
         const moveableComponents = ['APP-CONTEXT-MENU', 'APP-HOVER-BORDER'].includes(element.tagName)
@@ -115,5 +115,8 @@ export class CenteredContentComponent implements AfterViewInit {
         task(headerContainer.innerHTML, contentContainer.innerHTML, footerContainer.innerHTML)
     }
 
+    public changeBackgroundColor(color: string){
+      this.selectedBackgroundColor = color
+    }
 
 }

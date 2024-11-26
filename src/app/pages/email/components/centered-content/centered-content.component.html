@@ -12,11 +12,10 @@
     <div
       id="header-container"
       [innerHTML]="headerHTML"
-      contenteditable="true"
       [ngStyle]="{ 'max-width.px': 600 }"
-      (click)="makeEditable($event)"
       (keydown)="onKeyDown($event)"
-    >
+      >
+      <!-- (click)="makeEditable($event)" -->
       <!-- Conteúdo do header será adicionado aqui -->
     </div>
 
@@ -36,11 +35,10 @@
     <div
       id="footer-container"
       [innerHTML]="footerHTML"
-      contenteditable="true"
       [ngStyle]="{ 'max-width.px': 600 }"
-      (click)="makeEditable($event)"
       (keydown)="onKeyDown($event)"
-    >
+      >
+      <!-- (click)="makeEditable($event)" -->
       <!-- Conteúdo do footer será adicionado aqui -->
     </div>
   </div>
