@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import {StringState} from 'src/app/common/types/State';
 
 @Component({
   selector: 'app-inicio',
@@ -36,14 +37,14 @@ export class InicioComponent {
     ])
       .then((responses) => {
         const [headerHTML, contentHTML, footerHTML] = responses;
-        const combinedHTML = `
-          <div id="header-container">${headerHTML}</div>
-          <div id="content-container">${contentHTML}</div>
-          <div id="footer-container">${footerHTML}</div>
-        `;
-        this.emailHTML = combinedHTML;
+
+        const state: StringState = {
+          header: headerHTML!,
+          content: contentHTML!,
+          footer: footerHTML!
+        }
         this.router.navigate(['/email'], {
-          queryParams: { emailHTML: this.emailHTML },
+          state: state,
         });
       })
       .catch((error) =>

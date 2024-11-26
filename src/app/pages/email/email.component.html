@@ -16,6 +16,7 @@
       [contentHTML]="contentHTML"
       [headerHTML]="headerHTML"
       [footerHTML]="footerHTML"
+      [selectedBackgroundColor]="this.selectedBackgroundColor"
       id="email-container"
       class="col-md-6 px-0 mx-3 emailfundo"
     />
@@ -24,136 +25,7 @@
     <!-- PROPRIEDADES DO EMAIL -->
     <div class="col-md-3">
       <div class="block-properties">
-        <!-- HEADER -->
-        <!-- <div
-          *ngIf="mostrarHeader"
-          class="propriedades"
-          data-replaceable-image-header
-        >
-          <h5 style="margin-bottom: 50px">Propriedades do Header</h5>
-          <div class="form-group">
-            <label for="Headers">Headers: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'header')"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesHeaders"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
 
-          <div>
-            <h2 style="margin: 50px 0px 20px 0px">Adicionar Imagem</h2> -->
-        <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
-            <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
-              <option value="P">Pequena (25%)</option>
-              <option value="M">Média (50%)</option>
-              <option value="G">Grande (100%)</option>
-            </select> -->
-        <!-- <div class="image-upload-container"> -->
-        <!-- Checkbox para confirmar termos de uso -->
-        <!-- <label>
-                <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
-                Eu aceito os termos de uso
-              </label> -->
-
-        <!-- Botão personalizado para upload de arquivo -->
-        <!-- <label class="custom-file-upload">
-                <input
-                  type="file"
-                  (change)="uploadFileHeader($event)"
-                  [disabled]="!termosDeUsoAceitos"
-                />
-                Escolher arquivo
-              </label>
-            </div>
-          </div>
-        </div> -->
-        <!-- HEADER -->
-
-        <!-- FOOTER -->
-        <!-- <div *ngIf="mostrarFooter" class="propriedades">
-          <h5 style="margin-bottom: 50px">Footers</h5>
-
-          <div class="form-group">
-            <label for="footers">Footers: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event, 'footer')"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesFooters"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div>
-        </div> -->
-        <!-- FOOTER -->
-
-        <!-- PROPRIEDADES -->
-        <!-- <div *ngIf="false" class="propriedades">
-          <h5 style="margin-bottom: 50px">Propriedades do E-mail</h5> -->
-
-        <!-- <div class="form-group">
-            <label for="esquemaCores">Esquema de cores</label>
-            <select class="form-select" aria-label="Default select example">
-              <option disabled selected>Positivo</option>
-              <option value="positivo">Positivo</option>
-              <option value="negativo">Negativo</option>
-            </select>
-          </div> -->
-
-        <!-- <div class="form-group">
-            <label for="corFundo">Cor do fundo do e-mail</label>
-            <select
-              class="form-select"
-              id="corFundo"
-              (change)="mudarCorFundo($event)"
-            >
-              <option disabled selected>Cor</option>
-              <option value="branco">Branco</option>
-              <option value="cinza">Cinza</option>
-              <option value="roxo">Roxo</option>
-            </select>
-          </div> -->
-
-        <!-- <div class="form-group">
-            <label for="tipoTemplate">Tipo de template</label>
-            <select class="form-select" id="tipoTemplate">
-              <option disabled selected>Tipo</option>
-              <option value="b2b">B2B</option>
-              <option value="b2c">B2C</option>
-            </select>
-          </div> -->
-
-        <!-- <div class="form-group">
-            <label for="esquemaCores">Empresas: </label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="AplicaMudanca($event)"
-            >
-              <option disabled selected>Escolher</option>
-              <option
-                *ngFor="let opcoes of opcoesPropriedadesEmpresas"
-                [value]="opcoes.nome"
-              >
-                {{ opcoes.nome }}
-              </option>
-            </select>
-          </div> -->
-        <!-- </div> -->
-        <!-- PROPRIEDADES -->
 
         <!-- TIPOGRAFIAS -->
         <app-typography-menu

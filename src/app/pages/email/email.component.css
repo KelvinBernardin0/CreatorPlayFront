@@ -9,24 +9,7 @@
   background-color: white;
 }
 
-.square-card {
-  padding: 10px;
-  /* Borda sólida */
-  border-radius: 10px;
-  text-align: center;
-  width: 100%;
-  font-size: 13px;
-  margin-bottom: 20px;
-  background-color: #ffffff;
-  /* Cor de fundo padrão */
 
-  /* Cursor de arraste */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Sombra sutil */
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  /* Transição suave */
-
-}
 
 /* .square-card:hover {
   background-color: #f9f9f9;
@@ -42,28 +25,6 @@
   justify-content: center;
   /* Centraliza horizontalmente dentro do deck */
 
-}
-
-.avancar {
-  display: flex;
-  border-radius: 5px;
-  font-size: 16px;
-  justify-content: center;
-  /* Centraliza horizontalmente dentro do deck */
-  margin: 50px 0px 20px 0px;
-}
-
-.desfazer {
-  font-size: 20px;
-
-}
-
-.header {
-  font-size: 15px;
-  border-radius: 50px;
-  background: #380054;
-  color: #ffffff;
-  padding: 10px;
 }
 
 
@@ -86,15 +47,6 @@
 }
 
 
-.img-icon {
-  width: 20px;
-  /* Ajuste o tamanho conforme necessário */
-  height: 20px;
-  /* Ajuste o tamanho conforme necessário */
-  display: block;
-  margin: 0 auto 10px;
-  /* Centraliza a imagem e adiciona margem inferior */
-}
 
 /* ------------------- 1 PARTE ------------------- */
 
