@@ -19,6 +19,7 @@ export default class HistoryStringStateStack extends HistoryStack<StringState> {
       return
 
     this.state.push(state);
+    // localStorage.setItem('lastState', JSON.stringify(this.state))
   }
 
   public override undo(): void {
@@ -40,8 +41,8 @@ export default class HistoryStringStateStack extends HistoryStack<StringState> {
     )
   }
 
-  getLastState(): StringState | null {
-    return this.state.at(-1) ?? null
+  getLastState(): StringState {
+    return this.state.at(-1)!
   }
 
 }

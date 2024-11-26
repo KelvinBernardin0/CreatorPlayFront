@@ -10,7 +10,7 @@ export abstract class EditorMediator{
   abstract saveCurrentEditorState(): void
   abstract undoEditorState(): void
   abstract updateEditorState(StringState: StringState): void
-  abstract getCurrentEditorState(): StringState | null
+  abstract getCurrentEditorState(): StringState
 
   abstract displayContextMenuOn(element: Element): void
   abstract getSelectedElement(): Element | null
@@ -21,6 +21,9 @@ export abstract class EditorMediator{
   abstract hideHoverBorder(): void
 
   abstract executeCommand(command: Command): void
-  abstract saveChanges(): void
+  abstract executeCommands(commands: Command[]): void
+
+  abstract changeBackgroundColor(color: string): void
+  abstract getBackgroundColor(): string
 
 }
