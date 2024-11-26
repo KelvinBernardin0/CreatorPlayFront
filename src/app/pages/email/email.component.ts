@@ -37,15 +37,6 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   contentHTML: SafeHtml = '';
   footerHTML: SafeHtml = '';
 
-  mostrarPropriedades: boolean = false;
-  mostrarHeader: boolean = false;
-  mostrarFooter: boolean = false;
-
-  opcoesPropriedades: { nome: string; html: string }[] = [];
-  opcoesPropriedadesEmpresas: { nome: string; html: string }[] = [];
-  opcoesHeaders!: OpcaoHeader[];
-  opcoesFooters: { nome: string; html: string }[] = [];
-
   selectedBackgroundColor = ''; // Cor de fundo selecionada
 
   @ViewChild(CenteredContentComponent)
@@ -62,9 +53,8 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   protected initialState!: StringState;
   constructor(
     private sanitizer: DomSanitizer,
-    private router: Router,
     private changeDetector: ChangeDetectorRef,
-    private http: HttpClient
+    router: Router,
   ) {
     super();
     this.initialState = router.getCurrentNavigation()?.extras
@@ -91,75 +81,6 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
     );
   }
 
-  //---------------- APLICA MUDANÇA NO HTML ----------------
-  AplicaMudanca(event: any, section: 'header' | 'content' | 'footer') {
-    const selectedValue = event.target.value;
-    let editableContainer: HTMLElement | null = null;
-
-    // Seleciona a seção apropriada com base no parâmetro `section`
-    switch (section) {
-      case 'header':
-        editableContainer = document.getElementById('header-container');
-        break;
-      case 'content':
-        editableContainer = document.getElementById('content-container');
-        break;
-      case 'footer':
-        editableContainer = document.getElementById('footer-container');
-        break;
-    }
-
-    if (editableContainer) {
-      let selectedOption:
-        | { nome: string; html?: string; path?: string }
-        | undefined;
-
-      // Verifica em qual array de opções está o valor selecionado
-      selectedOption =
-        this.opcoesPropriedades.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesFooters.find((opcoes) => opcoes.nome === selectedValue) ||
-        this.opcoesPropriedadesEmpresas.find(
-          (opcoes) => opcoes.nome === selectedValue
-        ) ||
-        this.opcoesHeaders.find((opcoes) => opcoes.nome === selectedValue);
-
-      if (selectedOption) {
-        const div = document.createElement('div');
-
-        if (selectedOption.html) {
-          div.innerHTML = selectedOption.html;
-        } else if (selectedOption.path) {
-          const img = document.createElement('img');
-          img.src = selectedOption.path;
-          div.appendChild(img);
-        }
-
-        const frag = document.createDocumentFragment();
-        let node;
-        while ((node = div.firstChild)) {
-          frag.appendChild(node);
-        }
-
-        this.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-        // Adiciona o conteúdo à seção apropriada
-        if (section === 'content') {
-          editableContainer.appendChild(frag);
-          this.rawEmailHTML = editableContainer.innerHTML;
-          this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(
-            this.rawEmailHTML
-          );
-        } else {
-          // Para header e footer, substitui o conteúdo inteiro
-          editableContainer.innerHTML = '';
-          editableContainer.appendChild(frag);
-        }
-      }
-    }
-  }
-  //---------------- APLICA MUDANÇA NO HTML ----------------
 
   override saveNewEditorState(stringState: StringState): void {
     this.historyStack.save(stringState);

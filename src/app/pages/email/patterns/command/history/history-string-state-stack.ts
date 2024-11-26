@@ -19,7 +19,6 @@ export default class HistoryStringStateStack extends HistoryStack<StringState> {
       return
 
     this.state.push(state);
-    // localStorage.setItem('lastState', JSON.stringify(this.state))
   }
 
   public override undo(): void {
