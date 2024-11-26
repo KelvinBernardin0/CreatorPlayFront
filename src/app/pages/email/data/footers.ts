@@ -1,12 +1,12 @@
-import {NamedPath} from "src/app/common/types/NamedPath";
+import {NamedValue} from "src/app/common/types/NamedValue";
 
-export const footers: NamedPath[] = [
+export const footers: NamedValue<string>[] = [
   {
-    nome: 'Footer Roxo',
-    path: 'assets/componentes/footers/footer.html',
+    name: 'Padrão',
+    value: 'assets/componentes/footers/footer.html',
   },
   {
-    nome: 'Footer Branco',
-    path: 'assets/componentes/footers/footer_inverso.html',
+    name: 'Inverso',
+    value: 'assets/componentes/footers/footer_inverso.html',
   },
 ];

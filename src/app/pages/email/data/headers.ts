@@ -1,29 +1,38 @@
-import {NamedPath} from "src/app/common/types/NamedPath";
+import { NamedValue, NamedValueWithImage } from 'src/app/common/types/NamedValue';
 
+export const headers: NamedValueWithImage<string>[] = [
+  {
+    name: 'Imagem Grande',
+    value: 'assets/componentes/headers/headers_imagem_grande.html',
+    hasImage: true,
+  },
+  {
+    name: 'Imagem Grande Inverso',
+    value: 'assets/componentes/headers/headers_imagem_grande_inverso.html',
+    hasImage: true,
 
-export const headers: NamedPath[] = [
-  {
-    nome: 'Imagem Grande',
-    path: 'assets/componentes/headers/headers_imagem_grande.html',
   },
   {
-    nome: 'Imagem Grande Inverso',
-    path: 'assets/componentes/headers/headers_imagem_grande_inverso.html',
+    name: 'Imagem Pequena',
+    value: 'assets/componentes/headers/headers_imagem_pequena.html',
+    hasImage: true,
+
   },
   {
-    nome: 'Imagem Pequena',
-    path: 'assets/componentes/headers/headers_imagem_pequena.html',
+    name: 'Imagem Pequena Inverso',
+    value: 'assets/componentes/headers/headers_imagem_pequena_inverso.html',
+    hasImage: true,
+
   },
   {
-    nome: 'Imagem Pequena Inverso',
-    path: 'assets/componentes/headers/headers_imagem_pequena_inverso.html',
+    name: 'Sem Imagem',
+    value: 'assets/componentes/headers/headers_sem_imagem.html',
+    hasImage: false,
+
   },
   {
-    nome: 'Sem Imagem',
-    path: 'assets/componentes/headers/headers_sem_imagem.html',
-  },
-  {
-    nome: 'Sem Imagem Inverso',
-    path: 'assets/componentes/headers/headers_sem_imagem_inverso.html',
+    name: 'Sem Imagem Inverso',
+    value: 'assets/componentes/headers/headers_sem_imagem_inverso.html',
+    hasImage: false,
   },
 ];
