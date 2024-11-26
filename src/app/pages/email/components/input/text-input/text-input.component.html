@@ -4,6 +4,6 @@
   <input
     class="my-2 p-3"
     type="text"
-    (change)="this.onChange($event)"
+    (input)="this.onInput.emit($event)"
     placeholder="{{ placeholder }}"
   />

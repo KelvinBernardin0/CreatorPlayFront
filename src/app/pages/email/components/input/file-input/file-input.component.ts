@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-file-input',
@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class FileInputComponent {
 
   @Input() label!: string
-  // onFileSelected!: (event: Event) => void
+  @Output() fileSelected = new EventEmitter<Event>()
   @Input() disabled!: boolean
 
   protected fileName: string | null = null
@@ -17,6 +17,7 @@ export class FileInputComponent {
     const target= event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
     this.fileName = file.name
+    this.fileSelected.emit(event)
   }
 
 }
