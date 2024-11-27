@@ -41,11 +41,20 @@ export class BuildingBlocksMenuComponent {
   protected blocks: NamedPathState[] = blocks;
   protected state: PropertyState = 'Vazio';
 
-  protected mostrarBotao: boolean = false;
   protected mostrarSeletorImagem: boolean = false;
   private _mostrarPreTitulo: boolean = false;
   private _mostrarSubtitulo: boolean = false;
   private _mostrarTextoLegal: boolean = false;
+  private _mostrarBotao: boolean = false;
+
+  get mostrarBotao(): boolean {
+    return this._mostrarBotao
+  }
+
+  set mostrarBotao(value: boolean){
+    this._mostrarBotao = value
+    this.toogleElement('#editable-button', value)
+  }
 
   get mostrarPreTitulo(): boolean {
     return this._mostrarPreTitulo;
@@ -158,7 +167,7 @@ export class BuildingBlocksMenuComponent {
   }
 
   protected onButtonChange(event: Event) {
-    throw new Error('Method not implemented.');
+    this.editElement('#editable-button', event);
   }
 
   protected uploadImageHeader(event: Event) {

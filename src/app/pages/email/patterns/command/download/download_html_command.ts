@@ -1,10 +1,10 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import Command from '../command';
-import {EditorMediator} from '../../mediator/editor_mediator';
+import { EditorMediator } from '../../mediator/editor_mediator';
 
 type Params = {
-  mediator: EditorMediator
-}
+  mediator: EditorMediator;
+};
 
 export class DownloadHtmlCommand extends Command {
   constructor(private params: Params) {
@@ -16,7 +16,7 @@ export class DownloadHtmlCommand extends Command {
   }
 
   downloadHTML(html: string, filename: string) {
-    const backgroundColor = this.params.mediator.getBackgroundColor()
+    const backgroundColor = this.params.mediator.getBackgroundColor();
     const imgRegex = /<img.*?src="(.*?)".*?>/g;
     const matches = Array.from(html.matchAll(imgRegex));
 
@@ -105,8 +105,17 @@ export class DownloadHtmlCommand extends Command {
 
       const combinedHTML = `${headerHTML}${contentHTML}${footerHTML}`;
       const cleanedHTML = this.removeContentEditable(combinedHTML);
+      const result = this.removeDisplayNone(cleanedHTML);
 
-      this.downloadHTML(cleanedHTML, 'Email.html');
+      this.downloadHTML(result, 'Email.html');
     }
+  }
+
+  removeDisplayNone(html: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const elements = tempDiv.querySelectorAll('[style*="display: none"]')
+    elements.forEach((e) => e.parentElement?.removeChild(e))
+    return tempDiv.innerHTML;
   }
 }

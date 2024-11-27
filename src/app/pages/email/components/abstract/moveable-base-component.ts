@@ -1,5 +1,4 @@
-
-export type Position={
+export type Position = {
   top: number;
   left: number;
   width: number;
@@ -23,8 +22,6 @@ export abstract class MovableBaseComponent {
   }
 
   public displayComponentOn(element: Element): void {
-    if (element === this.innerElement) return;
-
     this.innerElement = element;
     const bodyPosition = document.body.getBoundingClientRect();
     const elementPosition = this.innerElement.getBoundingClientRect();
