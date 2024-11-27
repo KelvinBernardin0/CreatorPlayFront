@@ -20,6 +20,7 @@ import { EditorMediator } from '../../../patterns/mediator/editor_mediator';
 import { copyWith } from '../../../patterns/prototype/copywith';
 import { PropertyState } from '../../../patterns/state/propertie-state';
 import { blocks, NamedPathState } from '../../../patterns/state/state-array';
+import { InsertLinkToElementCommand } from '../../../patterns/command/link/insert-link-to-element-command';
 
 @Component({
   selector: 'app-building-blocks-menu',
@@ -48,12 +49,12 @@ export class BuildingBlocksMenuComponent {
   private _mostrarBotao: boolean = false;
 
   get mostrarBotao(): boolean {
-    return this._mostrarBotao
+    return this._mostrarBotao;
   }
 
-  set mostrarBotao(value: boolean){
-    this._mostrarBotao = value
-    this.toogleElement('#editable-button', value)
+  set mostrarBotao(value: boolean) {
+    this._mostrarBotao = value;
+    this.toogleElement('#editable-button', value);
   }
 
   get mostrarPreTitulo(): boolean {
@@ -181,5 +182,15 @@ export class BuildingBlocksMenuComponent {
 
   protected onChange() {
     throw new Error('Method not implemented.');
+  }
+
+  protected onLinkChange(event: Event): void {
+    const text: string = (event.target as HTMLInputElement).value;
+    const command = new InsertLinkToElementCommand({
+      mediator: this.mediator,
+      link: text,
+      targetSelector: '#editable-button',
+    });
+    this.mediator.executeCommand(command);
   }
 }

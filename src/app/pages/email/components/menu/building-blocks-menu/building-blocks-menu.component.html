@@ -108,6 +108,11 @@
                 [placeholder]="'Digite o texto do botão'"
                 (onInput)="this.onButtonChange($event)"
               />
+
+              <app-text-input
+              [placeholder]="'Digite o link do botão'"
+              (onInput)="this.onLinkChange($event)"
+              />
             </ng-container>
           </ng-template>
         </div>
