@@ -40,8 +40,4 @@ export default class HistoryStringStateStack extends HistoryStack<StringState> {
     )
   }
 
-  getLastState(): StringState {
-    return this.state.at(-1)!
-  }
-
 }
