@@ -67,7 +67,7 @@
               *ngIf="this.mostrarSeletorImagem"
               [label]="'Imagem do header'"
               [disabled]="false"
-              (fileSelected)="this.uploadImageHeader($event)"
+              (fileSelected)="this.uploadImageHeader($event, 'header')"
             />
 
             <app-text-input
@@ -110,8 +110,8 @@
               />
 
               <app-text-input
-              [placeholder]="'Digite o link do botão'"
-              (onInput)="this.onLinkChange($event)"
+                [placeholder]="'Digite o link do botão'"
+                (onInput)="this.onLinkChange($event)"
               />
             </ng-container>
           </ng-template>
@@ -195,15 +195,15 @@
   </div>
 
   <div class="avancar">
-    <button class="btn btn-primary" (click)="this.downloadHtml()">
-      Salvar HTML
+    <button (click)="this.downloadHtml(1)" class="btn btn-primary">
+      Baixar HTML
     </button>
   </div>
+  <div (click)="this.downloadHtml(0)" class="avancar">
+    <button class="btn btn-warning">Salvar e Sair</button>
+  </div>
   <div class="avancar">
-    <button
-      (click)="this.mediator.undoEditorState()"
-      class="btn btn-danger desfazer"
-    >
+    <button (click)="this.mediator.undoEditorState()" class="btn btn-danger">
       Desfazer
     </button>
   </div>

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import {
   NamedValue,
@@ -21,6 +21,10 @@ import { copyWith } from '../../../patterns/prototype/copywith';
 import { PropertyState } from '../../../patterns/state/propertie-state';
 import { blocks, NamedPathState } from '../../../patterns/state/state-array';
 import { InsertLinkToElementCommand } from '../../../patterns/command/link/insert-link-to-element-command';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
+import { TemplateService } from 'src/app/services/template/template.service';
+import { EmailService } from 'src/app/services/email/email.service';
 
 @Component({
   selector: 'app-building-blocks-menu',
@@ -28,7 +32,16 @@ import { InsertLinkToElementCommand } from '../../../patterns/command/link/inser
   styleUrls: ['./building-blocks-menu.component.css'],
 })
 export class BuildingBlocksMenuComponent {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private notificacaoService: NotificacaoService,
+    private templateService: TemplateService,
+    private elRef: ElementRef,
+    private router: Router,
+    private emailService: EmailService
+
+  ) {}
 
   @Input() mediator!: EditorMediator;
 
@@ -68,6 +81,7 @@ export class BuildingBlocksMenuComponent {
   get mostrarSubtitulo(): boolean {
     return this._mostrarSubtitulo;
   }
+
   set mostrarSubtitulo(value: boolean) {
     this._mostrarSubtitulo = value;
     this.toogleElement('#editable-subtitle', value);
@@ -76,6 +90,7 @@ export class BuildingBlocksMenuComponent {
   get mostrarTextoLegal(): boolean {
     return this._mostrarTextoLegal;
   }
+
   set mostrarTextoLegal(value: boolean) {
     this._mostrarTextoLegal = value;
     this.toogleElement('#legal-text', value);
@@ -130,12 +145,19 @@ export class BuildingBlocksMenuComponent {
     this.mediator.executeCommand(command);
   }
 
-  protected downloadHtml() {
-    const command: Command = new DownloadHtmlCommand({
-      mediator: this.mediator,
-    });
+  protected downloadHtml(templateStatus: number): void {
+    const command = new DownloadHtmlCommand(
+      { templateStatus, mediator: this.mediator },
+      this.notificacaoService,  // Pass the service separately
+      this.templateService,     // Pass the service separately
+      this.elRef,               // Pass the reference separately
+      this.router               // Pass the router separately
+    );
     this.mediator.executeCommand(command);
   }
+  
+
+ 
 
   protected async changeHeader(event: Event) {
     this.mediator.saveCurrentEditorState();
@@ -171,14 +193,20 @@ export class BuildingBlocksMenuComponent {
     this.editElement('#editable-button', event);
   }
 
-  protected uploadImageHeader(event: Event) {
+  protected uploadImageHeader(event: Event, local: string) {
+   debugger;
+    
     const command = new UploadFileToContainerCommand(
-      this.mediator,
-      event,
-      'img[data-replaceable-image-header="true"]'
+      this.mediator, 
+      event, 
+      local, // Passando o valor correto de 'header' ou 'local'
+      this.emailService
     );
     this.mediator.executeCommand(command);
   }
+  
+  
+  
 
   protected onChange() {
     throw new Error('Method not implemented.');

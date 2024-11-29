@@ -1,0 +1,56 @@
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="content">
+    <div class="titulo">
+      <h5>Escolha seu modelo para começar a criação:</h5>
+    </div>
+
+    <!-- Abas de Rascunho e Concluídos -->
+    <ul class="nav nav-tabs">
+      
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: abaAtiva === 'Concluído' }"
+          (click)="selecionarAba('Concluído')"
+          >Concluídos</a
+        >
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: abaAtiva === 'Rascunho' }"
+          (click)="selecionarAba('Rascunho')"
+          >Rascunho</a
+        >
+      </li>
+    </ul>
+
+    <!-- Conteúdo da aba -->
+    <div class="cards" style="margin-top: 30px;">
+      <div class="card" *ngFor="let template of templatesFiltrados">
+        <img
+          src="assets/imagens/templates/icone_email_7.png"
+          alt="Header Sem"
+        />
+        <h2>{{ template.name }}</h2>
+        <div class="avancar">
+          <button
+            class="btn btn-primary"
+            (click)="redirecionarParaEmail(template)"
+          >
+            Editar
+          </button>
+          <div
+            style="margin-top: 10px"
+            class="avancar"
+            (click)="saveChanges(template.template)"
+          >
+            <button class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,82 +1,75 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import Command from '../command';
 import { EditorMediator } from '../../mediator/editor_mediator';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ElementRef } from '@angular/core';
+import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
+import { TemplateService } from 'src/app/services/template/template.service';
+import Swal from 'sweetalert2';
 
 type Params = {
+  templateStatus: number;
   mediator: EditorMediator;
 };
 
 export class DownloadHtmlCommand extends Command {
-  constructor(private params: Params) {
+  templateStatus: number;
+  mediator: EditorMediator;
+  notificacaoService: NotificacaoService;
+  templateService: TemplateService;
+  elRef: ElementRef;
+  router: Router;
+
+  constructor(
+    private params: Params,
+    notificacaoService: NotificacaoService,    // Inject service
+    templateService: TemplateService,          // Inject service
+    elRef: ElementRef,                         // Inject reference
+    router: Router                             // Inject Router
+  ) {
     super();
+    this.templateStatus = params.templateStatus;
+    this.mediator = params.mediator;
+    this.notificacaoService = notificacaoService; // Assign injected service
+    this.templateService = templateService;       // Assign injected service
+    this.elRef = elRef;                          // Assign reference
+    this.router = router;                        // Assign Router
   }
 
   override execute(): void {
-    this.saveChanges();
+    this.saveHtml(this.templateStatus);
   }
+ 
 
   downloadHTML(html: string, filename: string) {
-    const backgroundColor = this.params.mediator.getBackgroundColor();
-    const imgRegex = /<img.*?src="(.*?)".*?>/g;
+    // Regex para capturar imagens com atributo específico
+    const imgRegex = /<img[^>]+data-replaceable-image[^>]*src="(.*?)"/g;
     const matches = Array.from(html.matchAll(imgRegex));
 
-    const promises = [];
-
-    // Função para carregar imagens e converter para base64
-    const loadImageToBase64 = (src: string) => {
-      return new Promise<string>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          const reader = new FileReader();
-          reader.onloadend = function () {
-            resolve(reader.result as string); // Resolve com o conteúdo base64 da imagem
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(xhr.response); // Lê o conteúdo do blob como Data URL
-        };
-        xhr.onerror = reject;
-        xhr.responseType = 'blob'; // Definir o responseType antes de abrir o request
-        xhr.open('GET', src, true); // Abertura do request
-        xhr.send(); // Envio do request
-      });
-    };
-
-    // Iterar sobre todas as correspondências de tags <img>
     for (const match of matches) {
-      const imgSrc = match[1]; // Captura o atributo src da tag <img>
-      promises.push(
-        loadImageToBase64(imgSrc)
-          .then((base64) => {
-            html = html.replace(imgSrc, base64); // Substituir src da imagem pelo conteúdo base64 no HTML
-          })
-          .catch((error) => {
-            console.error('Erro ao carregar imagem:', error);
-          })
-      );
+      const imgSrc = match[1];
+      const imageName = imgSrc.split('/').pop();
+      const imagePath = `https://vivoid.vivo.com.br/creatorPlay/${imageName}`;
+
+      // Substitui o caminho base64 pelo caminho correto no servidor
+      html = html.replace(imgSrc, imagePath);
     }
 
-    // Aguardar todas as promessas de carregamento de imagens serem resolvidas
-    Promise.all(promises)
-      .then(() => {
-        // Estilizar o HTML com a cor de fundo selecionada
-        const styledHTML = `<html><head><style>body { background-color: ${backgroundColor}; }</style></head><body>${html}</body></html>`;
+    console.log('HTML após substituição:', html);
 
-        // Criar o Blob com o HTML estilizado
-        const blob = new Blob([styledHTML], { type: 'text/html' });
+    // Remover atributos editáveis do HTML
+    html = this.removeContentEditable(html);
 
-        // Criar um link temporário para o download
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
+    const blob = new Blob([html], { type: 'text/html' });
 
-        // Adicionar o link ao documento e simular o clique para iniciar o download
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch((error) => {
-        console.error('Erro ao processar imagens:', error);
-      });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   removeContentEditable(html: string): string {
@@ -93,10 +86,47 @@ export class DownloadHtmlCommand extends Command {
     return tempDiv.innerHTML;
   }
 
-  saveChanges() {
+  async saveHtml(templateStatus: number) {
+    debugger;
+    const name: string = (await this.notificacaoService.AlertaNomeTemplate()) ?? 'Template';
+    const tStatus = templateStatus;
+
     const headerContainer = document.querySelector('#header-container');
     const contentContainer = document.querySelector('#content-container');
     const footerContainer = document.querySelector('#footer-container');
+
+
+    if (headerContainer && contentContainer && footerContainer) {
+      const headerHTML = headerContainer.outerHTML;
+      const contentHTML = contentContainer.outerHTML;
+      const footerHTML = footerContainer.outerHTML;
+
+      const combinedHTML = `${headerHTML}${contentHTML}${footerHTML}`;
+      const cleanedHTML = this.removeContentEditable(combinedHTML);
+      const result = this.removeDisplayNone(cleanedHTML);
+      
+      // Converte o array em string JSON para passar para o método saveDbTemplate
+      this.saveDbTemplate(
+        name,
+        tStatus,
+        result
+      );
+  
+      // Salva no banco e realiza o download do HTML.
+      this.saveDbTemplate(name, tStatus, combinedHTML);
+      this.downloadHTML(result, `${name}.html`);
+    }
+  }
+
+  async saveHtmlAndExit(templateStatus: number) {
+    debugger;
+    const name: string = (await this.notificacaoService.AlertaNomeTemplate()) ?? 'Template';
+    const tStatus = templateStatus;
+
+    const headerContainer = document.querySelector('#header-container');
+    const contentContainer = document.querySelector('#content-container');
+    const footerContainer = document.querySelector('#footer-container');
+
 
     if (headerContainer && contentContainer && footerContainer) {
       const headerHTML = headerContainer.outerHTML;
@@ -107,9 +137,86 @@ export class DownloadHtmlCommand extends Command {
       const cleanedHTML = this.removeContentEditable(combinedHTML);
       const result = this.removeDisplayNone(cleanedHTML);
 
-      this.downloadHTML(result, 'Email.html');
+      // Converte o array em string JSON para passar para o método saveDbTemplate
+      this.saveDbTemplate(
+        name,
+        tStatus,
+        result
+      );
+      
+      this.router.navigate(['/inicio']); // Redireciona após salvar
     }
+     else {
+      this.notificacaoService
+            .AlertaErro('Erro', 'Conteúdo Nullo', 'Concluir')
+            .then(() => {
+              // this.router.navigate(['/login']);
+            });
+     }
   }
+  
+
+  saveDbTemplate(
+    name: string,
+    templateStatus: number,
+    template: string,  ) {
+   
+
+
+    debugger;
+    const templatePayload = {
+      name: name,
+      template: template,
+      templateStatus: templateStatus,
+    };
+
+    this.templateService.saveTemplate(templatePayload).subscribe({
+      next: (response) => {
+        debugger;
+        if (templateStatus === 0) {
+          this.notificacaoService
+            .AlertaConcluidoAzul('Sucesso', response.message, 'Concluir')
+            .then(() => {
+              // this.router.navigate(['/login']);
+            });
+        }
+      },
+      error: (error) => {
+        debugger;
+        this.notificacaoService
+          .AlertaErro('Erro', error.error.message, 'Concluir')
+          .then(() => {});
+      },
+      complete: () => {},
+    });
+  }
+
+  async AlertaNomeTemplate(): Promise<string | undefined> {
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: 'Nome do template',
+      inputValidator: (value: any) => {
+        if (!value) {
+          return 'Você precisa digitar algo!';
+        }
+        return undefined; // Adicionando retorno explícito para todos os caminhos
+      },
+      showCancelButton: false,
+    });
+
+    if (text) {
+      console.log('nameTemplate ', text);
+      return text;
+    }
+    return undefined;
+  }
+
+
+  
+
+ 
+
+  
 
   removeDisplayNone(html: string): string {
     const tempDiv = document.createElement('div');

@@ -7,6 +7,7 @@ import {equipamentos} from '../../../data/equipamentos';
 import {HttpClient} from '@angular/common/http';
 import UploadFileToContainerCommand from '../../../patterns/command/file/upload-file-to-container-command';
 import {InsertLinkToImageCommand} from '../../../patterns/command/link/insert-link-to-image-command';
+import { EmailService } from 'src/app/services/email/email.service';
 
 @Component({
   selector: 'app-vitrine-menu',
@@ -20,7 +21,7 @@ export class VitrineMenuComponent extends PropertiesMenu implements AfterViewIni
 
 
   constructor(
-    http: HttpClient
+    http: HttpClient, private emailService: EmailService
   ){
     super(http)
   }
@@ -31,16 +32,24 @@ export class VitrineMenuComponent extends PropertiesMenu implements AfterViewIni
     equipamentos.forEach((opcao) => this.getAndPushData(opcao, this.opcoesVitrineEquipamento));
   }
 
-  uploadFileVitrine1(event: Event) {
-    const selector = '[data-replaceable-image-vitrine1]'
-    const command = new UploadFileToContainerCommand(this.mediator, event, selector);
-    this.mediator.executeCommand(command)
+  uploadFileVitrine1(event: Event, local: string) {
+    const command = new UploadFileToContainerCommand(
+      this.mediator,
+      event,
+      local, // Passando o valor correto de 'header' ou 'local'
+      this.emailService
+    );
+    this.mediator.executeCommand(command);
   }
 
-  uploadFileVitrine2(event: Event) {
-    const selector = '[data-replaceable-image-vitrine2]'
-    const command = new UploadFileToContainerCommand(this.mediator, event, selector);
-    this.mediator.executeCommand(command)
+  uploadFileVitrine2(event: Event, local: string) {
+    const command = new UploadFileToContainerCommand(
+      this.mediator,
+      event,
+      local, // Passando o valor correto de 'header' ou 'local'
+      this.emailService
+    );
+    this.mediator.executeCommand(command);
   }
 
   inserirLink(){

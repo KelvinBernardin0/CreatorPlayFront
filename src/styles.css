@@ -112,28 +112,8 @@ input::placeholder {
 }
 
 .left-section {
-  flex: 2;
-  background: radial-gradient(
-    circle,
-    #ffffff 0%,
-    #ffffff 0%,
-    #8a4af3 40%,
-    #2e0060 80%
-  );
-  /* background: radial-gradient(
-    circle,
-    #ffffff 0%,
-    #ffffff 0%,
-    #086bb1 40%,
-    #2e0060 70%
-  ); */
-  /* background: radial-gradient(
-    circle,
-    #ffffff 0%,
-    #086bb1 25%,
-    #650198 50%,
-    #2e0060 80%
-  ); */
+  flex: 1;
+  background: #380054;
   display: flex;
   justify-content: center;
   align-items: center;

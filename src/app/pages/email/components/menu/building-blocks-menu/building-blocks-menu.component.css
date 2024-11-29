@@ -36,16 +36,34 @@
 }
 
 
+
 .avancar {
   display: flex;
-  border-radius: 5px;
-  font-size: 16px;
-  justify-content: center;
-  /* Centraliza horizontalmente dentro do deck */
-  margin: 50px 0px 20px 0px;
+  justify-content: center; /* Centraliza horizontalmente dentro do deck */
+  margin: 20px 0px;
 }
 
-.desfazer {
-  font-size: 20px;
+.avancar .btn {
+  width: 150px; /* Define um tamanho fixo para os botões */
+  height: 50px; /* Define uma altura fixa */
+  font-size: 16px;
+  border-radius: 5px;
 }
+
+#link-save-button{
+  background-color: #5e008d; /* Cor roxa para o botão "Salvar HTML" */
+  border-color: #5e008d;
+}
+
+.avancar .btn-primary {
+  background-color: #5e008d; /* Cor roxa para o botão "Salvar HTML" */
+  border-color: #5e008d;
+}
+
+.avancar .btn-danger {
+  background-color: #CC1F59; /* Cor vermelha para o botão "Desfazer" */
+  border-color: #CC1F59;
+}
+
+
 

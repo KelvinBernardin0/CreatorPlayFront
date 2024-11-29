@@ -41,7 +41,7 @@
     <label class="custom-file-upload" style="display: block; margin-bottom: 10px;">
       <input
         type="file"
-        (change)="uploadFileVitrine1($event)"
+        (change)="uploadFileVitrine1($event, 'vitrine1')"
         [disabled]="!termosDeUsoAceitos"
       />
       Escolher Imagem 1
@@ -50,7 +50,7 @@
     <label class="custom-file-upload" style="display: block;">
       <input
         type="file"
-        (change)="uploadFileVitrine2($event)"
+        (change)="uploadFileVitrine2($event, 'vitrine2')"
         [disabled]="!termosDeUsoAceitos"
       />
       Escolher Imagem 2

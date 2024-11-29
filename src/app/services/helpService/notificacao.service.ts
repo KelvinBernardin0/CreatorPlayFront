@@ -14,6 +14,27 @@ export class NotificacaoService {
 
   constructor(private http: HttpClient) {}
 
+
+  async AlertaNomeTemplate(): Promise<string | undefined> {
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: 'Nome do template',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'Você precisa digitar algo!';
+        }
+        return undefined; // Adicionando retorno explícito para todos os caminhos
+      },
+      showCancelButton: false,
+    });
+
+    if (text) {
+      console.log('nameTemplate ', text);
+      return text;
+    }
+    return undefined;
+  }
+
   AlertaConcluidoAzul(Titulo: string, Texto: string, Botao: string) {
     return Swal.fire({
       title: Titulo,

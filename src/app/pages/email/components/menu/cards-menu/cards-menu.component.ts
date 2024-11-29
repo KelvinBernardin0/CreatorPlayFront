@@ -8,6 +8,7 @@ import { EditorMediator } from '../../../patterns/mediator/editor_mediator';
 import PropertiesMenu from '../../abstract/properties-menu';
 import UploadFileToContainerCommand from '../../../patterns/command/file/upload-file-to-container-command';
 import {InsertLinkToImageCommand} from '../../../patterns/command/link/insert-link-to-image-command';
+import { EmailService } from 'src/app/services/email/email.service';
 
 @Component({
   selector: 'app-cards-menu',
@@ -23,7 +24,10 @@ export class CardsMenuComponent
   opcoesCards: NamedHtml[] = [];
   termosDeUsoAceitos: boolean = false;
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient,
+    private emailService: EmailService,
+
+  ) {
     super(http);
   }
 
@@ -31,11 +35,17 @@ export class CardsMenuComponent
     cards.forEach((opcao) => this.getAndPushData(opcao, this.opcoesCards));
   }
 
-  uploadFileCard(event: Event) {
-    const command = new UploadFileToContainerCommand(this.mediator, event, '[data-replaceable-image-card]')
-    this.mediator.executeCommand(command);
+  uploadFileCard(event: Event, local: string) {
+    const command = new UploadFileToContainerCommand(
+      this.mediator, 
+      event, 
+      local, // Passando o valor correto de 'header' ou 'local'
+      this.emailService
+    );    this.mediator.executeCommand(command);
     // this.uploadFileToContainer('[data-replaceable-image-card]', event);
   }
+
+ 
 
   inserirLink(){
     const command = new InsertLinkToImageCommand(this.mediator)
