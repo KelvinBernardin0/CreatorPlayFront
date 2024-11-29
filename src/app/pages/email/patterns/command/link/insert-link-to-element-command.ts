@@ -45,6 +45,5 @@ export class InsertLinkToElementCommand extends Command {
     targetElement.parentNode?.replaceChild(aElement, targetElement);
 
     mediator.hideContextMenu();
-    mediator.displayHoverBorderOn(targetElement);
   }
 }

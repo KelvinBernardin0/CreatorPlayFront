@@ -29,8 +29,8 @@
           <app-selection-input
             [label]="'Escolha um esquema de cor'"
             [disabledOption]="'Escolha um esquema de cor'"
-            [options]="opcoesFooters"
-            (onChange)="this.onChange()"
+            [options]="opcoesEsquemaCor"
+            (onChange)="this.onChangeColorScheme($event)"
           />
         </div>
       </div>
@@ -49,48 +49,50 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
-          <ng-template>
-            <app-selection-input
-              [label]="'Modelo do header'"
-              [disabledOption]="'Escolha um modelo'"
-              [options]="opcoesModeloHeader"
-              (onChange)="this.changeHeader($event)"
+          <app-selection-input
+            #selectionInputHeader
+            [label]="'Modelo do header'"
+            [disabledOption]="'Escolha um modelo'"
+            [(selectedOption)]="this.selectedHeaderOption"
+            [options]="opcoesModeloHeader"
+            (onChange)="this.onChangeHeader($event)"
             />
-            <app-selection-input
+            <ng-template>
+              <app-selection-input
               [label]="'Logo do email'"
               [disabledOption]="'Escolha uma marca'"
               [options]="opcoesLogo"
               (onChange)="this.onChange()"
-            />
+              />
 
-            <app-file-input
+              <app-file-input
               *ngIf="this.mostrarSeletorImagem"
               [label]="'Imagem do header'"
               [disabled]="false"
               (fileSelected)="this.uploadImageHeader($event)"
-            />
+              />
 
-            <app-text-input
+              <app-text-input
               [label]="'Título'"
               onInput="'Digite o título'"
               (onInput)="this.onTitleChange($event)"
-            />
+              />
 
-            <app-toggle-input
+              <app-toggle-input
               [label]="'Incluir pré-título'"
               (onChange)="this.mostrarPreTitulo = $event"
-            />
+              />
 
-            <ng-container *ngIf="this.mostrarPreTitulo">
-              <app-text-input
+              <ng-container *ngIf="this.mostrarPreTitulo">
+                <app-text-input
                 [placeholder]="'Digite o pré-título'"
                 (onInput)="this.onPretitleChange($event)"
-              />
-            </ng-container>
+                />
+              </ng-container>
 
             <app-toggle-input
-              [label]="'Incluir subtítulo'"
-              (onChange)="this.mostrarSubtitulo = $event"
+            [label]="'Incluir subtítulo'"
+            (onChange)="this.mostrarSubtitulo = $event"
             />
             <ng-container *ngIf="this.mostrarSubtitulo">
               <app-text-input
@@ -100,8 +102,8 @@
             </ng-container>
 
             <app-toggle-input
-              [label]="'Incluir botão'"
-              (onChange)="this.mostrarBotao = $event"
+            [label]="'Incluir botão'"
+            (onChange)="this.mostrarBotao = $event"
             />
             <ng-container *ngIf="this.mostrarBotao">
               <app-text-input
@@ -110,22 +112,22 @@
               />
 
               <app-text-input
-              [placeholder]="'Digite o link do botão'"
-              (onInput)="this.onLinkChange($event)"
-              />
-            </ng-container>
-          </ng-template>
+                [placeholder]="'Digite o link do botão'"
+                (onInput)="this.onLinkChange($event)"
+                />
+              </ng-container>
+            </ng-template>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div ngbAccordionItem>
-      <h2 ngbAccordionHeader>
-        <button ngbAccordionButton>
+      <div ngbAccordionItem>
+        <h2 ngbAccordionHeader>
+          <button ngbAccordionButton>
           <img
-            class="item-icon"
-            src="assets/imagens/controls-regular.svg"
-            alt="ícone de engrenagem"
+          class="item-icon"
+          src="assets/imagens/controls-regular.svg"
+          alt="ícone de engrenagem"
           />
           Footer
         </button>
@@ -133,20 +135,22 @@
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
           <app-selection-input
-            [label]="'Esquema de cor do footer'"
-            [disabledOption]="'Escolha um esquema de cor'"
-            [options]="this.opcoesFooters"
-            (onChange)="this.changeFooter($event)"
+          #selectionInputFooter
+          [label]="'Esquema de cor do footer'"
+          [disabledOption]="'Escolha um esquema de cor'"
+          [options]="this.opcoesFooters"
+          [(selectedOption)]="this.selectedFooterOption"
+          (onChange)="this.onChangeFooter($event)"
           />
           <ng-template>
             <app-toggle-input
-              [label]="'Incluir texto legal'"
-              (onChange)="this.mostrarTextoLegal = $event"
+            [label]="'Incluir texto legal'"
+            (onChange)="this.mostrarTextoLegal = $event"
             />
 
             <ng-container *ngIf="this.mostrarTextoLegal">
               <app-text-input
-                [placeholder]="'Digite o texto legal'"
+              [placeholder]="'Digite o texto legal'"
                 (onInput)="this.onLegalTextChange($event)"
               />
             </ng-container>
