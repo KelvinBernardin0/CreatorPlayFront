@@ -1,8 +1,12 @@
 export type NamedValue<T> = {
-  name: string,
-  value: T
-}
+  name: string;
+  value: T;
+};
 
-export type NamedValueWithImage<T> = NamedValue<T> & {
-   hasImage: boolean
-  }
+export type ColorScheme = {
+  isInverse: boolean;
+};
+
+export type Image = {
+  hasImage: boolean;
+};
