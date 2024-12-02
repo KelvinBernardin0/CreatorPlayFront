@@ -31,6 +31,7 @@ import ButtonMenuComponent from './pages/email/components/menu/button-menu/butto
 import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/cards-menu.component';
 import { PlansMenuComponent } from './pages/email/components/menu/plans-menu/plans-menu.component';
 import { VitrineMenuComponent } from './pages/email/components/menu/vitrine-menu/vitrine-menu.component';
+import { HistoricoComponent } from './pages/historico/historico.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -64,6 +65,10 @@ const routes: Routes = [
     path: 'email',
     component: EmailComponent,
   },
+  {
+    path: 'historico',
+    component: HistoricoComponent,
+  },
 ];
 
 @NgModule({
@@ -90,6 +95,7 @@ const routes: Routes = [
     CardsMenuComponent,
     PlansMenuComponent,
     VitrineMenuComponent,
+    HistoricoComponent
   ],
   imports: [
     BrowserModule,
