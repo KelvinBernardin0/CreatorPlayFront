@@ -67,3 +67,29 @@
 
 
 
+
+
+
+
+.file-input {
+  flex-grow: 1; /* Permite que o input se ajuste ao espaço disponível */
+  padding: 15px ;
+  font-size: 15px;
+  border: 1px solid #ddd; /* Borda cinza clara */
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+.info-icon {
+  font-size: 14px; /* Tamanho do ícone */
+  color: #5e008d; /* Cor do ícone (amarelo alerta) */
+  cursor: pointer;
+}
+
+.info-icon:hover {
+  color: #5e008d; /* Cor do ícone ao passar o mouse */
+}
