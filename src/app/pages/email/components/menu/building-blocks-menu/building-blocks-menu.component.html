@@ -95,47 +95,46 @@
             <div style="margin-top: 30px">
               <app-text-input
                 [label]="'Título'"
-                onInput="'Digite o título'"
-                (onInput)="this.onTitleChange($event)"
-              />
+                [(input)]="titulo"
+                />
 
               <app-toggle-input
                 [label]="'Incluir pré-título'"
-                (onChange)="this.mostrarPreTitulo = $event"
+                [(value)]="this.mostrarPreTitulo"
               />
             </div>
 
             <ng-container *ngIf="this.mostrarPreTitulo">
               <app-text-input
                 [placeholder]="'Digite o pré-título'"
-                (onInput)="this.onPretitleChange($event)"
+                [(input)]="this.preTitulo"
               />
             </ng-container>
 
             <app-toggle-input
               [label]="'Incluir subtítulo'"
-              (onChange)="this.mostrarSubtitulo = $event"
+              [(value)]="this.mostrarSubtitulo"
             />
             <ng-container *ngIf="this.mostrarSubtitulo">
               <app-text-input
                 [placeholder]="'Digite o subtítulo'"
-                (onInput)="this.onSubtitleChange($event)"
+                [(input)]="subTitulo"
               />
             </ng-container>
 
             <app-toggle-input
               [label]="'Incluir botão'"
-              (onChange)="this.mostrarBotao = $event"
+              [(value)]="this.mostrarBotao"
             />
             <ng-container *ngIf="this.mostrarBotao">
               <app-text-input
                 [placeholder]="'Digite o texto do botão'"
-                (onInput)="this.onButtonChange($event)"
+                [(input)]="botao"
               />
 
               <app-text-input
                 [placeholder]="'Digite o link do botão'"
-                (onInput)="this.onLinkChange($event)"
+                [(input)]="linkBotao"
               />
             </ng-container>
           </ng-template>
@@ -167,13 +166,13 @@
           <ng-template>
             <app-toggle-input
               [label]="'Incluir texto legal'"
-              (onChange)="this.mostrarTextoLegal = $event"
+              [(value)]="this.mostrarTextoLegal"
             />
 
             <ng-container *ngIf="this.mostrarTextoLegal">
               <app-text-input
                 [placeholder]="'Digite o texto legal'"
-                (onInput)="this.onLegalTextChange($event)"
+                [(input)]="textoLegal"
               />
             </ng-container>
           </ng-template>

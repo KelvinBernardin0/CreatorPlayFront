@@ -7,7 +7,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class TextInputComponent {
 
-  @Output() onInput = new EventEmitter<Event>()
+  @Input() input!: string
+  @Output() inputChange = new EventEmitter<string>()
   @Input() label: string = ''
   @Input() placeholder!: string
 
