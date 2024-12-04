@@ -1,4 +1,3 @@
-import { footers } from './data/footers';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -6,17 +5,16 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { StringState } from 'src/app/common/types/State';
-import { CenteredContentComponent } from './components/centered-content/centered-content.component';
-import { ContextMenuComponent } from './components/menu/context-menu/context-menu.component';
-import { HoverBorderComponent } from './components/menu/hover-border/hover-border.component';
+import {DomSanitizer,SafeHtml} from '@angular/platform-browser';
+import {Router} from '@angular/router';
+import {StringState} from 'src/app/common/types/State';
+import {CenteredContentComponent} from './components/centered-content/centered-content.component';
+import {ContextMenuComponent} from './components/menu/context-menu/context-menu.component';
+import {HoverBorderComponent} from './components/menu/hover-border/hover-border.component';
 import Command from './patterns/command/command';
 import HistoryStringStateStack from './patterns/command/history/history-string-state-stack';
-import { EditorMediator } from './patterns/mediator/editor_mediator';
-import { PropertyState } from './patterns/state/propertie-state';
-import { HttpClient } from '@angular/common/http';
+import {EditorMediator} from './patterns/mediator/editor_mediator';
+import {PropertyState} from './patterns/state/propertie-state';
 
 interface OpcaoHeader {
   nome: string;
@@ -54,7 +52,7 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   constructor(
     private sanitizer: DomSanitizer,
     private changeDetector: ChangeDetectorRef,
-    router: Router,
+    router: Router
   ) {
     super();
     this.initialState = router.getCurrentNavigation()?.extras
@@ -64,7 +62,7 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   ngAfterViewInit(): void {
     this.sanitizeState(this.initialState);
     this.changeDetector.detectChanges();
-    this.saveCurrentEditorState()
+    this.saveCurrentEditorState();
   }
 
   //---------------- FUNCIONAMENTO DO HTML ----------------
@@ -80,7 +78,6 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
       state.footer ?? ''
     );
   }
-
 
   override saveNewEditorState(stringState: StringState): void {
     this.historyStack.save(stringState);
@@ -113,7 +110,7 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   }
 
   override getCurrentEditorState(): StringState {
-    return this.historyStack.getLastState();
+    return this.centeredContentComponent.getCurrentEditorState();
   }
 
   override displayHoverBorderOn(element: Element): void {

@@ -1,12 +1,12 @@
-import {NamedValue} from "src/app/common/types/NamedValue";
+import { ColorScheme, NamedValue } from 'src/app/common/types/NamedValue';
 
-export const esquemaCores: NamedValue<string>[] = [
+export const esquemaCores: (NamedValue<boolean>)[] = [
   {
-    name: "Padrão",
-    value: "Padrão"
+    name: 'Padrão',
+    value: false,
   },
   {
-    name: "Inverso",
-    value: "Inverso"
-  }
-]
+    name: 'Inverso',
+    value: true,
+  },
+];

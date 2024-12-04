@@ -119,4 +119,19 @@ export class CenteredContentComponent implements AfterViewInit {
       this.selectedBackgroundColor = color
     }
 
+    public getCurrentEditorState(): StringState{
+      const headerContainer = document.getElementById('header-container');
+      const contentContainer = document.getElementById('content-container');
+      const footerContainer = document.getElementById('footer-container');
+
+      if (!headerContainer || !contentContainer || !footerContainer)
+        throw new Error(`Conteúdo incompleto no editor`)
+
+      return {
+        header: headerContainer.innerHTML,
+        content: contentContainer.innerHTML,
+        footer: footerContainer.innerHTML
+      };
+    }
+
 }

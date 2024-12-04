@@ -1,12 +1,21 @@
-import {NamedValue} from "src/app/common/types/NamedValue";
+import { ColorScheme, NamedValue } from 'src/app/common/types/NamedValue';
+import { TemplateOptions } from 'src/app/common/types/TemplateOptions';
 
-export const footers: NamedValue<string>[] = [
+export const footers: NamedValue<TemplateOptions>[] = [
   {
     name: 'Padrão',
-    value: 'assets/componentes/footers/footer.html',
+    value: {
+      hasImage: false,
+      url: 'assets/componentes/footers/footer.html',
+      isInverse: false,
+    },
   },
   {
     name: 'Inverso',
-    value: 'assets/componentes/footers/footer_inverso.html',
+    value: {
+      hasImage: false,
+      url: 'assets/componentes/footers/footer_inverso.html',
+      isInverse: true,
+    },
   },
 ];

@@ -2,9 +2,9 @@
 <select
   class="form-select w-100 my-2 p-3"
   id="selection"
-  (change)="onChange.emit($event)"
+  [(ngModel)]="this.selectedOption"
+  (ngModelChange)="this.changeSelectionTo($event)"
 >
-  <!-- (change)="mudarCorFundo($event)" -->
-  <option disabled selected>{{ disabledOption }}</option>
-  <option *ngFor="let option of options" [value]="option.value">{{ option.name }}</option>
+  <option disabled selected [ngValue]="null">{{ disabledOption }}</option>
+  <option *ngFor="let option of options" [ngValue]="option">{{ option.name }}</option>
 </select>

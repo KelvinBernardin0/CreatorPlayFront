@@ -1,12 +1,13 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import Command from '../command';
 import { EditorMediator } from '../../mediator/editor_mediator';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
 import { TemplateService } from 'src/app/services/template/template.service';
 import Swal from 'sweetalert2';
+import { EmailService } from 'src/app/services/email/email.service';
 
 type Params = {
   templateStatus: number;
