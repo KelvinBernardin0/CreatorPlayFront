@@ -13,6 +13,13 @@ export class InicioComponent {
 
   emailHTML: string = '';
 
+  redirecionarParaMaestro() {
+    window.open(
+      'https://app.powerbi.com/groups/me/reports/b691e0b8-3942-4386-a860-9f0b71f17523/ReportSection?ctid=9744600e-3e04-492e-baa1-25ec245c6f10&experience=power-bi',
+      '_blank'
+    );
+  }
+
   redirecionarParaEmailSemImagem() {
     this.carregarEmail(
       'assets/componentes/headers/headers_sem_imagem.html',

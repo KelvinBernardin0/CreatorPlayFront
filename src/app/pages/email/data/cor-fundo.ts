@@ -7,14 +7,10 @@ export const coresFundo: NamedValue<string>[] = [
   },
   {
     name: 'Cinza',
-    value: '#666666'
+    value: '#F6F6F6'
   },
   {
     name: 'Púrpura',
     value: '#49066B'
   },
-  {
-    name: 'Transparente',
-    value: 'transparent'
-  }
 ]

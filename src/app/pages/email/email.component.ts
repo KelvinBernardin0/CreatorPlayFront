@@ -37,7 +37,7 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   contentHTML: SafeHtml = '';
   footerHTML: SafeHtml = '';
 
-  selectedBackgroundColor = ''; // Cor de fundo selecionada
+  selectedBackgroundColor = 'Branco'; // Cor de fundo selecionada
 
   @ViewChild(CenteredContentComponent)
   centeredContentComponent!: CenteredContentComponent;
