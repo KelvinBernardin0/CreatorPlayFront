@@ -8,6 +8,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { AutenticacaoGuard } from './common/autenticacao/autenticacao.guard';
 import { EmailComponent } from './pages/email/email.component';
+import { HistoricoComponent } from './pages/historico/historico.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'email',
     component: EmailComponent,
+  },
+  {
+    path: 'historico',
+    component: HistoricoComponent,
   },
 ];
 
