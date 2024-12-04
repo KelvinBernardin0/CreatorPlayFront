@@ -156,6 +156,8 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
+          
+          
           <app-selection-input
             #selectionInputFooter
             [label]="'Esquema de cor do footer'"
@@ -164,6 +166,8 @@
             [(selectedOption)]="this.selectedFooterOption"
             (onChange)="this.onChangeFooter($event)"
           />
+
+
           <ng-template>
             <app-toggle-input
               [label]="'Incluir texto legal'"
