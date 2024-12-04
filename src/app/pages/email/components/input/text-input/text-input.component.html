@@ -4,6 +4,7 @@
   <input
     class="my-2 p-3"
     type="text"
-    (input)="this.onInput.emit($event)"
+    [(ngModel)]="input"
+    (ngModelChange)="inputChange.emit($event)"
     placeholder="{{ placeholder }}"
   />

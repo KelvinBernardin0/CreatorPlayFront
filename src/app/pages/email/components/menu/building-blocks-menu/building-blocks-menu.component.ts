@@ -1,15 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { NamedValue } from 'src/app/common/types/NamedValue';
 import { TemplateOptions } from 'src/app/common/types/TemplateOptions';
+import { EmailService } from 'src/app/services/email/email.service';
+import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
+import { TemplateService } from 'src/app/services/template/template.service';
 import { coresFundo } from '../../../data/cor-fundo';
 import { esquemaCores } from '../../../data/esquema-cores';
 import { footers } from '../../../data/footers';
 import { headers } from '../../../data/headers';
 import { logos } from '../../../data/logos';
 import { modelos } from '../../../data/modelos';
-import Command from '../../../patterns/command/command';
 import { ChangeDisplayElementCommand } from '../../../patterns/command/display/change-element-display-command';
 import { DownloadHtmlCommand } from '../../../patterns/command/download/download_html_command';
 import UploadFileToContainerCommand from '../../../patterns/command/file/upload-file-to-container-command';
@@ -21,10 +24,6 @@ import { copyWith } from '../../../patterns/prototype/copywith';
 import { PropertyState } from '../../../patterns/state/propertie-state';
 import { blocks, NamedPathState } from '../../../patterns/state/state-array';
 import { SelectionInputComponent } from '../../input/selection-input/selection-input.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NotificacaoService } from 'src/app/services/helpService/notificacao.service';
-import { TemplateService } from 'src/app/services/template/template.service';
-import { EmailService } from 'src/app/services/email/email.service';
 
 @Component({
   selector: 'app-building-blocks-menu',
@@ -40,7 +39,6 @@ export class BuildingBlocksMenuComponent {
     private elRef: ElementRef,
     private router: Router,
     private emailService: EmailService
-
   ) {}
   @Input() mediator!: EditorMediator;
 
@@ -62,6 +60,14 @@ export class BuildingBlocksMenuComponent {
   private _mostrarSubtitulo: boolean = false;
   private _mostrarTextoLegal: boolean = false;
   private _mostrarBotao: boolean = false;
+
+  private _titulo: string = '';
+  private _preTitulo: string = '';
+  private _subTitulo: string = '';
+  private _botao: string = '';
+  private _linkBotao: string = '';
+
+  private _textoLegal: string = '';
 
   @ViewChild('selectionInputHeader')
   selectionInputHeader!: SelectionInputComponent<TemplateOptions>;
@@ -101,6 +107,62 @@ export class BuildingBlocksMenuComponent {
     this.toogleElement('#legal-text', value);
   }
 
+  get titulo() {
+    return this._titulo;
+  }
+  get preTitulo() {
+    return this._preTitulo;
+  }
+  get subTitulo() {
+    return this._subTitulo;
+  }
+
+  set preTitulo(value: string) {
+    this._preTitulo = value;
+    this.editElement('#editable-pretitle', value);
+  }
+
+  set titulo(value: string) {
+    this._titulo = value;
+    this.editElement('#editable-title', value);
+  }
+
+  set subTitulo(value: string) {
+    this._subTitulo = value;
+    this.editElement('#editable-subtitle', value);
+  }
+
+  get textoLegal(): string {
+    return this._textoLegal;
+  }
+  set textoLegal(value: string) {
+    this._textoLegal = value;
+    this.editElement('#legal-text', value);
+  }
+
+  get botao(): string {
+    return this._botao;
+  }
+
+  set botao(value: string) {
+    this._botao = value;
+    this.editElement('#editable-button', value);
+  }
+
+  get linkBotao(): string {
+    return this._linkBotao;
+  }
+
+  set linkBotao(value: string) {
+    this._linkBotao = value;
+    const command = new InsertLinkToElementCommand({
+      mediator: this.mediator,
+      link: value,
+      targetSelector: '#editable-button',
+    });
+    this.mediator.executeCommand(command);
+  }
+
   protected changeState(newState: PropertyState) {
     this.state = newState;
     this.mediator.changePropertiesState(this.state);
@@ -111,24 +173,7 @@ export class BuildingBlocksMenuComponent {
     this.mediator.changeBackgroundColor(color);
   }
 
-  protected onPretitleChange(event: Event) {
-    this.editElement('#editable-pretitle', event);
-  }
-
-  protected onTitleChange(event: Event) {
-    this.editElement('#editable-title', event);
-  }
-
-  protected onSubtitleChange(event: Event) {
-    this.editElement('#editable-subtitle', event);
-  }
-
-  protected onLegalTextChange(event: Event) {
-    this.editElement('#legal-text', event);
-  }
-
-  protected editElement(selector: string, event: Event) {
-    const text: string = (event.target as HTMLInputElement).value;
+  protected editElement(selector: string, text: string) {
     const commands = [
       new EditTextContentCommand({
         mediator: this.mediator,
@@ -153,10 +198,10 @@ export class BuildingBlocksMenuComponent {
   protected downloadHtml(templateStatus: number): void {
     const command = new DownloadHtmlCommand(
       { templateStatus, mediator: this.mediator },
-      this.notificacaoService,  
-      this.templateService,     
-      this.elRef,            
-      this.router              
+      this.notificacaoService,
+      this.templateService,
+      this.elRef,
+      this.router
     );
     this.mediator.executeCommand(command);
   }
@@ -173,6 +218,8 @@ export class BuildingBlocksMenuComponent {
     const currentState = this.mediator.getCurrentEditorState();
     const newState = copyWith(currentState, { header: result });
     this.mediator.updateEditorState(newState);
+    this.resetHeaderOptions()
+    this.mediator.hideHoverBorder()
   }
 
   protected async onChangeFooter(namedValue: NamedValue<TemplateOptions>) {
@@ -184,45 +231,34 @@ export class BuildingBlocksMenuComponent {
     const currentState = this.mediator.getCurrentEditorState();
     const newState = copyWith(currentState, { footer: result });
     this.mediator.updateEditorState(newState);
-  }
-
-  protected onButtonChange(event: Event) {
-    this.editElement('#editable-button', event);
+    this.resetFooterOptions()
+    this.mediator.hideHoverBorder()
   }
 
   protected uploadImageHeader(event: Event, local: string) {
     debugger;
-     
-     const command = new UploadFileToContainerCommand(
-       this.mediator, 
-       event, 
-       local, // Passando o valor correto de 'header' ou 'local'
-       this.emailService
-     );
-     this.mediator.executeCommand(command);
-   }
+
+    const command = new UploadFileToContainerCommand(
+      this.mediator,
+      event,
+      local, // Passando o valor correto de 'header' ou 'local'
+      this.emailService
+    );
+    this.mediator.executeCommand(command);
+  }
 
   protected onChange() {
     throw new Error('Method not implemented.');
   }
 
-  protected onLinkChange(event: Event): void {
-    const text: string = (event.target as HTMLInputElement).value;
-    const command = new InsertLinkToElementCommand({
-      mediator: this.mediator,
-      link: text,
-      targetSelector: '#editable-button',
-    });
-    this.mediator.executeCommand(command);
-  }
-
   protected onChangeColorScheme(namedValue: NamedValue<boolean>) {
-    const filteredHeaderOptions = headers.filter(
-      (e) => e.value.isInverse === namedValue.value
-    );
-    const filteredFooterOptions = footers.filter(
-      (e) => e.value.isInverse === namedValue.value
-    );
+    const filterOptions =(
+      options: NamedValue<TemplateOptions>[],
+      isInverse: boolean
+    ) => options.filter((e) => e.value.isInverse === isInverse);
+
+    const filteredHeaderOptions = filterOptions(headers, namedValue.value)
+    const filteredFooterOptions = filterOptions(footers, namedValue.value)
 
     this.opcoesFooters = filteredFooterOptions;
     this.opcoesModeloHeader = filteredHeaderOptions;
@@ -232,5 +268,25 @@ export class BuildingBlocksMenuComponent {
 
     this.selectionInputHeader.changeSelectionTo(firstHeaderOption);
     this.selectionInputFooter.changeSelectionTo(firstFooterOption);
+    this.resetHeaderOptions()
+    this.resetFooterOptions();
+  }
+
+  private resetHeaderOptions(){
+    this._mostrarBotao = false;
+    this._mostrarPreTitulo = false;
+    this._mostrarSubtitulo = false;
+
+    this._titulo = '';
+    this._preTitulo = '';
+    this._subTitulo = '';
+    this._botao = '';
+    this._linkBotao = '';
+  }
+
+  private resetFooterOptions() {
+    this._mostrarTextoLegal = false;
+
+    this._textoLegal = '';
   }
 }
