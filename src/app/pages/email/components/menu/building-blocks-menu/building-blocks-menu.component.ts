@@ -267,7 +267,8 @@ export class BuildingBlocksMenuComponent {
     const firstFooterOption = filteredFooterOptions.at(0)!;
 
     this.selectionInputHeader.changeSelectionTo(firstHeaderOption);
-    this.selectionInputFooter.changeSelectionTo(firstFooterOption);
+    // this.selectionInputFooter.changeSelectionTo(firstFooterOption);
+    this.onChangeFooter(firstFooterOption);
     this.resetHeaderOptions()
     this.resetFooterOptions();
   }
