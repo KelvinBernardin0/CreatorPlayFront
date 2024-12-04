@@ -20,17 +20,17 @@ export class InicioComponent {
     );
   }
 
-  redirecionarParaEmailSemImagem() {
-    this.carregarEmail(
-      'assets/componentes/headers/headers_sem_imagem.html',
-      'assets/componentes/conteudo.html',
-      'assets/componentes/footers/footer_inverso.html'
-    );
-  }
+  // redirecionarParaEmailSemImagem() {
+  //   this.carregarEmail(
+  //     'assets/componentes/headers/headers_sem_imagem.html',
+  //     'assets/componentes/conteudo.html',
+  //     'assets/componentes/footers/footer_inverso.html'
+  //   );
+  // }
 
   redirecionarParaEmailComImagem() {
     this.carregarEmail(
-      'assets/componentes/headers/headers_imagem_pequena.html',
+      'assets/componentes/headers/headers_imagem_grande.html',
       'assets/componentes/conteudo.html',
       'assets/componentes/footers/footer.html'
     );
