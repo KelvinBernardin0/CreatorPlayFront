@@ -42,6 +42,9 @@ export class BuildingBlocksMenuComponent {
   ) {}
   @Input() mediator!: EditorMediator;
 
+  protected selectedColorScheme: NamedValue<boolean> = esquemaCores.find(e =>  e.value === false)!;
+
+
   protected selectedHeaderOption: NamedValue<TemplateOptions> | null = null;
   protected selectedFooterOption: NamedValue<TemplateOptions> | null = null;
 
@@ -73,6 +76,13 @@ export class BuildingBlocksMenuComponent {
   selectionInputHeader!: SelectionInputComponent<TemplateOptions>;
   @ViewChild('selectionInputFooter')
   selectionInputFooter!: SelectionInputComponent<TemplateOptions>;
+  
+  ngOnInit(): void {
+    this.onChangeColorScheme({
+      name: 'Padrão',
+      value: false
+    });
+  }
 
   get mostrarBotao(): boolean {
     return this._mostrarBotao;
@@ -180,7 +190,7 @@ export class BuildingBlocksMenuComponent {
         selector: selector,
         text: text,
       }),
-      new SmoothScroolCommand(selector),
+      // new SmoothScroolCommand(selector),
     ];
     this.mediator.executeCommands(commands);
   }
@@ -252,6 +262,8 @@ export class BuildingBlocksMenuComponent {
   }
 
   protected onChangeColorScheme(namedValue: NamedValue<boolean>) {
+    
+    
     const filterOptions =(
       options: NamedValue<TemplateOptions>[],
       isInverse: boolean

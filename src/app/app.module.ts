@@ -1,24 +1,24 @@
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {CommonModule, DatePipe} from '@angular/common';
-import {HTTP_INTERCEPTORS,HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
-import {FormsModule,ReactiveFormsModule} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
-import {RouterModule,Routes} from '@angular/router';
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {AutenticacaoGuard} from './common/autenticacao/autenticacao.guard';
-import {AutenticacaoInterceptor} from './common/autenticacao/autenticacao.interceptor';
-import {CenteredContentComponent} from './pages/email/components/centered-content/centered-content.component'; // Import DragDropModule
-import {ContextMenuComponent} from './pages/email/components/menu/context-menu/context-menu.component';
-import {HoverBorderComponent} from './pages/email/components/menu/hover-border/hover-border.component';
-import {EmailComponent} from './pages/email/email.component';
-import {HeaderComponent} from './pages/header/header.component';
-import {InicioComponent} from './pages/inicio/inicio.component';
-import {EsqueciSenhaComponent} from './pages/login/esqueci-senha/esqueci-senha.component';
-import {LoginComponent} from './pages/login/login/login.component';
-import {RegistraseComponent} from './pages/login/registrase/registrase.component';
-import {PerfilComponent} from './pages/perfil/perfil.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CommonModule, DatePipe } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { AutenticacaoGuard } from './common/autenticacao/autenticacao.guard';
+import { AutenticacaoInterceptor } from './common/autenticacao/autenticacao.interceptor';
+import { CenteredContentComponent } from './pages/email/components/centered-content/centered-content.component'; // Import DragDropModule
+import { ContextMenuComponent } from './pages/email/components/menu/context-menu/context-menu.component';
+import { HoverBorderComponent } from './pages/email/components/menu/hover-border/hover-border.component';
+import { EmailComponent } from './pages/email/email.component';
+import { HeaderComponent } from './pages/header/header.component';
+import { InicioComponent } from './pages/inicio/inicio.component';
+import { EsqueciSenhaComponent } from './pages/login/esqueci-senha/esqueci-senha.component';
+import { LoginComponent } from './pages/login/login/login.component';
+import { RegistraseComponent } from './pages/login/registrase/registrase.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 import { BuildingBlocksMenuComponent } from './pages/email/components/menu/building-blocks-menu/building-blocks-menu.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectionInputComponent } from './pages/email/components/input/selection-input/selection-input.component';
@@ -95,7 +95,7 @@ const routes: Routes = [
     CardsMenuComponent,
     PlansMenuComponent,
     VitrineMenuComponent,
-    HistoricoComponent
+    HistoricoComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +106,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     DragDropModule,
-    NgbModule
+    NgbModule,
   ],
 
   providers: [
@@ -118,6 +118,7 @@ const routes: Routes = [
       multi: true,
     },
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Or NO_ERRORS_SCHEMA depending on the requirement
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -12,12 +12,6 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody class="form-group my-2 mx-2">
-          <!-- <app-selection-input
-            [label]="'Modelo do email'"
-            [disabledOption]="'Escolha um modelo'"
-            [options]="opcoesModeloEstrutura"
-            (onChange)="this.onChange()"
-          /> -->
 
           <app-selection-input
             [label]="'Cor de fundo '"
@@ -29,6 +23,7 @@
           <app-selection-input
             [label]="'Escolha um esquema de cor'"
             [disabledOption]="'Escolha um esquema de cor'"
+            [selectedOption]="selectedColorScheme"
             [options]="opcoesEsquemaCor"
             (onChange)="this.onChangeColorScheme($event)"
           />
