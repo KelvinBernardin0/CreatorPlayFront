@@ -5,6 +5,7 @@ type Params = {
   mediator: EditorMediator;
   link: string;
   targetSelector: string;
+  target?: Document
 };
 export class InsertLinkToElementCommand extends Command {
   constructor(private params: Params) {
@@ -12,8 +13,8 @@ export class InsertLinkToElementCommand extends Command {
   }
 
   override execute(): void {
-    const { mediator, link, targetSelector } = this.params;
-    const targetElement = document.querySelector(targetSelector) as HTMLElement;
+    const { mediator, link, targetSelector, target  } = this.params;
+    const targetElement = (target ?? document).querySelector(targetSelector) as HTMLElement;
     if (!targetElement)
       throw new Error(`Seletor ${targetSelector} não encontrado!`);
 
