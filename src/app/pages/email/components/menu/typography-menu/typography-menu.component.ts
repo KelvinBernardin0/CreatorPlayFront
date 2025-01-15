@@ -1,84 +1,39 @@
-import {HttpClient} from '@angular/common/http';
-import {AfterViewInit,Component,Input} from '@angular/core';
-import {NamedHtml} from '../../../../../common/types/NamedHtml';
-import {descricoes} from '../../../data/descricoes';
-import {links} from '../../../data/links';
-import {titulos} from '../../../data/titulos';
-import {EditorMediator} from '../../../patterns/mediator/editor_mediator';
+import { HttpClient } from '@angular/common/http';
+import { Component, Input } from '@angular/core';
+import { EditorMediator } from '../../../patterns/mediator/editor_mediator';
 import PropertiesMenu from '../../abstract/properties-menu';
-import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
-import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start-command';
 
 @Component({
   selector: 'app-typography-menu',
   templateUrl: './typography-menu.component.html',
   styleUrls: ['./typography-menu.component.css']
 })
-export class TypographyMenuComponent extends PropertiesMenu implements AfterViewInit {
+export class TypographyMenuComponent extends PropertiesMenu {
+  @Input() override mediator!: EditorMediator;
 
-  @Input() override mediator!: EditorMediator
-  opcoesTitulos: NamedHtml[] = [];
-  opcoesDescricoes: NamedHtml[] = [];
-  opcoesLinks: NamedHtml[] = [];
+  textoEditado: string = ''; // Texto que será editado
+  elementoClicado: HTMLElement | null = null; // Variável para armazenar o elemento clicado
 
-
-  constructor(
-    http: HttpClient,
-  ){
-    super(http)
+  constructor(http: HttpClient) {
+    super(http);
   }
 
-  ngAfterViewInit(): void {
-    titulos.forEach((opcao) => this.getAndPushData(opcao, this.opcoesTitulos));
-    descricoes.forEach((opcao) => this.getAndPushData(opcao, this.opcoesDescricoes));
-    links.forEach((opcao) => this.getAndPushData(opcao, this.opcoesLinks));
-  }
-
-
-  AplicaCor(cor: string) {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const selectedContents = range.extractContents();
-      const span = document.createElement('span');
-      span.style.color = cor;
-
-      span.appendChild(selectedContents);
-      range.insertNode(span);
-
-      this.mediator.saveCurrentEditorState()
-    }
-  }
-
-  aplicaEstiloSelecionado(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    if (!selectedValue) return; // Retorna se nenhum valor estiver selecionado
-
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return; // Retorna se não houver seleção
-
-    const range = selection.getRangeAt(0);
-    const selectedContents = range.extractContents();
-
-    const span = document.createElement('span');
-    switch (selectedValue) {
-      case 'bold':
-        span.style.fontWeight = 'bold';
-        break;
-      case 'italic':
-        span.style.fontStyle = 'italic';
-        break;
-      case 'underline':
-        span.style.textDecoration = 'underline';
-        break;
-      default:
-        break;
+  // Função para aplicar o texto editado de volta ao elemento clicado
+  aplicarTextoEditado() {
+    if (this.elementoClicado) {
+      this.elementoClicado.innerHTML = this.textoEditado; // Atualiza o conteúdo com o texto editado
     }
 
-    span.appendChild(selectedContents);
-    range.insertNode(span);
+    // Rola a página para o topo após a edição
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    // Atualiza o HTML após aplicar o estilo
-    this.mediator.saveCurrentEditorState()
+  // Função para capturar o texto ao clicar no bloco de texto
+  selecionarBlocoTexto(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target && target.classList.contains('bloco-texto')) {
+      this.elementoClicado = target;
+      this.textoEditado = target.innerHTML; // Captura o texto atual do bloco
+    }
   }
 }

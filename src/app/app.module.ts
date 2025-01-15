@@ -32,6 +32,7 @@ import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/car
 import { PlansMenuComponent } from './pages/email/components/menu/plans-menu/plans-menu.component';
 import { VitrineMenuComponent } from './pages/email/components/menu/vitrine-menu/vitrine-menu.component';
 import { HistoricoComponent } from './pages/historico/historico.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -107,6 +108,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     DragDropModule,
     NgbModule,
+    EditorModule,
   ],
 
   providers: [
