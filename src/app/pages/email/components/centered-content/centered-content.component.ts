@@ -150,12 +150,18 @@ export class CenteredContentComponent implements AfterViewInit {
 
   selecionarBlocoTexto(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (target && target.classList.contains('bloco-texto')) {
-      this.elementoClicado = target; // Armazena o elemento clicado
-      this.textoEditado = target.innerHTML; // Captura o texto atual do bloco
+    
+    // Busca o elemento mais próximo com a classe 'bloco-texto', incluindo os filhos
+    const blocoTexto = target.closest('.bloco-texto') as HTMLElement;  // Casting para HTMLElement
+  
+    if (blocoTexto) {
+      this.elementoClicado = blocoTexto; // Armazena o elemento clicado
+      this.textoEditado = blocoTexto.innerHTML; // Captura o texto atual do bloco
       this.editorMediator.openTextEditor(this.textoEditado); // Chama o método no editor para abrir o texto no editor
     }
   }
+  
+  
 
   // Método para aplicar o texto modificado ao conteúdo
   aplicarTextoEditado() {
