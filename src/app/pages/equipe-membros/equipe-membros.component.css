@@ -1,0 +1,9 @@
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaçamento entre o campo de email e o botão */
+}
+
+.email-field {
+  flex: 1; /* Faz com que o campo de email ocupe o espaço disponível */
+}

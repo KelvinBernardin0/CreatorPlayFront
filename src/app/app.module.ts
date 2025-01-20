@@ -32,7 +32,11 @@ import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/car
 import { PlansMenuComponent } from './pages/email/components/menu/plans-menu/plans-menu.component';
 import { VitrineMenuComponent } from './pages/email/components/menu/vitrine-menu/vitrine-menu.component';
 import { HistoricoComponent } from './pages/historico/historico.component';
-
+import { EquipeComponent } from './pages/equipe/equipe.component';
+import { EquipeMembrosComponent } from './pages/equipe-membros/equipe-membros.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
@@ -69,6 +73,11 @@ const routes: Routes = [
     path: 'historico',
     component: HistoricoComponent,
   },
+  {
+    path: 'equipes',
+    component: EquipeComponent,
+    canActivate: [AutenticacaoGuard]
+  },
 ];
 
 @NgModule({
@@ -96,6 +105,9 @@ const routes: Routes = [
     PlansMenuComponent,
     VitrineMenuComponent,
     HistoricoComponent,
+    EquipeComponent,
+    EquipeMembrosComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -107,6 +119,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     DragDropModule,
     NgbModule,
+    MatDialogModule,
+    MatTableModule,
+    MatIconModule
   ],
 
   providers: [

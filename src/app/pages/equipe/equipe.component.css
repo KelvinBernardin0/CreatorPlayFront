@@ -1,0 +1,71 @@
+.container {
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.teams-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+mat-card {
+
+  padding: 16px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form-row {
+  display: flex;
+  gap: 16px; /* Espaçamento entre as colunas */
+}
+
+.small-form-field {
+  flex: 1;
+  height: 50%; /* Ajusta a altura para metade */
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0; /* Remove o padding extra */
+}
+
+.mat-form-field-flex {
+  height: 50%; /* Ajusta a altura interna para metade */
+}
+input#mat-input-0,
+input#mat-input-1 {
+  padding: inherit;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

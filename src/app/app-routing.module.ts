@@ -9,7 +9,7 @@ import { HeaderComponent } from './pages/header/header.component';
 import { AutenticacaoGuard } from './common/autenticacao/autenticacao.guard';
 import { EmailComponent } from './pages/email/email.component';
 import { HistoricoComponent } from './pages/historico/historico.component';
-
+import { EquipeComponent } from './pages/equipe/equipe.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -34,6 +34,11 @@ const routes: Routes = [
   {
     path: 'historico',
     component: HistoricoComponent,
+  },
+  {
+    path: 'equipes',
+    component: EquipeComponent,
+    canActivate: [AutenticacaoGuard]
   },
 ];
 

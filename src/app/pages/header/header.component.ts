@@ -19,7 +19,9 @@ export class HeaderComponent {
   Historico(): void {
     this.router.navigate(['/historico']); // Redirecionar para a página de perfil
   }
-
+  Equipes(): void {
+    this.router.navigate(['/equipes']); // Redirecionar para a página de equipe
+  }
   Sair(): void {
     localStorage.clear(); // Limpar o localStorage após deslogar com sucesso
     this.router.navigate(['/login']); // Redirecionar para a página de login
