@@ -149,6 +149,12 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
     this.typographyMenuComponent.openTextEditor(texto); // Chama o editor com o texto selecionado
   }
 
-  
+  // Método para aplicar o texto editado ao Content
+  public aplicarTextoNoContent(textoEditado: string): void {
+    if (this.centeredContentComponent) {
+      this.centeredContentComponent.textoEditado = textoEditado;
+      this.centeredContentComponent.aplicarTextoEditado();
+    }
+  }
   
 }

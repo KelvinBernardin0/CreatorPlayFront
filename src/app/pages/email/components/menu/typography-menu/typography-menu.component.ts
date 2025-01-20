@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { EditorMediator } from '../../../patterns/mediator/editor_mediator';
 import PropertiesMenu from '../../abstract/properties-menu';
+import { EmailComponent } from '../../../email.component';
 
 @Component({
   selector: 'app-typography-menu',
@@ -12,19 +13,22 @@ export class TypographyMenuComponent extends PropertiesMenu {
   @Input() override mediator!: EditorMediator;
 
   textoEditado: string = ''; // Texto que será editado
+  footerHTML!: string;
+  headerHTML!: string;
+
   elementoClicado: HTMLElement | null = null; // Variável para armazenar o elemento clicado
 
   constructor(http: HttpClient) {
     super(http);
   }
 
-  // Aplica o texto editado ao elemento original
-  aplicarTextoEditado() {
-    if (this.elementoClicado) {
-      this.elementoClicado.innerHTML = this.textoEditado; // Atualiza o conteúdo
-      this.mediator.saveCurrentEditorState(); // Salva o estado atualizado
-    }
+  // Modifica o conteúdo com o texto editado
+// Aplica o texto editado ao componente pai
+aplicarTextoEditado() {
+  if (this.mediator instanceof EmailComponent) {
+    this.mediator.aplicarTextoNoContent(this.textoEditado); // Chama o método no EmailComponent
   }
+}
 
   // Função para capturar o texto ao clicar no bloco de texto
   selecionarBlocoTexto(event: MouseEvent) {
