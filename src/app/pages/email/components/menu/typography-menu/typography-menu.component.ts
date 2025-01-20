@@ -18,14 +18,12 @@ export class TypographyMenuComponent extends PropertiesMenu {
     super(http);
   }
 
-  // Função para aplicar o texto editado de volta ao elemento clicado
+  // Aplica o texto editado ao elemento original
   aplicarTextoEditado() {
     if (this.elementoClicado) {
-      this.elementoClicado.innerHTML = this.textoEditado; // Atualiza o conteúdo com o texto editado
+      this.elementoClicado.innerHTML = this.textoEditado; // Atualiza o conteúdo
+      this.mediator.saveCurrentEditorState(); // Salva o estado atualizado
     }
-
-    // Rola a página para o topo após a edição
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Função para capturar o texto ao clicar no bloco de texto
@@ -36,4 +34,14 @@ export class TypographyMenuComponent extends PropertiesMenu {
       this.textoEditado = target.innerHTML; // Captura o texto atual do bloco
     }
   }
+
+  openTextEditor(texto: string): void {
+    this.textoEditado = texto; // Define o texto no editor
+    // Adicione lógica adicional para exibir o editor, se necessário
+    console.log('Texto configurado no editor:', texto);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  }
+  
+  
 }

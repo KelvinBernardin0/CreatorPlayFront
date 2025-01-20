@@ -20,6 +20,8 @@ export class CenteredContentComponent implements AfterViewInit {
   currentRange: Range | null = null; //Para armazenar a posição atual do cursor
 
   lastUploadedImg: HTMLImageElement | null = null; // Para armazenar a última imagem carregada
+  elementoClicado!: HTMLElement;
+  textoEditado!: string;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -133,5 +135,17 @@ export class CenteredContentComponent implements AfterViewInit {
         footer: footerContainer.innerHTML
       };
     }
+
+    selecionarBlocoTexto(event: MouseEvent): void {
+      const target = event.target as HTMLElement;
+      if (target && target.classList.contains('bloco-texto')) {
+        this.elementoClicado = target; // Armazena o elemento clicado
+        this.textoEditado = target.innerHTML; // Captura o texto atual do bloco
+        this.editorMediator.openTextEditor(this.textoEditado); // Chama o método no editor para abrir o texto no editor
+      }
+    }
+
+    
+    
 
 }

@@ -15,6 +15,7 @@ import Command from './patterns/command/command';
 import HistoryStringStateStack from './patterns/command/history/history-string-state-stack';
 import {EditorMediator} from './patterns/mediator/editor_mediator';
 import {PropertyState} from './patterns/state/propertie-state';
+import { TypographyMenuComponent } from './components/menu/typography-menu/typography-menu.component';
 
 interface OpcaoHeader {
   nome: string;
@@ -45,6 +46,10 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
 
   @ViewChild(ContextMenuComponent)
   contextMenuComponent!: ContextMenuComponent;
+
+  @ViewChild(TypographyMenuComponent) 
+  typographyMenuComponent!: TypographyMenuComponent;
+
 
   protected propertyState: PropertyState = 'Vazio';
   protected historyStack = new HistoryStringStateStack(this);
@@ -138,4 +143,12 @@ export class EmailComponent extends EditorMediator implements AfterViewInit {
   override getBackgroundColor(): string {
     return this.selectedBackgroundColor;
   }
+
+  override openTextEditor(texto: string): void {
+    console.log('Texto recebido para edição:', texto);
+    this.typographyMenuComponent.openTextEditor(texto); // Chama o editor com o texto selecionado
+  }
+
+  
+  
 }

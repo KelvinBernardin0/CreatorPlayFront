@@ -4,6 +4,8 @@ import Command from '../command/command';
 import {PropertyState} from '../state/propertie-state';
 
 export abstract class EditorMediator{
+
+ 
   abstract changePropertiesState(state: PropertyState): void
 
   abstract saveNewEditorState(stringState: StringState): void
@@ -25,5 +27,7 @@ export abstract class EditorMediator{
 
   abstract changeBackgroundColor(color: string): void
   abstract getBackgroundColor(): string
+  
+  abstract openTextEditor(texto: string): void; // Novo método abstrato para abrir o editor de texto
 
 }
