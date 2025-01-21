@@ -32,16 +32,13 @@ import { CardsMenuComponent } from './pages/email/components/menu/cards-menu/car
 import { PlansMenuComponent } from './pages/email/components/menu/plans-menu/plans-menu.component';
 import { VitrineMenuComponent } from './pages/email/components/menu/vitrine-menu/vitrine-menu.component';
 import { HistoricoComponent } from './pages/historico/historico.component';
-<<<<<<< HEAD
 import { EquipeComponent } from './pages/equipe/equipe.component';
 import { EquipeMembrosComponent } from './pages/equipe-membros/equipe-membros.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-=======
 import { EditorModule } from '@tinymce/tinymce-angular';
 
->>>>>>> 103-BlocoDeTexto
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
@@ -124,13 +121,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     DragDropModule,
     NgbModule,
-<<<<<<< HEAD
     MatDialogModule,
     MatTableModule,
-    MatIconModule
-=======
+    MatIconModule,
     EditorModule,
->>>>>>> 103-BlocoDeTexto
   ],
 
   providers: [
