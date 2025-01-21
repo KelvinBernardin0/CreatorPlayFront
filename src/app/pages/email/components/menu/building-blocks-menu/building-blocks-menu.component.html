@@ -12,7 +12,6 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody class="form-group my-2 mx-2">
-
           <app-selection-input
             [label]="'Cor de fundo '"
             [disabledOption]="'Escolha uma cor'"
@@ -88,10 +87,7 @@
             </div>
 
             <div style="margin-top: 30px">
-              <app-text-input
-                [label]="'Título'"
-                [(input)]="titulo"
-                />
+              <app-text-input [label]="'Título'" [(input)]="titulo" />
 
               <app-toggle-input
                 [label]="'Incluir pré-título'"
@@ -150,8 +146,6 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
-          
-          
           <!-- <app-selection-input
             #selectionInputFooter
             [label]="'Esquema de cor do footer'"
@@ -160,7 +154,6 @@
             [(selectedOption)]="this.selectedFooterOption"
             (onChange)="this.onChangeFooter($event)"
           /> -->
-
 
           <ng-template>
             <app-toggle-input
@@ -199,6 +192,9 @@
                 <div class="col-md-4">
                   <div
                     class="card square-card"
+                    draggable="true"
+                    (dragstart)="this.dragCopyStart($event, block.text)"
+                    (dragend)="this.dragCopyEnd($event)"
                     (click)="this.changeState(block.text)"
                   >
                     <img

@@ -25,6 +25,8 @@ import { copyWith } from '../../../patterns/prototype/copywith';
 import { PropertyState } from '../../../patterns/state/propertie-state';
 import { blocks, NamedPathState } from '../../../patterns/state/state-array';
 import { SelectionInputComponent } from '../../input/selection-input/selection-input.component';
+import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
+import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start-command';
 
 @Component({
   selector: 'app-building-blocks-menu',
@@ -46,6 +48,8 @@ export class BuildingBlocksMenuComponent {
   protected selectedColorScheme: NamedValue<boolean> = esquemaCores.find(
     (e) => e.value === false
   )!;
+  
+  draggedBlock: any;
 
   protected selectedHeaderOption: NamedValue<TemplateOptions> | null = null;
   protected selectedFooterOption: NamedValue<TemplateOptions> | null = null;
@@ -176,9 +180,32 @@ export class BuildingBlocksMenuComponent {
   }
 
   protected changeState(newState: PropertyState) {
+    debugger;
+
     this.state = newState;
     this.mediator.changePropertiesState(this.state);
   }
+
+
+
+   dragCopyEnd(event: DragEvent) {
+      const command = new DragCopyEndCommand(this.mediator, event)
+      this.mediator.executeCommand(command)
+    }
+
+    dragCopyStart(event: DragEvent, data: PropertyState) {
+      debugger;
+
+      const command = new DragCopyStartCommand(this.mediator, event, data)
+      this.mediator.executeCommand(command)
+      this.changeState(data);
+    }
+  
+  
+
+  
+ 
+  
 
   protected changeBackgroundColor(namedValue: NamedValue<string>) {
     const color = namedValue.value;
