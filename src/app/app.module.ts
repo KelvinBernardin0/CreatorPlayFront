@@ -38,7 +38,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { EditorModule } from '@tinymce/tinymce-angular';
-
+import { SelecaoModeloComponent } from './pages/selecao-modelo/selecao-modelo.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
@@ -108,7 +108,8 @@ const routes: Routes = [
     VitrineMenuComponent,
     HistoricoComponent,
     EquipeComponent,
-    EquipeMembrosComponent
+    EquipeMembrosComponent,
+    SelecaoModeloComponent
     
   ],
   imports: [

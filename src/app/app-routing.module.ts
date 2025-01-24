@@ -10,6 +10,7 @@ import { AutenticacaoGuard } from './common/autenticacao/autenticacao.guard';
 import { EmailComponent } from './pages/email/email.component';
 import { HistoricoComponent } from './pages/historico/historico.component';
 import { EquipeComponent } from './pages/equipe/equipe.component';
+import { SelecaoModeloComponent } from './pages/selecao-modelo/selecao-modelo.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -40,6 +41,11 @@ const routes: Routes = [
     component: EquipeComponent,
     canActivate: [AutenticacaoGuard]
   },
+  {
+    path:'selecaomodelos',
+    component: SelecaoModeloComponent,
+    canActivate: [AutenticacaoGuard]
+  }
 ];
 
 @NgModule({
