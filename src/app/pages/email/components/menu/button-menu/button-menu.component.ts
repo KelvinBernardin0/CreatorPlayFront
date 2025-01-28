@@ -19,9 +19,70 @@ export default class ButtonMenuComponent extends PropertiesMenu {
 
   protected opcoesBotoes: NamedPath[] = botoes;
 
+  buttonText: string = 'Botão';
+  buttonLink: string = '';
   constructor(http: HttpClient) {
     super(http);
   }
+
+
+
+
+  estiloSelecionado(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    if (!selectedValue) return;
+
+    const buttonElement = document.querySelector('button.bloco-botao-btn') as HTMLButtonElement;
+    const aButtonElement = document.querySelector('#linkBtn') as HTMLButtonElement;
+    if (!buttonElement) return;
+
+    const parentDiv = aButtonElement.parentElement as HTMLDivElement;
+    if (!parentDiv) return;
+
+
+    switch (selectedValue) {
+      case 'left':
+        parentDiv.style.textAlign = 'left';
+        break;
+      case 'center':
+        parentDiv.style.textAlign = 'center';
+        break;
+      case 'right':
+        parentDiv.style.textAlign = 'right';
+        break;
+      case '25%':
+        buttonElement.style.width = '25%';
+        break;
+      case '50%':
+        buttonElement.style.width = '50%';
+        break;
+      case '100%':
+        buttonElement.style.width = '100%';
+        break;
+      case 'white':
+        buttonElement.style.backgroundColor ='#ffffff'
+        buttonElement.style.color = ' #49066B';
+        break;
+      case 'purple':
+        buttonElement.style.color = '#ffffff';
+        buttonElement.style.backgroundColor =' #49066B'
+        break;
+      case 'solido':
+        buttonElement.style.backgroundColor = '49066B';
+        buttonElement.style.border = 'none';
+        break;
+      case 'contorno':
+        buttonElement.style.backgroundColor = 'transparent';
+        buttonElement.style.border = '1px solid maroon';
+        buttonElement.style.color = ' #49066B';
+        break;
+      default:
+        break;
+    }
+
+    this.mediator.saveCurrentEditorState();
+  }
+
 
   alinhamentoSelecionado(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -75,6 +136,27 @@ export default class ButtonMenuComponent extends PropertiesMenu {
     // this.emailHTML = this.sanitizer.bypassSecurityTrustHtml(this.rawEmailHTML);
   }
 
+  atualizarTextoBotao(){
+    const buttonElement = document.querySelector('button.bloco-botao-btn') as HTMLButtonElement;
+    if (!buttonElement) return;
+
+    buttonElement.innerText = this.buttonText;
+    this.mediator.saveCurrentEditorState();
+  }
+  atualizarLinkBotao(){
+    const aButtonElement = document.querySelector('#linkBtn') as HTMLButtonElement;
+    const ButtonElement = document.querySelector('button.bloco-botao-btn') as HTMLButtonElement;
+    debugger
+    if (aButtonElement) {
+      aButtonElement.setAttribute('href', this.buttonLink);
+      aButtonElement.setAttribute('target', '_blank');
+      aButtonElement.style.textDecoration = 'none';
+      aButtonElement.style.cursor = 'pointer';
+      ButtonElement.style.cursor = 'pointer';
+    }
+    this.mediator.saveCurrentEditorState();
+
+  }
   AplicaMudanca(event: any, section: 'header' | 'content' | 'footer') {
     const selectedValue = event.target.value;
     let editableContainer: HTMLElement | null = null;

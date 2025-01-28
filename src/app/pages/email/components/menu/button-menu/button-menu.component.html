@@ -1,47 +1,58 @@
 <div>
-  <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
-  <label style="margin-bottom: 30px" for="esquemaCores"
-    >Arraste o Botão para onde voce quer que fique!
-  </label>
+  <div class="container-fluid px-0 .bg-body">
+    <div class="row">
+      <h5 style="margin-bottom: 50px">Propriedades dos Botões</h5>
+      <div class="form-group line">
+        <div class="form-group-item">
+          <label for="tamanhobt"><b> Escolha o tamanho do botão </b></label>
+          <select id="tamanhobt" class="form-select"  (change)="estiloSelecionado($event)">
+            <option disabled selected>Selecione</option>
+            <option value="25%">25%</option>
+            <option value="50%">50%</option>
+            <option value="100%">100%</option>
+          </select>
+        </div>
 
-  <label
-    >Quer inserir link? Selecione o botão e:
-    <button
-      class="btn btn-secondary btn-smaller btn-link"
-      (click)="inserirLink()"
-    >
-      Clique aqui
-    </button>
-  </label>
+        <div class="form-group-item">
+          <label for="estilocor"><b> Escolha o estilo da cor </b></label>
+          <select id="estilocor" class="form-select"  (change)="estiloSelecionado($event)">
+            <option disabled selected>Selecione</option>
+            <option value="purple">Púrpura</option>
+            <option value="white">Branco</option>
+          </select>
+        </div>
 
-  <!-- Novos botões para alinhamento -->
-  <div style="margin-bottom: 20px" class="form-group">
-    <label>Alinhamento? Selecione o botão e:</label>
-    <select
-      class="form-select-alinhamento"
-      (change)="alinhamentoSelecionado($event)"
-    >
-      <option disabled selected>Selecione</option>
-      <option value="left">Esquerda</option>
-      <option value="center">Centro</option>
-      <option value="right">Direita</option>
-    </select>
-  </div>
+        <div class="form-group-item">
+          <label for="escolhaEstilo"><b> Escolha o estilo de preenchimento </b></label>
+          <select id="escolhaEstilo" class="form-select" (change)="estiloSelecionado($event)">
+            <option disabled selected>Selecione</option>
+            <option value="solido">sólido</option>
+            <option value="contorno">somente contorno</option>
+          </select>
+        </div>
 
-  <div class="form-group">
-    <div class="btn-options-container">
-      <div class="btn-options">
-        <img
-          class="btn-img"
-          *ngFor="let opcao of opcoesBotoes"
-          [src]="opcao.path"
-          [alt]="opcao.nome"
-          draggable="true"
-          (dragstart)="this.dragStart($event, opcao.path)"
-          (dragend)="this.dragEnd($event)"
-          (click)="AplicaMudanca({ target: { value: opcao.nome } }, 'content')"
-        />
+        <div class="form-group-item">
+          <label for="alinhamentobt"><b> Escolha o alinhamento</b></label>
+          <select id="alinhamentobt" class="form-select"(change)="estiloSelecionado($event)">
+            <option disabled selected>Selecione</option>
+            <option value="left">Esquerda</option>
+            <option value="center">Centralizado</option>
+            <option value="right">Direita</option>
+          </select>
+        </div>
+        <div class="form-group-item">
+          <label for="textobt"><b> Digite o texto do seu botão</b></label>
+          <input type="text" class="form-control" [(ngModel)]="buttonText" (ngModelChange)="atualizarTextoBotao()" id="textobt"  placeholder="Ttexto do botão">
+        </div>
+        <div class="form-group-item">
+          <label for="linkbt"><b> Digite o link do seu botão</b></label>
+          <input type="text" class="form-control" [(ngModel)]="buttonLink" (ngModelChange)="atualizarLinkBotao()" id="linkbt"  placeholder="Link botão">
+        </div>
+        <button  class="btn btn-primary btn-lg" style="margin-top: 20px">
+          Salvar
+        </button>
       </div>
+
     </div>
   </div>
 </div>

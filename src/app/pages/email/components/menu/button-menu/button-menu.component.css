@@ -1,0 +1,22 @@
+.form-group-item {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-group-item label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group-item select {
+  width: 100%;
+}
+.form-group.line {
+  display: inline-block;
+}
+input#textobt, input#linkbt {
+  max-height: 10px;
+}
+button.btn.btn-primary.btn-lg {
+  width: 100%;
+}

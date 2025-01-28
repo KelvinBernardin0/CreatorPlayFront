@@ -97,7 +97,6 @@ option .edit-view-btns {
   padding: 10px;
 }
 
-
 /* ------------------- 2 PARTE ------------------- */
 
 
@@ -267,5 +266,10 @@ option .edit-view-btns {
 
 }
 
-
+.bg-coluna {
+  background: #fafafa;
+}
+.col-md-3.\.bg-coluna {
+  background:#fafafa;
+}
 /* ------------------- 3 PARTE ------------------- */

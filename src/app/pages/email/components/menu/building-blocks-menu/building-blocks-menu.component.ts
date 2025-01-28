@@ -48,7 +48,7 @@ export class BuildingBlocksMenuComponent {
   protected selectedColorScheme: NamedValue<boolean> = esquemaCores.find(
     (e) => e.value === false
   )!;
-  
+
   draggedBlock: any;
 
   protected selectedHeaderOption: NamedValue<TemplateOptions> | null = null;
@@ -180,7 +180,7 @@ export class BuildingBlocksMenuComponent {
   }
 
   protected changeState(newState: PropertyState) {
-    debugger;
+
 
     this.state = newState;
     this.mediator.changePropertiesState(this.state);
@@ -194,18 +194,18 @@ export class BuildingBlocksMenuComponent {
     }
 
     dragCopyStart(event: DragEvent, data: PropertyState) {
-      debugger;
+
 
       const command = new DragCopyStartCommand(this.mediator, event, data)
       this.mediator.executeCommand(command)
       this.changeState(data);
     }
-  
-  
 
-  
- 
-  
+
+
+
+
+
 
   protected changeBackgroundColor(namedValue: NamedValue<string>) {
     const color = namedValue.value;
@@ -361,7 +361,7 @@ export class BuildingBlocksMenuComponent {
   }
 
   protected uploadImageHeader(event: Event, local: string) {
-    debugger;
+
 
     const command = new UploadFileToContainerCommand(
       this.mediator,
