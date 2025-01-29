@@ -27,7 +27,9 @@ import { blocks, NamedPathState } from '../../../patterns/state/state-array';
 import { SelectionInputComponent } from '../../input/selection-input/selection-input.component';
 import DragCopyEndCommand from '../../../patterns/command/drag/drag-copy-end-command';
 import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start-command';
-
+import { NamedPath } from 'src/app/common/types/NamedPath';
+import { NamedHtml } from 'src/app/common/types/NamedHtml';
+import { planos } from '../../../data/planos';
 @Component({
   selector: 'app-building-blocks-menu',
   templateUrl: './building-blocks-menu.component.html',
@@ -77,17 +79,19 @@ export class BuildingBlocksMenuComponent {
   private _linkBotao: string = '';
 
   private _textoLegal: string = '';
-
+  protected opcoesVitrinePlanos: NamedHtml[] = [];
   @ViewChild('selectionInputHeader')
   selectionInputHeader!: SelectionInputComponent<TemplateOptions>;
   @ViewChild('selectionInputFooter')
   selectionInputFooter!: SelectionInputComponent<TemplateOptions>;
 
   ngOnInit(): void {
+    this.getAndPushData(planos[0], this.opcoesVitrinePlanos)
     this.onChangeColorScheme({
       name: 'Padrão',
       value: false,
     });
+
   }
 
   get mostrarBotao(): boolean {
@@ -194,15 +198,28 @@ export class BuildingBlocksMenuComponent {
     }
 
     dragCopyStart(event: DragEvent, data: PropertyState) {
+      let command:Command;
+        switch (data) {
+          case 'Planos':
+            command = new DragCopyStartCommand(this.mediator, event, this.opcoesVitrinePlanos[0].html)
+            break;
+          default:
+            command = new DragCopyStartCommand(this.mediator, event, data)
+            break;
+        }
 
 
-      const command = new DragCopyStartCommand(this.mediator, event, data)
       this.mediator.executeCommand(command)
       this.changeState(data);
     }
 
 
-
+  protected getAndPushData(opcao: NamedPath, opcoes: NamedHtml[]): void{
+    this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
+      
+      opcoes.push({ nome: opcao.nome, html: data });
+    });
+  }
 
 
 
