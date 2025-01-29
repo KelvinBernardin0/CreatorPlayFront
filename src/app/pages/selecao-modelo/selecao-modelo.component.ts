@@ -2,38 +2,31 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import {StringState} from 'src/app/common/types/State';
-
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css'],
+  selector: 'app-selecao-modelo',
+  templateUrl: './selecao-modelo.component.html',
+  styleUrls: ['./selecao-modelo.component.css']
 })
-export class InicioComponent {
+export class SelecaoModeloComponent {
   constructor(private router: Router, private http: HttpClient) {}
-
   emailHTML: string = '';
 
-  redirecionarParaMaestro() {
-    window.open(
-      'https://app.powerbi.com/groups/me/reports/b691e0b8-3942-4386-a860-9f0b71f17523/ReportSection?ctid=9744600e-3e04-492e-baa1-25ec245c6f10&experience=power-bi',
-      '_blank'
-    );
+
+  redirecionarParaTemplates() {
+    this.router.navigate(['/templates']);
   }
 
-  // redirecionarParaEmailSemImagem() {
-  //   this.carregarEmail(
-  //     'assets/componentes/headers/headers_sem_imagem.html',
-  //     'assets/componentes/conteudo.html',
-  //     'assets/componentes/footers/footer_inverso.html'
-  //   );
-  // }
-  redirecionarParaSelecaoModelos(){
-    this.router.navigate(['/selecaomodelos']);
+  redirecionarParaEmailSemImagem() {
+    this.carregarEmail(
+      'assets/componentes/headers/headers_sem_imagem.html',
+      'assets/componentes/conteudo.html',
+      'assets/componentes/footers/footer_inverso.html'
+    );
   }
 
   redirecionarParaEmailComImagem() {
     this.carregarEmail(
-      'assets/componentes/headers/headers_imagem_grande.html',
+      'assets/componentes/headers/headers_imagem_pequena.html',
       'assets/componentes/conteudo.html',
       'assets/componentes/footers/footer.html'
     );
