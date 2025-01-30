@@ -13,38 +13,43 @@ export class InsertLinkToElementCommand extends Command {
   }
 
   override execute(): void {
-    const { mediator, link, targetSelector, target  } = this.params;
+    const { mediator, link, targetSelector, target } = this.params;
     const targetElement = (target ?? document).querySelector(targetSelector) as HTMLElement;
     if (!targetElement)
       throw new Error(`Seletor ${targetSelector} não encontrado!`);
 
-    const targetParentIsAnchor = targetElement.parentElement?.nodeName === 'A';
+    const existingAnchor = targetElement.closest('a') as HTMLAnchorElement;
 
     const formattedLink = !link.match(/^[a-zA-Z][a-zA-Z\d+\-.]*:/)
       ? 'https://' + link
       : link;
 
-    const aElement = targetParentIsAnchor
-      ? (targetElement.parentElement! as HTMLAnchorElement)
-      : document.createElement('a');
+    const aElement = existingAnchor || document.createElement('a');
 
-    if (link === '' && targetParentIsAnchor) {
-      aElement.replaceWith(targetElement);
+    if (link === '' && existingAnchor) {
+      existingAnchor.replaceWith(targetElement);
       return;
     }
 
     aElement.href = formattedLink;
     aElement.title = formattedLink;
     aElement.target = '_blank';
-    aElement.style.textDecoration = 'none'
-    aElement.style.color = 'inherit'
-    aElement.innerHTML = targetElement.outerHTML;
+    aElement.style.textDecoration = 'none';
+    aElement.style.color = 'inherit';
+
+    if (!existingAnchor) {
+      aElement.innerHTML = targetElement.outerHTML;
+      targetElement.parentNode?.replaceChild(aElement, targetElement);
+    }
 
     mediator.saveCurrentEditorState(); // Salvar o estado antes de fazer a alteração
-
-    // Substituir a imagem original pelo link com a imagem clonada
-    targetElement.parentNode?.replaceChild(aElement, targetElement);
-
     mediator.hideContextMenu();
   }
+  /**
+   * Problema Identificado 30/01/25
+  O problema ocorre porque a lógica de substituição do elemento está criando um novo <a> quando o targetElement não tem um pai <a>. Se o targetElement já estiver dentro de um <a>, ele reutiliza o pai <a>, mas se não estiver, ele cria um novo <a>.
+
+  Solução
+  Para garantir que o link seja atualizado no <a> existente, você pode modificar a lógica para sempre procurar um <a> existente antes de criar um novo. Aqui está a modificação:
+    */
 }
