@@ -41,7 +41,7 @@ export class DownloadHtmlCommand extends Command {
   override execute(): void {
     this.saveHtml(this.templateStatus);
   }
- 
+
 
   downloadHTML(html: string, filename: string) {
     // Regex para capturar imagens com atributo específico
@@ -88,7 +88,7 @@ export class DownloadHtmlCommand extends Command {
   }
 
   async saveHtml(templateStatus: number) {
-    debugger;
+
     const name: string = (await this.notificacaoService.AlertaNomeTemplate()) ?? 'Template';
     const tStatus = templateStatus;
 
@@ -105,22 +105,23 @@ export class DownloadHtmlCommand extends Command {
       const combinedHTML = `${headerHTML}${contentHTML}${footerHTML}`;
       const cleanedHTML = this.removeContentEditable(combinedHTML);
       const result = this.removeDisplayNone(cleanedHTML);
-      
+
       // Converte o array em string JSON para passar para o método saveDbTemplate
       this.saveDbTemplate(
         name,
         tStatus,
-        result
+        result,
+        'defaultOptions'
       );
-  
+
       // Salva no banco e realiza o download do HTML.
-      this.saveDbTemplate(name, tStatus, combinedHTML);
+      this.saveDbTemplate(name, tStatus, combinedHTML, 'defaultOptions' );
       this.downloadHTML(result, `${name}.html`);
     }
   }
 
   async saveHtmlAndExit(templateStatus: number) {
-    debugger;
+
     const name: string = (await this.notificacaoService.AlertaNomeTemplate()) ?? 'Template';
     const tStatus = templateStatus;
 
@@ -142,9 +143,10 @@ export class DownloadHtmlCommand extends Command {
       this.saveDbTemplate(
         name,
         tStatus,
-        result
+        result,
+        'defaultOptions'
       );
-      
+
       this.router.navigate(['/inicio']); // Redireciona após salvar
     }
      else {
@@ -155,25 +157,27 @@ export class DownloadHtmlCommand extends Command {
             });
      }
   }
-  
+
 
   saveDbTemplate(
     name: string,
     templateStatus: number,
-    template: string,  ) {
-   
+    template: string,
+    options: string  ) {
 
 
-    debugger;
+
+
     const templatePayload = {
       name: name,
       template: template,
       templateStatus: templateStatus,
+      options:'defaultOptions',
     };
 
     this.templateService.saveTemplate(templatePayload).subscribe({
       next: (response) => {
-        debugger;
+
         if (templateStatus === 0) {
           this.notificacaoService
             .AlertaConcluidoAzul('Sucesso', response.message, 'Concluir')
@@ -183,7 +187,7 @@ export class DownloadHtmlCommand extends Command {
         }
       },
       error: (error) => {
-        debugger;
+
         this.notificacaoService
           .AlertaErro('Erro', error.error.message, 'Concluir')
           .then(() => {});
@@ -213,11 +217,11 @@ export class DownloadHtmlCommand extends Command {
   }
 
 
-  
 
- 
 
-  
+
+
+
 
   removeDisplayNone(html: string): string {
     const tempDiv = document.createElement('div');

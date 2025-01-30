@@ -5,9 +5,9 @@ export const cards: NamedPath[] = [
     nome: 'Conteudo Branco',
     path: 'assets/componentes/cards/card_conteudo.html',
   },
-  {
-    nome: 'Conteudo Cinza',
-    path: 'assets/componentes/cards/card_conteudo_alternativo.html',
-  },
+  // {
+  //   nome: 'Conteudo Cinza',
+  //   path: 'assets/componentes/cards/card_conteudo_alternativo.html',
+  // },
 
 ];

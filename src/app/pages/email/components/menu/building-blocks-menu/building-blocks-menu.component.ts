@@ -30,6 +30,7 @@ import DragCopyStartCommand from '../../../patterns/command/drag/drag-copy-start
 import { NamedPath } from 'src/app/common/types/NamedPath';
 import { NamedHtml } from 'src/app/common/types/NamedHtml';
 import { planos } from '../../../data/planos';
+import { cards } from '../../../data/cards';
 @Component({
   selector: 'app-building-blocks-menu',
   templateUrl: './building-blocks-menu.component.html',
@@ -80,6 +81,8 @@ export class BuildingBlocksMenuComponent {
 
   private _textoLegal: string = '';
   protected opcoesVitrinePlanos: NamedHtml[] = [];
+  protected opcoesCards: NamedHtml[] = [];
+
   @ViewChild('selectionInputHeader')
   selectionInputHeader!: SelectionInputComponent<TemplateOptions>;
   @ViewChild('selectionInputFooter')
@@ -87,6 +90,7 @@ export class BuildingBlocksMenuComponent {
 
   ngOnInit(): void {
     this.getAndPushData(planos[0], this.opcoesVitrinePlanos)
+    this.getAndPushData(cards[0], this.opcoesCards)
     this.onChangeColorScheme({
       name: 'Padrão',
       value: false,
@@ -203,6 +207,9 @@ export class BuildingBlocksMenuComponent {
           case 'Planos':
             command = new DragCopyStartCommand(this.mediator, event, this.opcoesVitrinePlanos[0].html)
             break;
+          case 'Cards':
+            command = new DragCopyStartCommand(this.mediator, event, this.opcoesCards[0].html)
+            break;
           default:
             command = new DragCopyStartCommand(this.mediator, event, data)
             break;
@@ -216,7 +223,7 @@ export class BuildingBlocksMenuComponent {
 
   protected getAndPushData(opcao: NamedPath, opcoes: NamedHtml[]): void{
     this.http.get(opcao.path, { responseType: 'text' }).subscribe((data) => {
-      
+
       opcoes.push({ nome: opcao.nome, html: data });
     });
   }

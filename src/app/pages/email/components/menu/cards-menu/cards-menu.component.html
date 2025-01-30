@@ -1,57 +1,44 @@
 <div>
-  <h5 style="margin-bottom: 50px">Propriedades dos Cards</h5>
-  <label for="esquemaCores"
-    >Arraste o Card para onde voce quer que fique!
-  </label>
+  <h5>Propriedades dos Cards</h5>
+  <div class="row">
+    <div class="form-group line">
+      <!-- Lista de cards que podem ser arrastados -->
+      <div class="form-group-item">
+        <label for="esquemaCores">Cor de conteúdo</label>
+        <select name="corConteudo" id="corConteudo" class="form-select" (change)="changeColorContent($event)">
+          <option disabled selected>Selecione</option>
+          <option value="branco">Branco</option>
+          <option value="cinza">Cinza</option>
 
-  <div class="form-group">
-    <!-- Lista de cards que podem ser arrastados -->
-    <div
-      style="margin-right: 5px; margin-bottom: 40px"
-      class="card-list"
-      *ngFor="let opcao of opcoesCards"
-      draggable="true"
-      (dragstart)="this.dragCopyStart($event, opcao.html)"
-      (dragend)="this.dragCopyEnd($event)"
-    >
-      {{ opcao.nome }}
-    </div>
-  </div>
+        </select>
+      </div>
 
-  <label
-    >Quer inserir link? Selecione o botão e:
-    <button
-      class="btn btn-secondary btn-smaller btn-link"
-      (click)="inserirLink()"
-    >
-      Clique aqui
-    </button>
-  </label>
 
-  <div>
-    <h2 style="margin: 30px 0px 20px 0px">Adicionar Imagens</h2>
-    <!-- <p>Antes de inserir a imagem, selecione o local aonde voce quer adicionar</p>
-    <select class="form-select" style="margin-bottom: 30px" [(ngModel)]="selectedImageSize">
-      <option value="P">Pequena (25%)</option>
-      <option value="M">Média (50%)</option>
-      <option value="G">Grande (100%)</option>
-    </select> -->
-    <div class="image-upload-container">
-      <!-- Checkbox para confirmar termos de uso -->
-      <label>
-        <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
-        Eu aceito os termos de uso
-      </label>
+      <div class="form-group-item">
+        <label for="linkbt"> Digite o link do seu card</label>
+        <input type="text" class="form-control" id="linkCard"
+          [(ngModel)]="linkCard"
+          (ngModelChange)="onLinkCardChange($event)"
+           placeholder="Link do card">
+      </div>
 
-      <!-- Botão personalizado para upload de arquivo -->
-      <label class="custom-file-upload">
-        <input
-          type="file"
-          (change)="uploadFileCard($event, 'card')"
-          [disabled]="!termosDeUsoAceitos"
-        />
-        Escolher arquivo
-      </label>
+      <div class="form-group-item">
+        <h2>Adicionar Imagens</h2>
+        <div class="image-upload-container">
+          <!-- Checkbox para confirmar termos de uso -->
+          <label>
+            <input type="checkbox" [(ngModel)]="termosDeUsoAceitos" />
+            Eu aceito os termos de uso
+          </label>
+
+          <!-- Botão personalizado para upload de arquivo -->
+          <label class="custom-file-upload">
+            <input type="file" (change)="uploadFileCard($event, 'card')" [disabled]="!termosDeUsoAceitos" />
+            Escolher arquivo
+          </label>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
