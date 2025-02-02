@@ -31,6 +31,7 @@ import { NamedPath } from 'src/app/common/types/NamedPath';
 import { NamedHtml } from 'src/app/common/types/NamedHtml';
 import { planos } from '../../../data/planos';
 import { cards } from '../../../data/cards';
+import { equipamentos } from '../../../data/equipamentos';
 @Component({
   selector: 'app-building-blocks-menu',
   templateUrl: './building-blocks-menu.component.html',
@@ -82,6 +83,7 @@ export class BuildingBlocksMenuComponent {
   private _textoLegal: string = '';
   protected opcoesVitrinePlanos: NamedHtml[] = [];
   protected opcoesCards: NamedHtml[] = [];
+  protected opcoesVitrineEquipamentos: NamedHtml[] = [];
 
   @ViewChild('selectionInputHeader')
   selectionInputHeader!: SelectionInputComponent<TemplateOptions>;
@@ -91,6 +93,7 @@ export class BuildingBlocksMenuComponent {
   ngOnInit(): void {
     this.getAndPushData(planos[0], this.opcoesVitrinePlanos)
     this.getAndPushData(cards[0], this.opcoesCards)
+    this.getAndPushData(equipamentos[0], this.opcoesVitrineEquipamentos)
     this.onChangeColorScheme({
       name: 'Padrão',
       value: false,
@@ -209,6 +212,9 @@ export class BuildingBlocksMenuComponent {
             break;
           case 'Cards':
             command = new DragCopyStartCommand(this.mediator, event, this.opcoesCards[0].html)
+            break;
+          case 'Vitrine':
+            command = new DragCopyStartCommand(this.mediator, event, this.opcoesVitrineEquipamentos[0].html)
             break;
           default:
             command = new DragCopyStartCommand(this.mediator, event, data)
