@@ -1,27 +1,35 @@
 # CreatorPlay
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.0.
 
-## Development server
+CreatorPlay é um sistema para criação de e-mails marketing em HTML de forma intuitiva e eficiente. Com uma interface amigável e recursos avançados, permite a edição e personalização de templates para campanhas de e-mail.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+# Funcionalidades Principais:
+- Editor de arrastar e soltar: Crie templates de e-mail facilmente.
+- Suporte a componentes customizados: Adicione blocos de cabeçalho, rodapé e conteúdo personalizado.
+- Exportação de HTML: Gere o código HTML do e-mail pronto para envio.
+- Autenticação e gerenciamento de usuários: Controle de acesso seguro.
+- Integração com APIs de e-mail: Suporte a envio via plataformas
 
-## Code scaffolding
+# Tecnologias Utilizadas abaixo
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Front-End
+- Framework: Angular 16
+- Angular Material
+- Construção e Empacotamento: Angular CLI
+- Gerenciamento de Estado: RxJS
+- Estilização: Bootstrap
 
-## Build
+# Back-End
+- Framework: .NET 6
+- Padrão Arquitetural: API REST
+- Autenticação: JWT
+- ORM: Entity Framework Core
+- Documentação: Swagger
+- Banco: SQL Server
+- Migrations: Entity Framework Migrations
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Infraestrutura
+- Arquitetura de Containers: Docker
+- Esteira CI/CD: Jenkins
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
